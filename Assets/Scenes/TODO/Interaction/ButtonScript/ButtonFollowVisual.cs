@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
+[RequireComponent(typeof(XRSimpleInteractable))]
 public class ButtonFollowVisual : MonoBehaviour
 {
     [Header("References")]
@@ -101,7 +103,6 @@ public class ButtonFollowVisual : MonoBehaviour
                 if (OnPressed != null)
                     OnPressed.Invoke();
 
-                Debug.Log("Pressed");
             }
         }
         else
@@ -110,7 +111,7 @@ public class ButtonFollowVisual : MonoBehaviour
             {
                 if (OnReleased != null)
                     OnReleased.Invoke();
-                Debug.Log("Released");
+               
             }
         }
         wasIsPressed = isPressed;
@@ -160,7 +161,7 @@ public class ButtonFollowVisual : MonoBehaviour
         }
         else
         {
-            visualTarget.localPosition = Vector3.Lerp(visualTarget.localPosition, transform.localPosition, Time.deltaTime * resetSpeed);
+            visualTarget.transform.position = Vector3.Lerp(visualTarget.transform.position, transform.position, Time.deltaTime * resetSpeed);
         }
     }
 
