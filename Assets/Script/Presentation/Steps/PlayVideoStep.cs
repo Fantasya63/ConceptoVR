@@ -11,6 +11,7 @@ namespace Canvas
 
         public override void Activate()
         {
+            Debug.Log($"Playing video player: {player.name}");
             player.Play();
             Complete();
         }
@@ -24,6 +25,7 @@ namespace Canvas
         {
             if (player != null)
             {
+                Debug.Log($"Stopping video player: {player.name}");
                 player.Stop();
             }
         }

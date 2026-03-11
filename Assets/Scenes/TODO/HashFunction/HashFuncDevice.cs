@@ -33,6 +33,12 @@ namespace Concepto.HashMap
         [SerializeField]
         private Printer resultPrinter;
 
+        public void PrintPaperScripted(Paper paper)
+        {
+            XRBaseInteractable interactable = paper.GetComponent<XRBaseInteractable>();
+
+            Print(interactable);
+        }
 
         public void OnInputEntered()
         {
@@ -42,19 +48,26 @@ namespace Concepto.HashMap
             if (!inputSocketInteractor.hasSelection)
                 return;
 
+
             // Get interactable object
             XRBaseInteractable interactable =
                 (XRBaseInteractable)inputSocketInteractor.firstInteractableSelected;
 
+            // Remove paper from  input socket
+            inputSocketInteractor.interactionManager.SelectExit((IXRSelectInteractor)inputSocketInteractor, interactable);
+
+            Print(interactable);
+        }
+
+        private void Print(XRBaseInteractable interactable)
+        {
             if (interactable == null)
                 return;
 
             GameObject paperObject = interactable.gameObject;
+
+
             
-
-            // Remove paper from  input socket
-            inputSocketInteractor.interactionManager.SelectExit((IXRSelectInteractor)inputSocketInteractor, interactable);
-
             string paperData;
             {
                 Paper insertedPaper = paperObject.GetComponent<Paper>();
@@ -79,7 +92,7 @@ namespace Concepto.HashMap
 
 
             int hashkey = HashMap.HashFunc.Hash(paperData, HashMap.HashFunc.NumBoxes);
-            
+
 
             paperObject.transform.position = inputPaperStartPos.position;
             paperObject.transform.rotation = inputPaperStartPos.rotation;
@@ -94,5 +107,6 @@ namespace Concepto.HashMap
                 });
         }
     }
+    
 
 }

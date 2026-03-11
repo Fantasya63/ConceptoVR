@@ -20,12 +20,49 @@ public class Printer : MonoBehaviour
     [Header("Print Settings")]
     [SerializeField] private float printMoveDuration = 2f;
 
+
     private bool IsPrinting = false;
     private void Awake()
     {
         renderCamera.enabled = false;
-       
     }
+
+    public void PrintNoAnim(string text, System.Action<Paper> onFinished)
+    {
+        if (!IsPrinting)
+        {
+            StartCoroutine(PrintRoutineNoAnim(text, Paper.PAPER_TYPE.Data, onFinished));
+            IsPrinting = true;
+        }
+    }
+    IEnumerator PrintRoutineNoAnim(string text, Paper.PAPER_TYPE type, System.Action<Paper> onFinished)
+    {
+        printerStamp.text = text;
+        printerStamp.ForceMeshUpdate();
+
+        yield return new WaitForEndOfFrame();
+        renderCamera.Render();
+
+        Texture2D snapshot = new Texture2D(textureWidth, textureHeight, TextureFormat.RGBA32, false);
+        RenderTexture.active = renderCamera.targetTexture;
+        snapshot.ReadPixels(new Rect(0, 0, textureWidth, textureHeight), 0, 0);
+        snapshot.Apply();
+        RenderTexture.active = null;
+
+        Paper paper = Instantiate(paperPrefab, paperStartPos.position, paperStartPos.rotation);
+        paper.data = text;
+        paper.PaperType = type;
+
+        MeshRenderer renderer = paper.GetComponent<MeshRenderer>();
+        Material newMat = new Material(renderer.material);
+        renderer.material = newMat;
+        renderer.material.SetTexture("_BaseMap", snapshot);
+
+        IsPrinting = false;
+
+        onFinished?.Invoke(paper);
+    }
+
 
     public void Print(string text)
     {

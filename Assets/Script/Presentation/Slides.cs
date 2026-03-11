@@ -5,7 +5,6 @@ namespace Canvas
 {
     public class Slides : MonoBehaviour
     {
-
         [Header("Configuration")]
         public Step[] steps;
 
@@ -13,6 +12,11 @@ namespace Canvas
         public SlidesManager manager;
 
         
+        public string SlideName
+        {
+            get { return gameObject.name; }
+        }
+
 
         public void Setup()
         {
@@ -39,16 +43,16 @@ namespace Canvas
         public void Cleanup()
         {
             if (currentStep < 0 || steps == null || currentStep >= steps.Length)
-                return; // Already cleaned or never set up
+                return;
+
+            steps[currentStep].Deactivate();
+            currentStep = -1;
 
             foreach (Step step in steps)
             {
                 step.OnSlideExit();
                 step.OnCompleted.RemoveListener(OnStepComplete);
             }
-
-            steps[currentStep].Deactivate();
-            currentStep = -1; // Return to initial state
         }
 
 
@@ -67,6 +71,7 @@ namespace Canvas
             return false;
 
         }
+
 
 
         public bool Previous()
@@ -94,7 +99,8 @@ namespace Canvas
         [SerializeField, HideInInspector]
         private int currentStep = -1; // -1 = not initialized
 
-        // Helper methods to reduce duplication and improve readability
+        // Helper Methods
+
         private void AssertIsValidState()
         {
             Debug.Assert(steps != null, $"[Slides] Steps array is null on {name}");

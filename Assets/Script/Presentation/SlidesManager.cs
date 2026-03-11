@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
@@ -21,20 +22,49 @@ namespace Canvas
         [SerializeField] private InputActionReference toBeginningAction;
         [SerializeField] private InputActionReference toEndAction;
 
-       
+
+        [Header("Options")]
+        [SerializeField] private Slides m_StartSlide = null;
+
+        private Dictionary<string, int> m_SlideNameToIndexTable = new Dictionary<string, int>();
+
 
         public void Setup()
         {
             Debug.Assert(slides != null && slides.Length > 0,
                 $"[SlidesManager] No Slides assigned on {name}");
 
+            int index = 0;
             foreach (var slide in slides)
             {
                 slide.manager = this;
+
+                if (slide.SlideName != null)
+                {
+                    // Check for Duplicates
+                    string slideName = slide.SlideName;
+                    if (m_SlideNameToIndexTable.ContainsKey(slideName))
+                    {
+                        Debug.Log($"Warning! Duplicate SlideNames Detected! Name: {slide}.");
+                    }
+                    else
+                    {
+                        m_SlideNameToIndexTable[slideName] = index;
+                        Debug.Log($"SlideManager: Added {slideName} to SlideNameToIndex table.");
+                    }
+
+                }
+                index++;
             }
 
-
-            currentSlideIndex = 0;
+            if (m_StartSlide != null)
+            {
+                currentSlideIndex = m_SlideNameToIndexTable[m_StartSlide.SlideName];
+            }
+            else
+            {
+                currentSlideIndex = 0;
+            }
             ShowCurrentSlide();
         }
 
@@ -58,6 +88,7 @@ namespace Canvas
             int prevIndex = currentSlideIndex - 1;
             GoToSlide(prevIndex);
         }
+
 
         // Advances the current step of the slide and moves to the next slide if we reached the end limit of the steps
         public void NextStep()
@@ -93,6 +124,11 @@ namespace Canvas
 
             SetupInputActions();
 
+        }
+
+        public void JumpToSlide(string name, bool restart = false)
+        {
+            JumpToSlide(m_SlideNameToIndexTable[name], restart);
         }
 
         public void JumpToSlide(int index, bool restart = false)

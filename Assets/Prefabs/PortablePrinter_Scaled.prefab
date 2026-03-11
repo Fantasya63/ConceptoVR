@@ -1556,6 +1556,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OutputPrinter
       objectReference: {fileID: 0}
+    - target: {fileID: 8810849925855543752, guid: 17caeffc6b57d82499b12019b0268914, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3122073870291371745, guid: 17caeffc6b57d82499b12019b0268914, type: 3}
