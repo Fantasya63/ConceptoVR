@@ -25,6 +25,7 @@ namespace Canvas
 
             foreach (Step step in steps)
             {
+                step.slide = this;
                 step.OnCompleted.AddListener(OnStepComplete);
             }
 
@@ -95,6 +96,7 @@ namespace Canvas
                 manager.NextStep();
         }
 
+        public int CurrentStep { get { return currentStep; } }
 
         [SerializeField, HideInInspector]
         private int currentStep = -1; // -1 = not initialized

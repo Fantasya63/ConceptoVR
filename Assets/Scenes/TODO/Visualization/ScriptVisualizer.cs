@@ -5,7 +5,17 @@ using UnityEngine;
 public class ScriptVisualizer : MonoBehaviour
 {
     [TextArea(5, 20)]
-    public string code = "print(\"Hello World\");";
+    public string Code
+    {
+        set
+        {
+            code = value;
+            UpdateText();
+        }
+    }
+
+    [SerializeField]
+    private string code = "print(\"Hello World\");";
 
     [SerializeField] private TMP_Text codeUI;
 

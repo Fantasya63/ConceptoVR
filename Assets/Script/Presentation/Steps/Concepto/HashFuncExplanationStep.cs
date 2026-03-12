@@ -125,8 +125,10 @@ namespace Canvas
                 m_HashFuncDevInstance.gameObject.SetActive(false);
                 m_PlayerHashFuncDev.gameObject.SetActive(true);
                 m_PlayerKeypadObject.gameObject.SetActive(true);
+
             }
 
+            Complete();
 
         }
 

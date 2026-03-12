@@ -9,11 +9,15 @@ namespace Canvas
         // Event fired when a Step is completed
         public UnityEvent OnCompleted = new UnityEvent();
 
+        [HideInInspector]
+        public Slides slide;
+
         public abstract void Activate();
 
         public abstract void Deactivate();
 
         public abstract void OnSlideExit();
+
 
         // public abstract void Replay();
        

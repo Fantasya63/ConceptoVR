@@ -162,7 +162,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -699,7 +699,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -1022,6 +1022,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5443538549941393180}
   - component: {fileID: 8819818377392352672}
+  - component: {fileID: 3544915608413749050}
   m_Layer: 0
   m_Name: DraftKeypad
   m_TagString: Untagged
@@ -1056,7 +1057,6 @@ Transform:
   - {fileID: 4483884543954490353}
   - {fileID: 4199304522554415657}
   - {fileID: 5818381951075202812}
-  - {fileID: 5828037045998840771}
   - {fileID: 747596195065818296}
   - {fileID: 5230711771005633563}
   - {fileID: 967810536180762916}
@@ -1071,7 +1071,7 @@ AudioSource:
   m_GameObject: {fileID: 1618845598405709076}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 3077716886365188290, guid: 040d3603a8f74a24ab3c85b0e60b7997, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 2dc4ab4a3e8515b4bab79fe3d73a51d1, type: 3}
   m_PlayOnAwake: 0
@@ -1159,6 +1159,44 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3544915608413749050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618845598405709076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cffce8742a213cc4197cdb45cedea751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyboardController
+  cycleTime: 1.5
+  maxCharacters: 3
+  keys:
+  - keyChar: 49
+    values: 3100
+  - keyChar: 50
+    values: 4100420043003200
+  - keyChar: 51
+    values: 4400450046003300
+  - keyChar: 52
+    values: 4700480049003400
+  - keyChar: 53
+    values: 4a004b004c003500
+  - keyChar: 54
+    values: 4d004e004f003600
+  - keyChar: 55
+    values: 50005100520053003700
+  - keyChar: 56
+    values: 5400550056003800
+  - keyChar: 57
+    values: 5700580059005a003900
+  - keyChar: 48
+    values: 3000
+  printer: {fileID: 7782217958963091003}
+  display: {fileID: 1959748419189395817}
+  m_CodeTemplate: var myVariable = {0}
 --- !u!1 &1973947593898133076
 GameObject:
   m_ObjectHideFlags: 0
@@ -1476,7 +1514,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -1739,7 +1777,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressSubmit
         m_Mode: 1
@@ -2156,7 +2194,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -2354,7 +2392,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -2552,7 +2590,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -2873,75 +2911,6 @@ Transform:
   - {fileID: 8306800117340916855}
   m_Father: {fileID: 5443538549941393180}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4030341992272437569
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5828037045998840771}
-  - component: {fileID: 7640923322194100334}
-  m_Layer: 0
-  m_Name: KeypadManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5828037045998840771
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4030341992272437569}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5443538549941393180}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7640923322194100334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4030341992272437569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cffce8742a213cc4197cdb45cedea751, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::KeyboardController
-  cycleTime: 1.5
-  maxCharacters: 3
-  keys:
-  - keyChar: 49
-    values: 3100
-  - keyChar: 50
-    values: 4100420043003200
-  - keyChar: 51
-    values: 4400450046003300
-  - keyChar: 52
-    values: 4700480049003400
-  - keyChar: 53
-    values: 4a004b004c003500
-  - keyChar: 54
-    values: 4d004e004f003600
-  - keyChar: 55
-    values: 50005100520053003700
-  - keyChar: 56
-    values: 5400550056003800
-  - keyChar: 57
-    values: 5700580059005a003900
-  - keyChar: 48
-    values: 3000
-  printer: {fileID: 7782217958963091003}
-  display: {fileID: 1959748419189395817}
 --- !u!1 &4057739968465220830
 GameObject:
   m_ObjectHideFlags: 0
@@ -3383,7 +3352,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -3714,7 +3683,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressBackspace
         m_Mode: 1
@@ -4249,7 +4218,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -4997,7 +4966,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5
@@ -5195,7 +5164,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7640923322194100334}
+      - m_Target: {fileID: 3544915608413749050}
         m_TargetAssemblyTypeName: KeyboardController, Assembly-CSharp
         m_MethodName: PressKey
         m_Mode: 5

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.Events;
 
 public class KeyboardController : MonoBehaviour
 {
@@ -18,6 +19,15 @@ public class KeyboardController : MonoBehaviour
     private float lastPressTime = 0f;
     private List<char> typed = new List<char>();
 
+    [Header("Code Template")]
+    [SerializeField] private ScriptVisualizer m_ScriptVisualizer;
+    [TextArea(5, 20)]
+    [SerializeField] string m_CodeTemplate = "var myVariable = {0};";
+
+    [Header("Events")]
+    public UnityEvent OnSubmit;
+
+
     void Start()
     {
         keyMap.Clear();
@@ -32,6 +42,12 @@ public class KeyboardController : MonoBehaviour
 
         UpdateDisplay();
     }
+
+    string GetCodeEquivalent(string data)
+    {
+        return string.Format(m_CodeTemplate, data);
+    }
+
 
     public void PressKey(string keyValue)
     {
@@ -110,7 +126,12 @@ public class KeyboardController : MonoBehaviour
         }
 
         string output = GetTypedString();
-        Debug.Log("Submitted: " + output);
+        
+
+        string code = GetCodeEquivalent(output);
+        m_ScriptVisualizer.Code = code;
+
+
 
         if (printer != null)
         {
@@ -124,6 +145,8 @@ public class KeyboardController : MonoBehaviour
         typed.Clear();
         lastKey = null;
         UpdateDisplay(); 
+    
+        OnSubmit.Invoke();
     }
 
     void UpdateDisplay()
