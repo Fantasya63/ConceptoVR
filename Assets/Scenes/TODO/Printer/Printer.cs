@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Printer : MonoBehaviour
@@ -19,6 +20,9 @@ public class Printer : MonoBehaviour
 
     [Header("Print Settings")]
     [SerializeField] private float printMoveDuration = 2f;
+
+    [Header("Events")]
+    public UnityEvent<Paper> OnPaperPrinted;
 
 
     private bool IsPrinting = false;
@@ -163,6 +167,7 @@ public class Printer : MonoBehaviour
         if (grab != null)
             grab.enabled = true;
 
+        OnPaperPrinted.Invoke(paper);
         IsPrinting = false;
     }
 }

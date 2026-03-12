@@ -1,6 +1,7 @@
 using Concepto.HashMap;
 using Unity.Android.Gradle.Manifest;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -32,6 +33,13 @@ namespace Concepto.HashMap
         [Header("External Devices")]
         [SerializeField]
         private Printer resultPrinter;
+
+        public UnityEvent<Paper> OnPaperPrinted;
+
+        public void Start()
+        {
+            resultPrinter.OnPaperPrinted.AddListener((Paper paper) => { OnPaperPrinted.Invoke(paper); });
+        }
 
         public void PrintPaperScripted(Paper paper)
         {
@@ -105,6 +113,7 @@ namespace Concepto.HashMap
                     Destroy(paperObject);
                     resultPrinter.PrintHashkey(hashkey.ToString());
                 });
+
         }
     }
     

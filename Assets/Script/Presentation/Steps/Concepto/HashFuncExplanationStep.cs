@@ -9,6 +9,9 @@ namespace Canvas
     {
         [Header("References")]
         [SerializeField] private HashFuncDevice m_HashFuncDevPrefab;
+        [SerializeField] private HashFuncDevice m_PlayerHashFuncDev;
+        [SerializeField] private GameObject m_PlayerKeypadObject;
+
         [SerializeField] private Transform m_HashFuncDevSpawnTransform;
         [SerializeField] private Transform m_PaperStartTransform;
         [SerializeField] private Transform m_PaperEndTransform;
@@ -25,27 +28,31 @@ namespace Canvas
         [SerializeField] private float m_GiveItAKeyDelay = 4.5f;
 
         [SerializeField] private LeanTweenType m_HashFuncDevTweenType = LeanTweenType.easeInOutQuad;
+        [SerializeField] private LeanTweenType m_HashFuncDevMoveTweenType = LeanTweenType.easeInOutQuad;
+        [SerializeField] private float m_HashFuncDevMoveDur = 1.0f;
 
 
 
         private HashFuncDevice m_HashFuncDevInstance;
         private Vector3 m_HashFuncDevInitLocalScale;
         private Paper m_PaperInstance;
+        private Paper m_OutputHashKeyPaper = null;
 
         public void Awake()
         {
             Debug.Assert(m_HashFuncDevPrefab != null);
             Debug.Assert(m_HashFuncDevSpawnTransform != null);
+            Debug.Assert(m_PlayerHashFuncDev != null);
 
             m_HashFuncDevInstance = Instantiate(m_HashFuncDevPrefab);
             m_HashFuncDevInitLocalScale = m_HashFuncDevInstance.transform.localScale;
             m_HashFuncDevInstance.gameObject.SetActive(false);
+            m_HashFuncDevInstance.OnPaperPrinted.AddListener((Paper paper) => { m_OutputHashKeyPaper = paper; });
 
-            m_Printer.PrintNoAnim("ABC", p =>
-            {
-                m_PaperInstance = p;
-                m_PaperInstance.gameObject.SetActive(false);
-            });
+            m_PlayerHashFuncDev.gameObject.SetActive(false);
+
+
+           
         }
 
 
@@ -57,9 +64,22 @@ namespace Canvas
 
         IEnumerator OnExplanationRoutine()
         {
+            if (m_PaperInstance == null)
+            {
+                m_Printer.PrintNoAnim("ABC", p =>
+                {
+                    m_PaperInstance = p;
+                    m_PaperInstance.gameObject.SetActive(false);
+                });
+                yield return new WaitUntil(() => { return m_PaperInstance != null; });
+            }
+
             m_HashFuncDevInstance.transform.localScale = Vector3.zero;
             m_HashFuncDevInstance.transform.position = m_HashFuncDevSpawnTransform.position;
             m_HashFuncDevInstance.transform.rotation = m_HashFuncDevSpawnTransform.rotation;
+
+            m_PlayerHashFuncDev.gameObject.SetActive(false);
+            m_PlayerKeypadObject.SetActive(false);
 
             {
                 bool lerpComplete = false;
@@ -83,6 +103,28 @@ namespace Canvas
                 yield return new WaitForSeconds(m_GiveItAKeyDelay);
                 yield return PlayAndWaitVoice(m_VOSource, m_GiveItAKey);
 
+                yield return new WaitUntil(() => { return m_OutputHashKeyPaper != null; });
+                Destroy(m_OutputHashKeyPaper.gameObject);
+                m_OutputHashKeyPaper = null;
+            }
+
+            // Move Demo PlayerHashFuncDev
+            {
+                bool finished = false;
+                bool isRotFinished = false;
+
+                m_HashFuncDevInstance.transform.LeanMove(m_PlayerHashFuncDev.transform.position, m_HashFuncDevMoveDur)
+                    .setEase(m_HashFuncDevMoveTweenType)
+                    .setOnComplete(() => finished = true);
+
+                m_HashFuncDevInstance.transform.LeanRotate(m_PlayerHashFuncDev.transform.rotation.eulerAngles, m_HashFuncDevMoveDur)
+                    .setEase(m_HashFuncDevMoveTweenType)
+                    .setOnComplete(() => isRotFinished = true);
+
+                yield return new WaitUntil(() => finished && isRotFinished);
+                m_HashFuncDevInstance.gameObject.SetActive(false);
+                m_PlayerHashFuncDev.gameObject.SetActive(true);
+                m_PlayerKeypadObject.gameObject.SetActive(true);
             }
 
 
