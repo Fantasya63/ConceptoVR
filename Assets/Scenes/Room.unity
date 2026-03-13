@@ -714,6 +714,9 @@ MonoBehaviour:
   m_VOSource: {fileID: 638630828}
   m_KeyboardController: {fileID: 1183191241}
   m_HashFuncDevice: {fileID: 1855674983}
+  m_Keypad: {fileID: 1183191241}
+  m_DemoHashFuncDev: {fileID: 2005777784}
+  m_PlayerHashFuncDev: {fileID: 1855674983}
   m_TryItKeypadClip: {fileID: 8300000, guid: 61586ba255d837040a7fe4a669fd4b67, type: 3}
   m_ShowCodeViz: {fileID: 8300000, guid: a47f0a22ced7f3542a3f8ee7524503e1, type: 3}
 --- !u!1 &228527998
@@ -7135,6 +7138,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8217631172298926960, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
+      propertyPath: m_Visualizer
+      value: 
+      objectReference: {fileID: 387054003}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7902,6 +7909,17 @@ Transform:
   - {fileID: 1946806685}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2005777784 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8217631172298926960, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
+  m_PrefabInstance: {fileID: 450847494}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7bac7ae15388e5489590416f6d8c613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HashFuncDevice
 --- !u!1 &2018551868
 GameObject:
   m_ObjectHideFlags: 0

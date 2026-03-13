@@ -126,7 +126,7 @@ namespace Canvas
                 Destroy(m_SpawnedPaper);
             
             m_SpawnedPaper = null;
-            m_PaperPrinter.PrintNoAnim("63", p => m_SpawnedPaper = p.gameObject);
+            m_PaperPrinter.PrintNoAnim("63", p => m_SpawnedPaper = p.gameObject, Paper.PAPER_TYPE.Data);
             yield return new WaitUntil(() => m_SpawnedPaper != null);
 
 

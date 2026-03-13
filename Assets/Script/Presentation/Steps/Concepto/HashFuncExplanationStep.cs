@@ -31,6 +31,8 @@ namespace Canvas
         [SerializeField] private LeanTweenType m_HashFuncDevMoveTweenType = LeanTweenType.easeInOutQuad;
         [SerializeField] private float m_HashFuncDevMoveDur = 1.0f;
 
+        [SerializeField] private float m_BoxGrowSpeed = 1.0f;
+        [SerializeField] private float m_BoxGrowDelay = 0.1f;
 
 
         private HashFuncDevice m_HashFuncDevInstance;
@@ -70,7 +72,7 @@ namespace Canvas
                 {
                     m_PaperInstance = p;
                     m_PaperInstance.gameObject.SetActive(false);
-                });
+                }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => { return m_PaperInstance != null; });
             }
 
@@ -94,7 +96,6 @@ namespace Canvas
             }
 
             {
-                
                 m_PaperInstance.gameObject.SetActive(true);
                
                 Rigidbody rbody = m_PaperInstance.GetComponent<Rigidbody>();
@@ -125,11 +126,8 @@ namespace Canvas
                 m_HashFuncDevInstance.gameObject.SetActive(false);
                 m_PlayerHashFuncDev.gameObject.SetActive(true);
                 m_PlayerKeypadObject.gameObject.SetActive(true);
-
             }
-
             Complete();
-
         }
 
         public override void Deactivate()

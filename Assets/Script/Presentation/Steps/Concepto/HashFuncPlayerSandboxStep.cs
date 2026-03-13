@@ -11,6 +11,12 @@ namespace Canvas
         [SerializeField] private KeyboardController m_KeyboardController;
         [SerializeField] private HashFuncDevice m_HashFuncDevice;
 
+        [Header("Starting state References")]
+        [SerializeField] private KeyboardController m_Keypad;
+        [SerializeField] private HashFuncDevice m_DemoHashFuncDev;
+        [SerializeField] private HashFuncDevice m_PlayerHashFuncDev;
+
+
         [Header("Voice Overs")]
         [SerializeField] private AudioClip m_TryItKeypadClip;
         [SerializeField] private AudioClip m_ShowCodeViz;
@@ -33,6 +39,11 @@ namespace Canvas
                 StopCoroutine(m_StepCoroutine);
 
             m_HasToldHowToViz = false;
+
+            m_DemoHashFuncDev.gameObject.SetActive(false);
+            m_PlayerHashFuncDev.gameObject.SetActive(true);
+            m_KeyboardController.gameObject.SetActive(true);
+
             m_StepCoroutine = StartCoroutine(StepRoutine());
         }
 

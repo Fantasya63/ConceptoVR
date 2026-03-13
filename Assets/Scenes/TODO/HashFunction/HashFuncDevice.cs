@@ -36,8 +36,18 @@ namespace Concepto.HashMap
 
         public UnityEvent<Paper> OnPaperPrinted;
 
+        [Header("Script Visualization")]
+        [SerializeField]
+        private ScriptVisualizer m_Visualizer;
+        
+        [SerializeField]
+        [TextArea(5, 20)]
+        private string m_ScriptTemplate;
+
         public void Start()
         {
+            if (m_Visualizer == null)
+                Debug.LogWarning($"{name} has no Script Visualizer attached to it.");
             resultPrinter.OnPaperPrinted.AddListener((Paper paper) => { OnPaperPrinted.Invoke(paper); });
         }
 
@@ -65,6 +75,11 @@ namespace Concepto.HashMap
             inputSocketInteractor.interactionManager.SelectExit((IXRSelectInteractor)inputSocketInteractor, interactable);
 
             Print(interactable);
+        }
+
+        string GetScriptEquivalent(string input, int hash)
+        {
+            return string.Format(m_ScriptTemplate, input, hash);
         }
 
         private void Print(XRBaseInteractable interactable)
@@ -113,6 +128,9 @@ namespace Concepto.HashMap
                     Destroy(paperObject);
                     resultPrinter.PrintHashkey(hashkey.ToString());
                 });
+
+            if (m_Visualizer != null)
+                m_Visualizer.Code = GetScriptEquivalent(paperData, hashkey);
 
         }
     }

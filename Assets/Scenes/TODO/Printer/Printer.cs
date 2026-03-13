@@ -31,11 +31,11 @@ public class Printer : MonoBehaviour
         renderCamera.enabled = false;
     }
 
-    public void PrintNoAnim(string text, System.Action<Paper> onFinished)
+    public void PrintNoAnim(string text, System.Action<Paper> onFinished, Paper.PAPER_TYPE type)
     {
         if (!IsPrinting)
         {
-            StartCoroutine(PrintRoutineNoAnim(text, Paper.PAPER_TYPE.Data, onFinished));
+            StartCoroutine(PrintRoutineNoAnim(text, type, onFinished));
             IsPrinting = true;
         }
     }
