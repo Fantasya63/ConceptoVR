@@ -1086,6 +1086,7 @@ MonoBehaviour:
   m_PaperDataStartTransform: {fileID: 1749866437}
   m_BoxStartTransform: {fileID: 540332823}
   m_BoxOffset: {x: -0, y: -0, z: -0.25}
+  m_ScriptVisualizer: {fileID: 0}
   m_ToStoreAData: {fileID: 8300000, guid: b6e49aebbe256b04889c44ebb4784dd4, type: 3}
   m_PerfectNowPlace: {fileID: 8300000, guid: 1a8cba77f2169e24b890e1d45d4f99a4, type: 3}
   m_YouCanNowPlace: {fileID: 8300000, guid: b55dfc552cf1b36418449919dd57fba0, type: 3}
@@ -1578,14 +1579,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 540332822}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.042, y: 0.84400004, z: -4.2889}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.215, y: 0.577, z: -2.909}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 725083056}
   m_Father: {fileID: 873100837}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &548950961
 GameObject:
   m_ObjectHideFlags: 0

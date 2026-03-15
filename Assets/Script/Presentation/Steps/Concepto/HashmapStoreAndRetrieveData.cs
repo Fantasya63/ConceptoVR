@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Concepto.HashMap;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 
 namespace Canvas
 {
@@ -23,9 +24,10 @@ namespace Canvas
         [Header("Box Array")]
         [SerializeField] private Transform m_BoxStartTransform;
         [SerializeField] private Vector3 m_BoxOffset = Vector3.forward * -0.1f;
+        [SerializeField] private ScriptVisualizer m_ScriptVisualizer;
         
-        private string m_KeyData = "56";
-        private string m_PaperData = "RON";
+        private string m_PaperData = "56";
+        private string m_PaperKey = "RON";
 
         [Header("Voice Overs")]
         [SerializeField] private AudioClip m_ToStoreAData;
@@ -42,15 +44,18 @@ namespace Canvas
         private Paper m_KeyPaperInstance;
         bool m_HasHashedPaper = false;
         bool m_HasPlacedIndex = false;
+        bool m_HasPlacedPaper = false;
 
         private Coroutine m_SlideRoutine;
         private List<GameObject> m_SpawnedPlayerBoxes = new List<GameObject>(HashFunc.NumBoxes);
         private Vector3 m_BoxesInitialScale = Vector3.one;
+        private int m_KeyHash;
 
         void Start()
         {
             Debug.Assert(m_PaperDataStartTransform != null);
             Debug.Assert(m_PaperKeyStartTransform != null);
+            Debug.Assert(m_ScriptVisualizer != null);
 
             if (m_ScriptPrinter == null)
             {
@@ -62,6 +67,7 @@ namespace Canvas
             }
 
             Debug.Assert(m_ScriptPrinter != null);
+            m_KeyHash = HashFunc.Hash(m_PaperKey, HashFunc.NumBoxes);
 
             m_BoxesInitialScale = m_BoxPrefab.transform.localScale;
         }
@@ -96,15 +102,17 @@ namespace Canvas
         IEnumerator SlideRoutine()
         {
             PlayVoiceNoWait(m_VoiceSource, m_ToStoreAData);
+            Rigidbody datarbody = null;
+            Rigidbody keyrbody = null;
 
-            m_ScriptPrinter.PrintNoAnim(m_PaperData, p =>
+            m_ScriptPrinter.PrintNoAnim(m_PaperKey, p =>
             {
                 m_DataPaperInstance = p;
 
-                Rigidbody rbody = p.GetComponent<Rigidbody>();
-                Debug.Assert(rbody != null);
+                datarbody = p.GetComponent<Rigidbody>();
+                Debug.Assert(datarbody != null);
 
-                rbody.isKinematic = true;
+                datarbody.isKinematic = true;
 
                 m_DataPaperInstance.gameObject.SetActive(false);
                 
@@ -113,13 +121,13 @@ namespace Canvas
 
             yield return new WaitForSeconds(m_PaperShowdelay);
 
-            m_ScriptPrinter.PrintNoAnim(m_KeyData, p =>
+            m_ScriptPrinter.PrintNoAnim(m_PaperData, p =>
             {
                 m_KeyPaperInstance = p;
 
-                Rigidbody rbody = p.GetComponent<Rigidbody>();
-                Debug.Assert(rbody != null);
-                rbody.isKinematic = true;
+                keyrbody = p.GetComponent<Rigidbody>();
+                Debug.Assert(keyrbody != null);
+                keyrbody.isKinematic = true;
 
 
                 m_KeyPaperInstance.gameObject.SetActive(false);
@@ -147,6 +155,20 @@ namespace Canvas
                 box.transform.position = m_BoxStartTransform.position + m_BoxOffset * i;
                 box.transform.localScale = Vector3.zero;
 
+                BoxEvents boxEvents = box.GetComponent<BoxEvents>();
+                Debug.Assert(boxEvents != null);
+
+                boxEvents.Visualizer = m_ScriptVisualizer;
+                boxEvents.SetIndex(i);
+                
+                if (i == m_KeyHash)
+                {
+                    boxEvents.OnDataInserted.AddListener(OnDataInserted);
+                    boxEvents.OnDataRemoved.AddListener(OnDataRemoved);
+
+                    boxEvents.OnIndexInserted.AddListener(OnIndexInserted);
+                    boxEvents.OnIndexRemoved.AddListener(OnIndexRemoved);
+                }
                 m_SpawnedPlayerBoxes.Add(box);
 
                 box.transform.LeanScale(m_BoxesInitialScale, m_BoxGrowSpeed);
@@ -154,12 +176,26 @@ namespace Canvas
                 yield return new WaitForSeconds(m_BoxGrowDelay);
             }
 
+            yield return new WaitUntil(() => { return m_VoiceSource.isPlaying == false; });
+            
+            datarbody.isKinematic = false;
+            keyrbody.isKinematic = false;
+
             yield return new WaitUntil(() => m_HasHashedPaper);
 
             PlayVoiceNoWait(m_VoiceSource, m_PerfectNowPlace);
 
             yield return new WaitUntil(() => m_HasPlacedIndex);
+
+            yield return PlayAndWaitVoice(m_VoiceSource, m_YouCanNowPlace);
+
+            yield return new WaitUntil(() => {return m_HasPlacedPaper == true && m_HasPlacedIndex == false;});
+
+            yield return PlayAndWaitVoice(m_VoiceSource, m_CongratsInsert);
+
+            Complete();
         }
+
 
         public override void Deactivate()
         {
@@ -178,7 +214,38 @@ namespace Canvas
         {
             Destroy(m_KeyPaperInstance);
             Destroy(m_KeyPaperInstance);
+
+            if (m_SpawnedPlayerBoxes != null)
+            {
+                foreach (var box in m_SpawnedPlayerBoxes)
+                {
+                    Destroy(box.gameObject);
+                }
+            }
+
+            m_SpawnedPlayerBoxes.Clear();
         }
+
+        void OnIndexInserted(Paper paper)
+        {
+            m_HasPlacedIndex = true;
+        }
+
+        void OnDataInserted(Paper paper)
+        {
+            m_HasPlacedPaper = true;
+        }
+
+        void OnDataRemoved(Paper paper)
+        {
+            m_HasPlacedPaper = false;
+        }
+
+        void OnIndexRemoved(Paper paper)
+        {
+            m_HasPlacedIndex = false;
+        }
+
     }
 
 }

@@ -192,13 +192,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3355653817336906689}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.69, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.379, z: -0.18922478}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4835673437604352677}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &4235885403311962730
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,34 +263,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5210686700589893663}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4316607143003178886}
-        m_TargetAssemblyTypeName: BoxEvents, Assembly-CSharp
-        m_MethodName: EmitIndexRemoved
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: Paper, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_ShowInteractableHoverMeshes: 1
@@ -323,8 +299,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.1, y: 0.1000011, z: 0.029211469}
-  m_Center: {x: 1.4215459e-16, y: 0, z: 0.0015242478}
+  m_Size: {x: 0.1, y: 0.10000144, z: 0.014123186}
+  m_Center: {x: -3.4219276e-16, y: 0, z: -0.00601992}
 --- !u!114 &3999355020854381479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,7 +847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor
   m_InteractionManager: {fileID: 0}
   m_InteractionLayers:
-    m_Bits: 4294967295
+    m_Bits: 2
   m_Handedness: 0
   m_AttachTransform: {fileID: 544274242095377321}
   m_KeepSelectedTargetValid: 1
@@ -946,7 +922,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5210686700589893663}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a65c8023708f2f498ed7bf3fcab943c, type: 3}
   m_Name: 
@@ -1003,4 +979,17 @@ MonoBehaviour:
   m_PaperDataSocket: {fileID: -1287794470558815718}
   m_PaperIndexSocket: {fileID: 4255817934924439891}
   m_IndexLabel: {fileID: 5570761272122892761}
-  m_Visualizer: {fileID: 0}
+  m_KeyLock: {fileID: 2903076901110846565}
+  OnIndexInserted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnIndexRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDataInserted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDataRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  Visualizer: {fileID: 0}

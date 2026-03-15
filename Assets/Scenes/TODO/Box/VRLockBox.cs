@@ -26,8 +26,8 @@ public class SimpleVRBoxLock : MonoBehaviour
             else
                 UnlockObjects();
 
-            lastState = isOpen;
         }
+
     }
 
     void LockObjects()

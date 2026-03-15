@@ -25,22 +25,22 @@ public class BoxEvents : MonoBehaviour
     [SerializeField] private XRSocketInteractor m_PaperDataSocket;
     [SerializeField] private XRSocketInteractor m_PaperIndexSocket;
     [SerializeField] private TMP_Text m_IndexLabel;
+    [SerializeField] private BoxKeyLock m_KeyLock;
 
     [Header("Events")]
-    private UnityEvent<Paper> OnIndexInserted;
-    private UnityEvent<Paper> OnIndexRemoved;
+    public UnityEvent<Paper> OnIndexInserted;
+    public UnityEvent<Paper> OnIndexRemoved;
 
-    private UnityEvent<Paper> OnDataInserted;
-    private UnityEvent<Paper> OnDataRemoved;
+    public UnityEvent<Paper> OnDataInserted;
+    public UnityEvent<Paper> OnDataRemoved;
 
 
     [Header("Visualization")]
-    [SerializeField] private ScriptVisualizer m_Visualizer;
+    public ScriptVisualizer Visualizer;
     
     bool m_ActionStarted = false;
     Paper m_BeginPaper = null;
 
-    private BoxKeyLock m_KeyLock;
 
     private void Start()
     {
@@ -52,10 +52,9 @@ public class BoxEvents : MonoBehaviour
         m_PaperIndexSocket.selectEntered.AddListener(EmitIndexInserted);
         m_PaperIndexSocket.selectExited.AddListener(EmitIndexRemoved);
 
-        m_KeyLock = gameObject.GetComponent<BoxKeyLock>();
         Debug.Assert(m_KeyLock != null);
-
         Debug.Assert(m_IndexLabel != null);
+        
     }
 
     public void SetIndex(int index)
@@ -136,6 +135,6 @@ public class BoxEvents : MonoBehaviour
 
     void ShowCodeEquivalent(ACTION_TYPE type, string index, string data)
     {
-        m_Visualizer.Code = string.Format(m_CodeEquivalents[(int)type], index, data);
+        Visualizer.Code = string.Format(m_CodeEquivalents[(int)type], index, data);
     }
 }

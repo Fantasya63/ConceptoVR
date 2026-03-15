@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -32,6 +33,8 @@ public class BoxKeyLock : MonoBehaviour
         }
     }
 
+    Coroutine testRoutine  = null;
+
     void OnKeyRemoved(SelectExitEventArgs args)
     {
         Paper paper = args.interactableObject.transform.GetComponent<Paper>();
@@ -40,5 +43,16 @@ public class BoxKeyLock : MonoBehaviour
         {
             boxAnimator.SetBool(openParameter, false);
         }
+
+        testRoutine = StartCoroutine(WaitRoutine());
+    }
+
+    IEnumerator WaitRoutine()
+    {
+        keySocket.enabled = false;
+
+        yield return new WaitForSeconds(1.0f);
+
+        keySocket.enabled = true;
     }
 }
