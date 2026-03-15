@@ -39,6 +39,7 @@ namespace Canvas
         private Vector3 m_HashFuncDevInitLocalScale;
         private Paper m_PaperInstance;
         private Paper m_OutputHashKeyPaper = null;
+        private Coroutine m_SlideRoutine;
 
         public void Awake()
         {
@@ -61,7 +62,7 @@ namespace Canvas
 
         public override void Activate()
         {
-            StartCoroutine(OnExplanationRoutine());
+            m_SlideRoutine = StartCoroutine(OnExplanationRoutine());
         }
 
         IEnumerator OnExplanationRoutine()
@@ -132,7 +133,15 @@ namespace Canvas
 
         public override void Deactivate()
         {
-            
+            // Hide Hash func object and paper
+            if (m_HashFuncDevInstance != null)
+                m_HashFuncDevInstance.gameObject.SetActive(false);
+
+            if (m_PaperInstance != null)
+                m_PaperInstance.gameObject.SetActive(false);
+
+            if (m_SlideRoutine != null)
+                StopCoroutine(m_SlideRoutine);
         }
 
         public override void OnSlideExit()

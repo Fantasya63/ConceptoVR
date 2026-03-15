@@ -1,0 +1,141 @@
+using Concepto.HashMap;
+using System.Globalization;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
+
+public class BoxEvents : MonoBehaviour
+{
+    enum ACTION_TYPE
+    {
+        Insertion = 0,
+        Retrieval,
+        RetriveAndReplace
+    }
+
+    [SerializeField]
+    [TextArea(5, 20)]
+    private string[] m_CodeEquivalents;
+
+
+    [Header("References")]
+    [SerializeField] private XRSocketInteractor m_PaperDataSocket;
+    [SerializeField] private XRSocketInteractor m_PaperIndexSocket;
+    [SerializeField] private TMP_Text m_IndexLabel;
+
+    [Header("Events")]
+    private UnityEvent<Paper> OnIndexInserted;
+    private UnityEvent<Paper> OnIndexRemoved;
+
+    private UnityEvent<Paper> OnDataInserted;
+    private UnityEvent<Paper> OnDataRemoved;
+
+
+    [Header("Visualization")]
+    [SerializeField] private ScriptVisualizer m_Visualizer;
+    
+    bool m_ActionStarted = false;
+    Paper m_BeginPaper = null;
+
+    private BoxKeyLock m_KeyLock;
+
+    private void Start()
+    {
+        m_PaperDataSocket.selectEntered.AddListener(EmitDataInserted);
+
+        m_PaperDataSocket.selectEntered.AddListener(EmitDataInserted);
+        m_PaperDataSocket.selectExited.AddListener(EmitDataRemoved);
+
+        m_PaperIndexSocket.selectEntered.AddListener(EmitIndexInserted);
+        m_PaperIndexSocket.selectExited.AddListener(EmitIndexRemoved);
+
+        m_KeyLock = gameObject.GetComponent<BoxKeyLock>();
+        Debug.Assert(m_KeyLock != null);
+
+        Debug.Assert(m_IndexLabel != null);
+    }
+
+    public void SetIndex(int index)
+    {
+        string indexText = index.ToString();
+        m_IndexLabel.text = indexText;
+        m_KeyLock.index = indexText;
+    }
+
+    void EmitIndexInserted(SelectEnterEventArgs arg0)
+    {
+        m_ActionStarted = true;
+        
+        m_BeginPaper = Utils.GetInsertedPaper(m_PaperIndexSocket);
+        OnIndexInserted.Invoke(Utils.GetInsertedPaper(m_PaperIndexSocket));
+    }
+
+
+    void EmitIndexRemoved(SelectExitEventArgs arg0)
+    {
+        Paper indexPaper = ((XRBaseInteractable)arg0.interactableObject).GetComponent<Paper>();
+        Paper dataPaper = Utils.GetInsertedPaper(m_PaperIndexSocket);
+
+
+        DetermineAction(indexPaper.data, dataPaper.data);
+
+        OnIndexRemoved.Invoke(indexPaper);
+        
+        
+        m_ActionStarted = false;
+
+        m_BeginPaper = null;
+    }
+
+
+    void EmitDataInserted(SelectEnterEventArgs arg0)
+    {
+        OnDataInserted.Invoke(Utils.GetInsertedPaper(m_PaperDataSocket));
+    }
+
+
+    void EmitDataRemoved(SelectExitEventArgs arg0)
+    {
+        Paper removedData = ((XRBaseInteractable)arg0.interactableObject).GetComponent<Paper>();
+        OnDataRemoved.Invoke(removedData);
+    }
+
+
+    void DetermineAction(string index, string data)
+    {
+        Paper endPaper = Utils.GetInsertedPaper(m_PaperDataSocket);
+
+        // None. Nothing was done
+        if (m_BeginPaper == endPaper)
+            return;
+
+        // Insertion
+        if (m_BeginPaper == null && endPaper != null)
+        {
+            ShowCodeEquivalent(ACTION_TYPE.Insertion, index, data);
+            return;
+        }
+
+        // Retrieval
+        if (m_BeginPaper != null && endPaper == null)
+        {
+            ShowCodeEquivalent(ACTION_TYPE.Retrieval, index, data);
+            return;
+        }
+
+        // RetriveAndReplace
+        if (m_BeginPaper != null && endPaper != null)
+        {
+            ShowCodeEquivalent(ACTION_TYPE.RetriveAndReplace, index, data);
+        }
+
+    }
+
+    void ShowCodeEquivalent(ACTION_TYPE type, string index, string data)
+    {
+        m_Visualizer.Code = string.Format(m_CodeEquivalents[(int)type], index, data);
+    }
+}

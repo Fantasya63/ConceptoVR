@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class BoxKeyLock : MonoBehaviour
 {
     [Header("Config")]
-    public string hashkey = "0";
+    public string index = "0";
     public Animator boxAnimator;
     public string openParameter = "IsOpen";
     public XRSocketInteractor keySocket;
@@ -26,7 +26,7 @@ public class BoxKeyLock : MonoBehaviour
     {
         Paper paper = args.interactableObject.transform.GetComponent<Paper>();
         Debug.Log("Paper inserted! Paper: " + paper + " | data: " + (paper != null ? paper.data : "NULL"));
-        if (paper != null && paper.data == hashkey)
+        if (paper != null && paper.data == index)
         {
             boxAnimator.SetBool(openParameter, true);
         }
@@ -36,7 +36,7 @@ public class BoxKeyLock : MonoBehaviour
     {
         Paper paper = args.interactableObject.transform.GetComponent<Paper>();
         Debug.Log("Paper removed! Paper: " + paper + " | data: " + (paper != null ? paper.data : "NULL"));
-        if (paper != null && paper.data == hashkey)
+        if (paper != null && paper.data == index)
         {
             boxAnimator.SetBool(openParameter, false);
         }
