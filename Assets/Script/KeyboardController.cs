@@ -35,11 +35,7 @@ public class KeyboardController : MonoBehaviour
 
     public void PressKey(string keyValue)
     {
-        if (typed.Count >= maxCharacters)
-        {
-            Debug.LogWarning("Character limit reached.");
-            return;
-        }
+       
 
         if (string.IsNullOrEmpty(keyValue))
             return;

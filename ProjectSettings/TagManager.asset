@@ -15,8 +15,8 @@ TagManager:
   - Interactable
   - Printer
   - TextDisplay
-  - 
-  - 
+  - PaperData
+  - PaperHashkey
   - 
   - 
   - 
