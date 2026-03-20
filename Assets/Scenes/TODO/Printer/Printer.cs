@@ -31,6 +31,11 @@ public class Printer : MonoBehaviour
         renderCamera.enabled = false;
     }
 
+    public IEnumerator PrintNoAnimEnumarator(string text, System.Action<Paper> onFinished, Paper.PAPER_TYPE type)
+    {
+        yield return PrintRoutineNoAnim(text, type, onFinished);
+    }
+
     public bool PrintNoAnim(string text, System.Action<Paper> onFinished, Paper.PAPER_TYPE type)
     {
         if (!IsPrinting)

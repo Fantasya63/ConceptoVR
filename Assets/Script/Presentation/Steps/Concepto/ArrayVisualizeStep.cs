@@ -63,6 +63,7 @@ namespace Canvas
             m_SpawnedBoxes = new List<BoxScriptController>(m_BoxesAmount);
             m_BoxIndexExample = m_BoxesAmount / 2 + (m_BoxesAmount % 2);
 
+
             m_SpawnedScriptVisualizer = Instantiate(m_ScriptVisualizerPrefab);
             m_SpawnedScriptVisualizer.gameObject.SetActive(false);
         }

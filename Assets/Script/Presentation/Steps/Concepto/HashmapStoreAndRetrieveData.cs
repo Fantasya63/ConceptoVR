@@ -34,6 +34,7 @@ namespace Canvas
         [SerializeField] private AudioClip m_PerfectNowPlace;
         [SerializeField] private AudioClip m_YouCanNowPlace;
         [SerializeField] private AudioClip m_CongratsInsert;
+        [SerializeField] private AudioClip m_WhenYouWant_Next;
 
         [Header("Animation")]
         private float m_PaperShowdelay = 1.0f;
@@ -193,7 +194,7 @@ namespace Canvas
 
             yield return PlayAndWaitVoice(m_VoiceSource, m_CongratsInsert);
 
-            Complete();
+            PlayVoiceNoWait(m_VoiceSource, m_WhenYouWant_Next);
         }
 
 
@@ -203,31 +204,38 @@ namespace Canvas
                 StopCoroutine(m_SlideRoutine);
 
             m_PlayerHashFuncDev.OnPaperPrinted.RemoveListener(OnHashFuncDevPrinted);
-            StopCoroutine(m_SlideRoutine);
+            
+            CleanUp();
         }
 
         public override void OnSlideExit()
         {
         }
 
-        public void OnDestroy()
+        void CleanUp()
         {
-            Destroy(m_KeyPaperInstance);
-            Destroy(m_KeyPaperInstance);
+            Destroy(m_DataPaperInstance.gameObject);
+            Destroy(m_KeyPaperInstance.gameObject);
 
             if (m_SpawnedPlayerBoxes != null)
             {
-                foreach (var box in m_SpawnedPlayerBoxes)
+                for (int i = 0; i < m_SpawnedPlayerBoxes.Count; i++)
                 {
-                    Destroy(box.gameObject);
+                    Destroy(m_SpawnedPlayerBoxes[i].gameObject);
                 }
             }
 
             m_SpawnedPlayerBoxes.Clear();
         }
 
+        public void OnDestroy()
+        {
+            CleanUp();
+        }
+
         void OnIndexInserted(Paper paper)
         {
+            Debug.Log("Index Paper Inserted");
             m_HasPlacedIndex = true;
         }
 
@@ -243,6 +251,7 @@ namespace Canvas
 
         void OnIndexRemoved(Paper paper)
         {
+            Debug.Log("Index Paper Removed");
             m_HasPlacedIndex = false;
         }
 

@@ -11,7 +11,10 @@ namespace Canvas
         [HideInInspector]
         public SlidesManager manager;
 
-        
+#if UNITY_EDITOR
+        [SerializeField] private int m_DebugStartStepIndex = 0;
+#endif
+
         public string SlideName
         {
             get { return gameObject.name; }
@@ -33,7 +36,12 @@ namespace Canvas
                 Debug.LogWarning($"[Slides] Setup() called multiple times on {name}. Previous state will be overridden.");
 
             // Ensure current step is valid before doing anything
+
             currentStep = 0;
+#if UNITY_EDITOR
+            currentStep = m_DebugStartStepIndex;
+#endif
+
 
             // Activate first step
             steps[currentStep].Activate();

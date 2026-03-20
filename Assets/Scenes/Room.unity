@@ -515,6 +515,7 @@ MonoBehaviour:
   steps:
   - {fileID: 1489501067}
   manager: {fileID: 0}
+  m_DebugStartStepIndex: 0
   currentStep: -1
 --- !u!4 &94533921
 Transform:
@@ -1186,6 +1187,7 @@ MonoBehaviour:
   m_PerfectNowPlace: {fileID: 8300000, guid: 1a8cba77f2169e24b890e1d45d4f99a4, type: 3}
   m_YouCanNowPlace: {fileID: 8300000, guid: b55dfc552cf1b36418449919dd57fba0, type: 3}
   m_CongratsInsert: {fileID: 8300000, guid: 10d260262944bb9439fe272ab9c185b4, type: 3}
+  m_WhenYouWant_Next: {fileID: 0}
   m_BoxGrowSpeed: 1
   m_BoxGrowDelay: 0.1
 --- !u!114 &387054003 stripped
@@ -3105,6 +3107,7 @@ MonoBehaviour:
   - {fileID: 362513682}
   - {fileID: 2050613820}
   manager: {fileID: 0}
+  m_DebugStartStepIndex: 7
   currentStep: -1
 --- !u!1 &819448227
 GameObject:
@@ -4924,6 +4927,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PortablePrinter_Scaled (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3401237200744885358, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4477895531249735988, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.372
@@ -4989,7 +4996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1291588828
 Transform:
   m_ObjectHideFlags: 0
@@ -4999,7 +5006,7 @@ Transform:
   m_GameObject: {fileID: 1291588827}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.09240259, y: 0.6192, z: -3.4773}
+  m_LocalPosition: {x: 0.09240259, y: 0.6556, z: -3.523}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5691,6 +5698,7 @@ MonoBehaviour:
   - {fileID: 1399171346}
   - {fileID: 1400222550}
   manager: {fileID: 0}
+  m_DebugStartStepIndex: 0
   currentStep: -1
 --- !u!1 &1399171344
 GameObject:
@@ -6431,6 +6439,7 @@ MonoBehaviour:
   - {fileID: 1409950175}
   - {fileID: 525959109}
   manager: {fileID: 0}
+  m_DebugStartStepIndex: 0
   currentStep: -1
 --- !u!1 &1503185721
 GameObject:
@@ -6675,6 +6684,10 @@ PrefabInstance:
         boxes and get the remainder\n    // The remainder will serve as the index
         for our boxes\n    return Mathf.Abs(hash) % boxesCount;\n}"
       objectReference: {fileID: 0}
+    - target: {fileID: 2423970045907289593, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
+      propertyPath: m_NotifClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4d2ebc1c6fadb934abf4ae0e259072d5, type: 3}
     - target: {fileID: 4106129285770532639, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_Name
       value: ScriptDisplayScreen
@@ -6694,6 +6707,10 @@ PrefabInstance:
         the index <color=#569CD6>for</color> our boxes</color>\n    <color=#569CD6>return</color>
         Mathf.<color=#DCDCAA>Abs</color>(hash) % boxesCount;\n}"
       objectReference: {fileID: 0}
+    - target: {fileID: 8569507196818311801, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 4d2ebc1c6fadb934abf4ae0e259072d5, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7260,6 +7277,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PortablePrinter_Scaled
       objectReference: {fileID: 0}
+    - target: {fileID: 3401237200744885358, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4477895531249735988, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7808,6 +7829,7 @@ MonoBehaviour:
   - {fileID: 1656810170}
   - {fileID: 535663689}
   manager: {fileID: 0}
+  m_DebugStartStepIndex: 0
   currentStep: -1
 --- !u!1001 &1855674980
 PrefabInstance:
@@ -8020,7 +8042,7 @@ MonoBehaviour:
   m_Buthow: {fileID: 8300000, guid: 95296e970fc70f448aeccc1f3fbf45b7, type: 3}
   m_CardboardPrefab: {fileID: 6937637338359584842, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
   m_PaperPrefab: {fileID: -5068869914604383010, guid: 68aaba43be6feb84b9e38ffb7c47a26b, type: 3}
-  m_ScriptVisualizerPrefab: {fileID: 0}
+  m_ScriptVisualizerPrefab: {fileID: 387054003}
   m_PaperPrinter: {fileID: 1020457884}
   m_HashmapExampleKeys:
   - Abc
@@ -8839,23 +8861,23 @@ MonoBehaviour:
   slide: {fileID: 0}
   m_VoiceSource: {fileID: 638630828}
   m_ScriptPrinter: {fileID: 1020457884}
-  m_ScriptHashFuncDevStartTransform: {fileID: 0}
-  m_HashFuncDevOffset: {x: 0, y: 0, z: 1}
-  m_KeyValueStartTransform: {fileID: 0}
+  m_ScriptHashFuncDevStartTransform: {fileID: 297738969}
+  m_HashFuncDevOffset: {x: 0, y: 0, z: -0.372}
+  m_KeyValueStartTransform: {fileID: 1291588828}
   m_KeyValueSeperation: {x: 0, y: 0, z: 0.2}
-  m_ScriptHashFuncDevPrefab: {fileID: 0}
-  m_BoxArrayPrefab: {fileID: 0}
+  m_ScriptHashFuncDevPrefab: {fileID: 8217631172298926960, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
+  m_BoxArrayPrefab: {fileID: 6937637338359584842, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
   m_ArrayOffset: {x: 0, y: 0, z: 0.2}
   m_SpawnDelay: 0.1
-  m_YouMightHave: {fileID: 0}
-  m_WhenTwoKeys: {fileID: 0}
-  m_OneMethod: {fileID: 0}
-  m_Instead: {fileID: 0}
+  m_YouMightHave: {fileID: 8300000, guid: b7d9adf566281354089420916a667171, type: 3}
+  m_WhenTwoKeys: {fileID: 8300000, guid: ffe1024fe7428634c8204e6e1c949fe8, type: 3}
+  m_OneMethod: {fileID: 8300000, guid: 8e7bd6d96c020a54686d8ccbb41ecc3d, type: 3}
+  m_Instead: {fileID: 8300000, guid: 59ae6f83b00d9fb4ba5317157a167904, type: 3}
   m_KeyValue:
-  - key: 
-    value: 
-  - key: 
-    value: 
+  - key: ABC
+    value: 12
+  - key: BCG
+    value: 39
 --- !u!1 &2062529410
 GameObject:
   m_ObjectHideFlags: 0

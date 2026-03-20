@@ -130,8 +130,7 @@ namespace Concepto.HashMap
                 });
 
             if (m_Visualizer != null)
-                m_Visualizer.Code = GetScriptEquivalent(paperData, hashkey);
-
+                m_Visualizer.SetCodeWithNotif(GetScriptEquivalent(paperData, hashkey));
         }
     }
     

@@ -14,10 +14,19 @@ public class ScriptVisualizer : MonoBehaviour
         }
     }
 
+    public void SetCodeWithNotif(string _code)
+    {
+        Code = _code;
+        m_VisualizerAudioSource.clip = m_NotifClip;
+        m_VisualizerAudioSource.Play();
+    }
+
     [SerializeField]
     private string code = "print(\"Hello World\");";
 
     [SerializeField] private TMP_Text codeUI;
+    [SerializeField] private AudioSource m_VisualizerAudioSource;
+    [SerializeField] private AudioClip m_NotifClip;
 
     private void OnEnable()
     {

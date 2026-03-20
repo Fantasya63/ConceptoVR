@@ -129,7 +129,8 @@ public class KeyboardController : MonoBehaviour
         
 
         string code = GetCodeEquivalent(output);
-        m_ScriptVisualizer.Code = code;
+        //m_ScriptVisualizer.Code = code;
+        m_ScriptVisualizer.SetCodeWithNotif(code);
 
 
 

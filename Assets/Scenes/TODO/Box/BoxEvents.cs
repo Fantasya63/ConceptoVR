@@ -1,5 +1,3 @@
-using Concepto.HashMap;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -67,9 +65,9 @@ public class BoxEvents : MonoBehaviour
     void EmitIndexInserted(SelectEnterEventArgs arg0)
     {
         m_ActionStarted = true;
-        
-        m_BeginPaper = Utils.GetInsertedPaper(m_PaperIndexSocket);
+        m_BeginPaper = Utils.GetInsertedPaper(m_PaperDataSocket);
         OnIndexInserted.Invoke(Utils.GetInsertedPaper(m_PaperIndexSocket));
+        Debug.Log($"Box Index Inserted: Starting paper: {m_BeginPaper?.data}");
     }
 
 
@@ -89,12 +87,10 @@ public class BoxEvents : MonoBehaviour
         m_BeginPaper = null;
     }
 
-
     void EmitDataInserted(SelectEnterEventArgs arg0)
     {
         OnDataInserted.Invoke(Utils.GetInsertedPaper(m_PaperDataSocket));
     }
-
 
     void EmitDataRemoved(SelectExitEventArgs arg0)
     {
@@ -103,7 +99,7 @@ public class BoxEvents : MonoBehaviour
     }
 
 
-    void DetermineAction(string index, string data)
+    void DetermineAction(string index, string currData)
     {
         Paper endPaper = Utils.GetInsertedPaper(m_PaperDataSocket);
 
@@ -114,27 +110,27 @@ public class BoxEvents : MonoBehaviour
         // Insertion
         if (m_BeginPaper == null && endPaper != null)
         {
-            ShowCodeEquivalent(ACTION_TYPE.Insertion, index, data);
+            ShowCodeEquivalent(ACTION_TYPE.Insertion, index, currData);
             return;
         }
 
         // Retrieval
         if (m_BeginPaper != null && endPaper == null)
         {
-            ShowCodeEquivalent(ACTION_TYPE.Retrieval, index, data);
+            ShowCodeEquivalent(ACTION_TYPE.Retrieval, index, m_BeginPaper.data);
             return;
         }
 
         // RetriveAndReplace
         if (m_BeginPaper != null && endPaper != null)
         {
-            ShowCodeEquivalent(ACTION_TYPE.RetriveAndReplace, index, data);
+            ShowCodeEquivalent(ACTION_TYPE.RetriveAndReplace, index, currData);
         }
 
     }
 
     void ShowCodeEquivalent(ACTION_TYPE type, string index, string data)
     {
-        Visualizer.Code = string.Format(m_CodeEquivalents[(int)type], index, data);
+        Visualizer.SetCodeWithNotif(string.Format(m_CodeEquivalents[(int)type], index, data));
     }
 }
