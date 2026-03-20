@@ -33,7 +33,36 @@ namespace Canvas
         {
             Deactivate();
         }
+        protected IEnumerator WaitForArray<T>(
+            T prefab,
+            int count,
+            float spawnDelay,
+            Vector3 offset,
+            System.Action onSpawned,
+            System.Action<T[]> result
+        ) where T : MonoBehaviour
+        {
+            T[] instances = new T[count];
 
+            for (int i = 0; i < count; i++)
+            {
+                // Instantiate using the prefab instance
+                T instance = Instantiate(prefab);
+
+                instance.transform.position += offset * i;
+
+                instances[i] = instance;
+
+                onSpawned?.Invoke();
+
+                // Wait before spawning next
+                if (spawnDelay > 0f)
+                    yield return new WaitForSeconds(spawnDelay);
+            }
+
+            // Return the result
+            result?.Invoke(instances);
+        }
         protected IEnumerator WaitForAnimator(Animator anim)
         {
             yield return null;
