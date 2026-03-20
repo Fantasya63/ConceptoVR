@@ -14,7 +14,26 @@ namespace Canvas
             public string key;
             public string value;
         }
-      
+        [System.Serializable]
+        struct PaperKeyValue
+        {
+            public Paper key;
+            public Paper value;
+
+            public PaperKeyValue(Paper _key, Paper _value)
+            {
+                key = _key;
+                value = _value;
+            }
+
+            public bool IsValid => key != null && value != null;
+
+            public override string ToString()
+            {
+               return $"Key: {key.data}, value: {value.data}";
+            }
+        }
+
 
         [Header("References")]
         [SerializeField] private AudioSource m_VoiceSource;
@@ -46,16 +65,12 @@ namespace Canvas
         [Header("Examples")]
         [SerializeField] private KeyValue[] m_KeyValue = new KeyValue[2];
 
+        private PaperKeyValue[] m_PaperKeyValuesInstances = new PaperKeyValue[2];
         private HashFuncDevice[] m_ScriptHashFuncDevInstances = new HashFuncDevice[2];
         private Coroutine m_SlideCoroutine;
 
 
         BoxScriptController[] BoxScriptinstances = null;
-        private Paper m_LKey = null;
-        private Paper m_LValue = null;
-        private Paper m_RKey = null;
-        private Paper m_RValue = null;
-
 
         private void Start()
         {
@@ -68,17 +83,25 @@ namespace Canvas
 
             Debug.Assert(m_ScriptHashFuncDevPrefab != null);
 
-            Debug.Assert(m_KeyValue.Length == m_ScriptHashFuncDevInstances.Length);
+            Debug.Assert(
+                m_PaperKeyValuesInstances.Length == m_KeyValue.Length 
+                && m_PaperKeyValuesInstances.Length == m_ScriptHashFuncDevInstances.Length
+            );
 
             for (int i = 0; i < 2; i++)
             {
                 HashFuncDevice instance = Instantiate(m_ScriptHashFuncDevPrefab);
                 instance.transform.position = m_ScriptHashFuncDevStartTransform.position + m_HashFuncDevOffset * i;
+                instance.transform.rotation = m_ScriptHashFuncDevStartTransform.rotation;
                 instance.gameObject.SetActive(false);
                 
                 m_ScriptHashFuncDevInstances[i] = instance;
             }
 
+            for (int i = 0; i < 2 ;i++)
+            {
+                m_PaperKeyValuesInstances[i] = new PaperKeyValue(null, null);
+            }
         }
 
         public override void Activate()
@@ -100,122 +123,78 @@ namespace Canvas
 
         IEnumerator SlideRoutine()
         {
-            // Init Papers
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    int index = i;
-
-            //    // Print Key
-            //    m_ScriptPrinter.PrintNoAnim(m_KeyValue[index].key,
-            //        (p) => {
-            //            m_PaperKeyValuesInstances[index].key = p;
-            //            m_PaperKeyValuesInstances[index].key.gameObject.SetActive(false);
-            //        }, Paper.PAPER_TYPE.Hashkey);
-
-            //    // Print Value
-            //    m_ScriptPrinter.PrintNoAnim(m_KeyValue[i].value,
-            //        (p) => {
-            //            m_PaperKeyValuesInstances[index].value = p;
-            //            m_PaperKeyValuesInstances[index].value.gameObject.SetActive(false);
-            //            Debug.Log($"ColisionTest: {m_PaperKeyValuesInstances[index].value.data}");
-            //        }, Paper.PAPER_TYPE.Data);
-            //}
             PlayVoiceNoWait(m_VoiceSource, m_YouMightHave);
 
-            // ===== Left =====
-            yield return m_ScriptPrinter.PrintNoAnimEnumarator(m_KeyValue[0].key,
-                p => {
-                    m_LKey= p;
-                    m_LKey.gameObject.SetActive(false);
-                }, Paper.PAPER_TYPE.Hashkey);
-
-            yield return m_ScriptPrinter.PrintNoAnimEnumarator(m_KeyValue[0].value,
-                (p) => {
-                    m_LValue = p;
-                    m_LValue.gameObject.SetActive(false);
-                }, Paper.PAPER_TYPE.Data);
-
-            // ===== Index 1 =====
-            yield return m_ScriptPrinter.PrintNoAnimEnumarator(m_KeyValue[1].key,
-                (p) => {
-                    m_RKey = p;
-                    m_RKey.gameObject.SetActive(false);
-                }, Paper.PAPER_TYPE.Hashkey);
-
-            yield return m_ScriptPrinter.PrintNoAnimEnumarator(m_KeyValue[1].value,
-                (p) => {
-                    m_RValue = p;
-                    m_RValue.gameObject.SetActive(false);
-                }, Paper.PAPER_TYPE.Data);
-
-
-            yield return new WaitUntil(() => { return !m_VoiceSource.isPlaying; });
-
-
-
-            yield return new WaitUntil(() => 
+            // Init Papers
+            for (int i = 0; i < 2; i++)
             {
-                return m_LValue != null;
-            });
+                int index = i;
 
-            Debug.Log("adasjkdhaj");
+                // Print Key
+                yield return m_ScriptPrinter.PrintNoAnimEnumarator(m_KeyValue[index].key,
+                    (p) =>
+                    {
+                        m_PaperKeyValuesInstances[index].key = p;
+                        p.transform.rotation = m_KeyValueStartTransform.rotation;
 
-            yield return new WaitUntil(() =>
-            {
-                return m_LKey != null;
-            });
+                        m_PaperKeyValuesInstances[index].key.gameObject.SetActive(false);
+                        m_PaperKeyValuesInstances[index].key.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                    }, Paper.PAPER_TYPE.Data);
 
-            Debug.Log("adasjkdhaj");
+                // Print Value
+                yield return m_ScriptPrinter.PrintNoAnimEnumarator(m_KeyValue[i].value,
+                    (p) =>
+                    {
+                        m_PaperKeyValuesInstances[index].value = p;
+                        p.transform.rotation = m_KeyValueStartTransform.rotation;
 
-            yield return new WaitUntil(() =>
-            {
-                return m_RValue != null;
-            });
+                        m_PaperKeyValuesInstances[index].value.gameObject.SetActive(false);
+                        m_PaperKeyValuesInstances[index].value.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                    }, Paper.PAPER_TYPE.Data);
 
-            Debug.Log("adasjkdhaj");
-            yield return new WaitUntil(() =>
-            {
-                return m_RKey != null;
-            });
+                m_ScriptHashFuncDevInstances[index].gameObject.SetActive(true);
+            }
 
-
-            Debug.Log("adasjkdhaj");
-
+            
 
             {
-                Debug.Log("PaperCollisionTest");
+                Debug.Log("PaperColisionTest");
 
-                bool leftPrinted = false;
-                bool rightPrinted = false;
-
-                // ===== LEFT =====
-                m_LKey.transform.position = m_KeyValueStartTransform.position + m_HashFuncDevOffset * 0;
-                m_LValue.transform.position = m_LKey.transform.position + m_KeyValueSeperation;
-
-                m_LKey.gameObject.SetActive(true);
-                m_LValue.gameObject.SetActive(true);
-
-                m_ScriptHashFuncDevInstances[0].OnPaperPrinted.AddListener((p) =>
+                bool[] hasPrinted = new bool[m_PaperKeyValuesInstances.Length];
+                for (int i = 0; i < m_PaperKeyValuesInstances.Length; ++i)
                 {
-                    leftPrinted = true;
-                });
+                    int currIndex = i;
+
+                    PaperKeyValue paperKeyValue = m_PaperKeyValuesInstances[i];
+                    paperKeyValue.key.transform.position = m_KeyValueStartTransform.position + m_HashFuncDevOffset * i;
+                    paperKeyValue.key.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+
+                    paperKeyValue.value.transform.position = paperKeyValue.key.transform.position + m_KeyValueSeperation;
+
+                    paperKeyValue.key.gameObject.SetActive(true);
+                    paperKeyValue.value.gameObject.SetActive(true);
+
+                    // HashFuncCallback
+                    m_ScriptHashFuncDevInstances[i].OnPaperPrinted.AddListener((p) =>
+                    {
+                        hasPrinted[currIndex] = true;
+                    });
+                }
 
 
-                // ===== RIGHT =====
-                m_RKey.transform.position = m_KeyValueStartTransform.position + m_HashFuncDevOffset * 1;
-                m_RValue.transform.position = m_RKey.transform.position + m_KeyValueSeperation;
 
-                m_RKey.gameObject.SetActive(true);
-                m_RValue.gameObject.SetActive(true);
-
-                m_ScriptHashFuncDevInstances[1].OnPaperPrinted.AddListener((p) =>
+                // Wait to finish hashing
+                yield return new WaitUntil(() => 
                 {
-                    rightPrinted = true;
+                    bool finished = true;
+                    foreach(bool printed in hasPrinted)
+                    {
+                        finished = finished && printed;
+                    }
+
+                    return finished;
+                    
                 });
-
-
-                // Wait for both
-                yield return new WaitUntil(() => leftPrinted && rightPrinted);
             }
 
             // Narrate, spawn boxes, while move resulting index to corresponding box
@@ -266,32 +245,22 @@ namespace Canvas
                 m_SlideCoroutine = null;
             }
 
-            // LEFT
-            if (m_LKey != null)
+            for (int i = 0; i < m_PaperKeyValuesInstances.Length; i++)
             {
-                Destroy(m_LKey.gameObject);
-                m_LKey = null;
-            }
+                PaperKeyValue paperKeyValue = m_PaperKeyValuesInstances[i];
 
-            if (m_LValue != null)
-            {
-                Destroy(m_LValue.gameObject);
-                m_LValue = null;
-            }
+                if (paperKeyValue.key != null)
+                {
+                    Destroy(paperKeyValue.key.gameObject);
+                    paperKeyValue.key = null;
+                }
 
-            // RIGHT
-            if (m_RKey != null)
-            {
-                Destroy(m_RKey.gameObject);
-                m_RKey = null;
+                if (paperKeyValue.value != null)
+                {
+                    Destroy(paperKeyValue.value.gameObject);
+                    paperKeyValue.value = null;
+                }
             }
-
-            if (m_RValue != null)
-            {
-                Destroy(m_RValue.gameObject);
-                m_RValue = null;
-            }
-
             if (BoxScriptinstances != null)
             {
                 foreach (var instance in BoxScriptinstances)

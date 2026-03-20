@@ -4929,7 +4929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3401237200744885358, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4477895531249735988, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4996,7 +4996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1291588828
 Transform:
   m_ObjectHideFlags: 0
@@ -7279,7 +7279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3401237200744885358, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4477895531249735988, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8864,7 +8864,7 @@ MonoBehaviour:
   m_ScriptHashFuncDevStartTransform: {fileID: 297738969}
   m_HashFuncDevOffset: {x: 0, y: 0, z: -0.372}
   m_KeyValueStartTransform: {fileID: 1291588828}
-  m_KeyValueSeperation: {x: 0, y: 0, z: 0.2}
+  m_KeyValueSeperation: {x: 0, y: 0, z: -0.0893}
   m_ScriptHashFuncDevPrefab: {fileID: 8217631172298926960, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
   m_BoxArrayPrefab: {fileID: 6937637338359584842, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
   m_ArrayOffset: {x: 0, y: 0, z: 0.2}
