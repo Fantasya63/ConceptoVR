@@ -44,11 +44,16 @@ namespace Concepto.HashMap
         [TextArea(5, 20)]
         private string m_ScriptTemplate;
 
-        public void Start()
+        public void Awake()
         {
             if (m_Visualizer == null)
                 Debug.LogWarning($"{name} has no Script Visualizer attached to it.");
-            resultPrinter.OnPaperPrinted.AddListener((Paper paper) => { OnPaperPrinted.Invoke(paper); });
+                resultPrinter.OnPaperPrinted.AddListener(
+                (Paper paper) => {
+                    Debug.Log("HashFuncDev: PaperPrinted");
+                    OnPaperPrinted.Invoke(paper); 
+                    
+                });
         }
 
         public void PrintPaperScripted(Paper paper)

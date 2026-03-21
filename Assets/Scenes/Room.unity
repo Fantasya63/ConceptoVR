@@ -174,6 +174,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Paper
       objectReference: {fileID: 0}
+    - target: {fileID: 961634259465563759, guid: c1629cd2c6bb7cd4db9a5492acaee053, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6622800288660845628, guid: c1629cd2c6bb7cd4db9a5492acaee053, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -992,7 +996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &297738969
 Transform:
   m_ObjectHideFlags: 0
@@ -3945,10 +3949,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6747963754396152009, guid: df14e86657accf94388c42a530c8ef92, type: 3}
-      propertyPath: m_RequestedTrackingOriginMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7058169265171491290, guid: df14e86657accf94388c42a530c8ef92, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -4991,12 +4991,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1291588828}
   m_Layer: 0
-  m_Name: PaperInputStartPos
+  m_Name: CollisionPaperInputStartPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1291588828
 Transform:
   m_ObjectHideFlags: 0
@@ -5025,6 +5025,10 @@ PrefabInstance:
     - target: {fileID: 961634259465563759, guid: c1629cd2c6bb7cd4db9a5492acaee053, type: 3}
       propertyPath: m_Name
       value: Paper (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 961634259465563759, guid: c1629cd2c6bb7cd4db9a5492acaee053, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6622800288660845628, guid: c1629cd2c6bb7cd4db9a5492acaee053, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8862,8 +8866,8 @@ MonoBehaviour:
   m_VoiceSource: {fileID: 638630828}
   m_ScriptPrinter: {fileID: 1020457884}
   m_ScriptHashFuncDevStartTransform: {fileID: 297738969}
-  m_HashFuncDevOffset: {x: 0, y: 0, z: -0.372}
   m_KeyValueStartTransform: {fileID: 1291588828}
+  m_HashFuncDevOffset: {x: 0, y: 0, z: -0.372}
   m_KeyValueSeperation: {x: 0, y: 0, z: -0.0893}
   m_ScriptHashFuncDevPrefab: {fileID: 8217631172298926960, guid: 8a966285a17d64247998b54773cf94ac, type: 3}
   m_BoxArrayPrefab: {fileID: 6937637338359584842, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
@@ -8875,9 +8879,9 @@ MonoBehaviour:
   m_Instead: {fileID: 8300000, guid: 59ae6f83b00d9fb4ba5317157a167904, type: 3}
   m_KeyValue:
   - key: ABC
-    value: 12
+    value: 63
   - key: BCG
-    value: 39
+    value: 76
 --- !u!1 &2062529410
 GameObject:
   m_ObjectHideFlags: 0

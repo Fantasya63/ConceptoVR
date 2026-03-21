@@ -174,6 +174,7 @@ public class Printer : MonoBehaviour
         if (grab != null)
             grab.enabled = true;
 
+        Debug.Log("Printer: Paper Printed");
         OnPaperPrinted.Invoke(paper);
         IsPrinting = false;
     }

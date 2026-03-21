@@ -39,8 +39,10 @@ namespace Canvas
         [SerializeField] private AudioSource m_VoiceSource;
         [SerializeField] private Printer m_ScriptPrinter;
         [SerializeField] private Transform m_ScriptHashFuncDevStartTransform;
-        [SerializeField] private Vector3 m_HashFuncDevOffset = Vector3.forward;
         [SerializeField] private Transform m_KeyValueStartTransform;
+        //[SerializeField] private Transform m_BoxArrStartTransform;
+
+        [SerializeField] private Vector3 m_HashFuncDevOffset = Vector3.forward;
         [SerializeField] private Vector3 m_KeyValueSeperation = Vector3.forward * 0.2f;
 
         [Header("Prefabs")]
@@ -71,11 +73,21 @@ namespace Canvas
 
 
         BoxScriptController[] BoxScriptinstances = null;
+        private bool[] m_HasPrintedArr;
+
+        private void Awake()
+        {
+            m_HasPrintedArr = new bool[m_PaperKeyValuesInstances.Length];
+
+            for (int i = 0; i < 2; i++)
+            {
+                m_PaperKeyValuesInstances[i] = new PaperKeyValue(null, null);
+            }
+        }
 
         private void Start()
         {
             Debug.Assert(m_VoiceSource != null);
-
             Debug.Assert(m_YouMightHave != null);
             Debug.Assert(m_WhenTwoKeys != null);
             Debug.Assert(m_OneMethod != null);
@@ -94,14 +106,13 @@ namespace Canvas
                 instance.transform.position = m_ScriptHashFuncDevStartTransform.position + m_HashFuncDevOffset * i;
                 instance.transform.rotation = m_ScriptHashFuncDevStartTransform.rotation;
                 instance.gameObject.SetActive(false);
-                
+                instance.OnPaperPrinted.AddListener((p) =>
+                {
+                    Debug.Log("Start");
+                });
                 m_ScriptHashFuncDevInstances[i] = instance;
             }
 
-            for (int i = 0; i < 2 ;i++)
-            {
-                m_PaperKeyValuesInstances[i] = new PaperKeyValue(null, null);
-            }
         }
 
         public override void Activate()
@@ -115,6 +126,11 @@ namespace Canvas
                 {
                     Destroy(instance);
                 }
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                m_HasPrintedArr[i] = false;
             }
 
             
@@ -136,8 +152,8 @@ namespace Canvas
                     {
                         m_PaperKeyValuesInstances[index].key = p;
                         p.transform.rotation = m_KeyValueStartTransform.rotation;
-
-                        m_PaperKeyValuesInstances[index].key.gameObject.SetActive(false);
+                        
+                        m_PaperKeyValuesInstances[index].key.gameObject.SetActive(true);
                         m_PaperKeyValuesInstances[index].key.gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     }, Paper.PAPER_TYPE.Data);
 
@@ -148,51 +164,44 @@ namespace Canvas
                         m_PaperKeyValuesInstances[index].value = p;
                         p.transform.rotation = m_KeyValueStartTransform.rotation;
 
-                        m_PaperKeyValuesInstances[index].value.gameObject.SetActive(false);
+                        m_PaperKeyValuesInstances[index].value.gameObject.SetActive(true);
                         m_PaperKeyValuesInstances[index].value.gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     }, Paper.PAPER_TYPE.Data);
 
                 m_ScriptHashFuncDevInstances[index].gameObject.SetActive(true);
             }
 
-            
+            yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
 
             {
                 Debug.Log("PaperColisionTest");
 
-                bool[] hasPrinted = new bool[m_PaperKeyValuesInstances.Length];
+                Debug.Log($"Length: {m_PaperKeyValuesInstances.Length}");
+
                 for (int i = 0; i < m_PaperKeyValuesInstances.Length; ++i)
                 {
                     int currIndex = i;
 
                     PaperKeyValue paperKeyValue = m_PaperKeyValuesInstances[i];
                     paperKeyValue.key.transform.position = m_KeyValueStartTransform.position + m_HashFuncDevOffset * i;
+                    paperKeyValue.value.transform.position = paperKeyValue.key.transform.position + m_KeyValueSeperation;
                     paperKeyValue.key.gameObject.GetComponent<Rigidbody>().isKinematic = false;
 
-                    paperKeyValue.value.transform.position = paperKeyValue.key.transform.position + m_KeyValueSeperation;
-
-                    paperKeyValue.key.gameObject.SetActive(true);
-                    paperKeyValue.value.gameObject.SetActive(true);
+                    Debug.Log($"CollisionStep: HashFuncDevInstance: {i} - {m_ScriptHashFuncDevInstances[i].name}");
 
                     // HashFuncCallback
-                    m_ScriptHashFuncDevInstances[i].OnPaperPrinted.AddListener((p) =>
+                    m_ScriptHashFuncDevInstances[currIndex].OnPaperPrinted.AddListener((Paper p) =>
                     {
-                        hasPrinted[currIndex] = true;
+                        Debug.Log("Hash");
+                        m_HasPrintedArr[currIndex] = true;
                     });
+
                 }
-
-
 
                 // Wait to finish hashing
                 yield return new WaitUntil(() => 
                 {
-                    bool finished = true;
-                    foreach(bool printed in hasPrinted)
-                    {
-                        finished = finished && printed;
-                    }
-
-                    return finished;
+                    return m_HasPrintedArr[0] && m_HasPrintedArr[1];
                     
                 });
             }
@@ -200,10 +209,25 @@ namespace Canvas
             // Narrate, spawn boxes, while move resulting index to corresponding box
             {
                 PlayVoiceNoWait(m_VoiceSource, m_WhenTwoKeys);
+                Debug.Log("Spawn Boxes");
+                yield return WaitForArray<BoxScriptController>(
+                    m_BoxArrayPrefab, 
+                    HashFunc.NumBoxes, 
+                    m_SpawnDelay,
+                    Vector3.zero,
+                    m_ArrayOffset, 
+                    (BoxScriptController instance) =>
+                    {
+                        Debug.Log("Instanceeee");
+                        
+                    }
+                    , (arr) => {
+                        BoxScriptinstances = arr;
+                    }
+                );
 
-                yield return WaitForArray<BoxScriptController>(m_BoxArrayPrefab, HashFunc.NumBoxes, m_SpawnDelay, m_ArrayOffset, null, (arr) => {
-                    BoxScriptinstances = arr;
-                });
+                Debug.Log("Spawned Boxes");
+
             }
 
             // Narrate Seperate chaining

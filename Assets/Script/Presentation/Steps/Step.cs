@@ -37,8 +37,9 @@ namespace Canvas
             T prefab,
             int count,
             float spawnDelay,
+            Vector3 spawnPos,
             Vector3 offset,
-            System.Action onSpawned,
+            System.Action <T> onSpawned,
             System.Action<T[]> result
         ) where T : MonoBehaviour
         {
@@ -49,16 +50,17 @@ namespace Canvas
                 // Instantiate using the prefab instance
                 T instance = Instantiate(prefab);
 
-                instance.transform.position += offset * i;
+                instance.transform.position = spawnPos + offset * i;
 
                 instances[i] = instance;
 
-                onSpawned?.Invoke();
+                onSpawned?.Invoke(instance);
 
                 // Wait before spawning next
                 if (spawnDelay > 0f)
                     yield return new WaitForSeconds(spawnDelay);
             }
+
 
             // Return the result
             result?.Invoke(instances);

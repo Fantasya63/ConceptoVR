@@ -214,8 +214,10 @@ namespace Canvas
 
         void CleanUp()
         {
-            Destroy(m_DataPaperInstance.gameObject);
-            Destroy(m_KeyPaperInstance.gameObject);
+            if (m_DataPaperInstance != null)
+                Destroy(m_DataPaperInstance.gameObject);
+            if (m_KeyPaperInstance != null)
+                Destroy(m_KeyPaperInstance.gameObject);
 
             if (m_SpawnedPlayerBoxes != null)
             {
