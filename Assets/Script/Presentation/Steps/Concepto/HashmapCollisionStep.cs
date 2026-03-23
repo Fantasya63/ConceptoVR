@@ -15,7 +15,7 @@ namespace Canvas
             public string value;
         }
         [System.Serializable]
-        struct PaperKeyValue
+        class PaperKeyValue
         {
             public Paper key;
             public Paper value;
@@ -40,7 +40,8 @@ namespace Canvas
         [SerializeField] private Printer m_ScriptPrinter;
         [SerializeField] private Transform m_ScriptHashFuncDevStartTransform;
         [SerializeField] private Transform m_KeyValueStartTransform;
-        //[SerializeField] private Transform m_BoxArrStartTransform;
+        [SerializeField] private Transform m_BoxArrStartTransform;
+        [SerializeField] private Transform m_IndexShowErrorTransform;
 
         [SerializeField] private Vector3 m_HashFuncDevOffset = Vector3.forward;
         [SerializeField] private Vector3 m_KeyValueSeperation = Vector3.forward * 0.2f;
@@ -56,7 +57,8 @@ namespace Canvas
 
         [Header("Animation")]
         [SerializeField] private float m_SpawnDelay = 0.1f;
-
+        [SerializeField] private float m_IndexToBoxLerpDur = 1.0f;
+        [SerializeField] private float m_ErrorOutlineDur = 3.0f;
 
         [Header("Voice Overs")]
         [SerializeField] private AudioClip m_YouMightHave;
@@ -72,7 +74,7 @@ namespace Canvas
         private Coroutine m_SlideCoroutine;
 
 
-        BoxScriptController[] BoxScriptinstances = null;
+        BoxScriptController[] m_BoxScriptinstances = null;
         private bool[] m_HasPrintedArr;
 
         private void Awake()
@@ -120,9 +122,9 @@ namespace Canvas
             if (m_SlideCoroutine != null)
                 StopCoroutine(m_SlideCoroutine);
 
-            if (BoxScriptinstances != null)
+            if (m_BoxScriptinstances != null)
             {
-                foreach (var instance in BoxScriptinstances)
+                foreach (var instance in m_BoxScriptinstances)
                 {
                     Destroy(instance);
                 }
@@ -139,7 +141,6 @@ namespace Canvas
 
         IEnumerator SlideRoutine()
         {
-            PlayVoiceNoWait(m_VoiceSource, m_YouMightHave);
 
             // Init Papers
             for (int i = 0; i < 2; i++)
@@ -151,10 +152,12 @@ namespace Canvas
                     (p) =>
                     {
                         m_PaperKeyValuesInstances[index].key = p;
-                        p.transform.rotation = m_KeyValueStartTransform.rotation;
-                        
-                        m_PaperKeyValuesInstances[index].key.gameObject.SetActive(true);
                         m_PaperKeyValuesInstances[index].key.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
+                        p.transform.rotation = m_KeyValueStartTransform.rotation;
+                        p.transform.position = m_KeyValueStartTransform.position + m_HashFuncDevOffset * i;
+
+                        m_PaperKeyValuesInstances[index].key.gameObject.SetActive(true);
                     }, Paper.PAPER_TYPE.Data);
 
                 // Print Value
@@ -162,20 +165,23 @@ namespace Canvas
                     (p) =>
                     {
                         m_PaperKeyValuesInstances[index].value = p;
-                        p.transform.rotation = m_KeyValueStartTransform.rotation;
-
-                        m_PaperKeyValuesInstances[index].value.gameObject.SetActive(true);
                         m_PaperKeyValuesInstances[index].value.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
+                        p.transform.rotation = m_KeyValueStartTransform.rotation;
+                        p.transform.position = m_PaperKeyValuesInstances[i].key.transform.position + m_KeyValueSeperation;
+                        m_PaperKeyValuesInstances[index].value.gameObject.SetActive(true);
                     }, Paper.PAPER_TYPE.Data);
 
                 m_ScriptHashFuncDevInstances[index].gameObject.SetActive(true);
             }
 
+            PlayVoiceNoWait(m_VoiceSource, m_YouMightHave);
+
             yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
 
+            Paper[] printedIndexes = new Paper[m_PaperKeyValuesInstances.Length];
             {
                 Debug.Log("PaperColisionTest");
-
                 Debug.Log($"Length: {m_PaperKeyValuesInstances.Length}");
 
                 for (int i = 0; i < m_PaperKeyValuesInstances.Length; ++i)
@@ -183,8 +189,6 @@ namespace Canvas
                     int currIndex = i;
 
                     PaperKeyValue paperKeyValue = m_PaperKeyValuesInstances[i];
-                    paperKeyValue.key.transform.position = m_KeyValueStartTransform.position + m_HashFuncDevOffset * i;
-                    paperKeyValue.value.transform.position = paperKeyValue.key.transform.position + m_KeyValueSeperation;
                     paperKeyValue.key.gameObject.GetComponent<Rigidbody>().isKinematic = false;
 
                     Debug.Log($"CollisionStep: HashFuncDevInstance: {i} - {m_ScriptHashFuncDevInstances[i].name}");
@@ -193,6 +197,7 @@ namespace Canvas
                     m_ScriptHashFuncDevInstances[currIndex].OnPaperPrinted.AddListener((Paper p) =>
                     {
                         Debug.Log("Hash");
+                        printedIndexes[currIndex] = p;
                         m_HasPrintedArr[currIndex] = true;
                     });
 
@@ -202,7 +207,6 @@ namespace Canvas
                 yield return new WaitUntil(() => 
                 {
                     return m_HasPrintedArr[0] && m_HasPrintedArr[1];
-                    
                 });
             }
 
@@ -214,15 +218,15 @@ namespace Canvas
                     m_BoxArrayPrefab, 
                     HashFunc.NumBoxes, 
                     m_SpawnDelay,
-                    Vector3.zero,
+                    m_BoxArrStartTransform.position,
                     m_ArrayOffset, 
-                    (BoxScriptController instance) =>
+                    (BoxScriptController instance, int index) =>
                     {
                         Debug.Log("Instanceeee");
-                        
+                        instance.SetLabel(index.ToString());
                     }
                     , (arr) => {
-                        BoxScriptinstances = arr;
+                        m_BoxScriptinstances = arr;
                     }
                 );
 
@@ -230,14 +234,60 @@ namespace Canvas
 
             }
 
-            // Narrate Seperate chaining
+            // Move Paper into key position:
             {
+                Outline[] outlines = new Outline[printedIndexes.Length];
+                for (int i = 0; i < printedIndexes.Length; i++) 
+                {
+                    Paper indexPaper = printedIndexes[i];
+                    Rigidbody rbody = indexPaper.GetComponent<Rigidbody>();
+                    rbody.isKinematic = true;
 
+                    Quaternion startRot = indexPaper.transform.rotation;
+
+                    Vector3 _pos = m_IndexShowErrorTransform.position + m_KeyValueSeperation * i;
+                    indexPaper.transform.LeanMove(_pos, m_IndexToBoxLerpDur);
+                    indexPaper.transform.rotation = Quaternion.Lerp(startRot, m_IndexShowErrorTransform.rotation, m_IndexToBoxLerpDur);
+
+                    // Flash Error
+                    Outline outline = indexPaper.GetComponent<Outline>();
+                    outlines[i] = outline;
+                }
+
+                yield return new WaitForSeconds(m_IndexToBoxLerpDur);
+
+                foreach (var outline in outlines)
+                {
+                    outline.enabled = true;
+                    outline.OutlineColor = Color.red;
+                }
+
+                yield return new WaitForSeconds(m_ErrorOutlineDur);
+
+                yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
+
+                for (int i = 0; i < outlines.Length; i++)
+                {
+                    outlines[i].enabled = false;
+                }
             }
+
+
+            // Narrate Seperate chaining
+            PlayVoiceNoWait(m_VoiceSource, m_OneMethod);
 
             // Switch array to array of linked lists
             {
+                for (int i = 0; i < m_BoxScriptinstances.Length; i++)
+                {
+                    Destroy(m_BoxScriptinstances[i]);
+                    yield return new WaitForSeconds(m_SpawnDelay);
+                }
 
+                // Create Linked Lists
+                {
+
+                }
             }
 
             // Demonstrate insertion
@@ -285,9 +335,9 @@ namespace Canvas
                     paperKeyValue.value = null;
                 }
             }
-            if (BoxScriptinstances != null)
+            if (m_BoxScriptinstances != null)
             {
-                foreach (var instance in BoxScriptinstances)
+                foreach (var instance in m_BoxScriptinstances)
                 {
                     Destroy(instance);
                 }
@@ -296,7 +346,7 @@ namespace Canvas
 
         public override void OnSlideExit()
         {
-            throw new System.NotImplementedException();
+           
         }
     }
 

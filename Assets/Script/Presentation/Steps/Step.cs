@@ -39,7 +39,7 @@ namespace Canvas
             float spawnDelay,
             Vector3 spawnPos,
             Vector3 offset,
-            System.Action <T> onSpawned,
+            System.Action <T, int> onSpawned,
             System.Action<T[]> result
         ) where T : MonoBehaviour
         {
@@ -54,7 +54,7 @@ namespace Canvas
 
                 instances[i] = instance;
 
-                onSpawned?.Invoke(instance);
+                onSpawned?.Invoke(instance, i);
 
                 // Wait before spawning next
                 if (spawnDelay > 0f)
