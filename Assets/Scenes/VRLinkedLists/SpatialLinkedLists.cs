@@ -57,6 +57,8 @@ namespace Concepto
                 {
                     Debug.Log("Invalid command.");
                 }
+
+                yield return new WaitForSeconds(0.5f);
             }
             
         }
@@ -108,7 +110,7 @@ namespace Concepto
             if (m_Head.GetData() == null)
             {
                 newNode.gameObject.SetActive(true);
-                yield return StartCoroutine(m_Head.PointTo(newNode));
+                yield return (m_Head.PointTo(newNode));
                 Debug.Log(value + " is inserted. (Head)");
                 yield break;
             }
@@ -125,18 +127,21 @@ namespace Concepto
                 if (currentNode.m_NextPointer.GetData() == null)
                 {
                     newNode.gameObject.SetActive(true);
-                    yield return StartCoroutine(currentNode.m_NextPointer.PointTo(newNode));
+                    yield return (currentNode.m_NextPointer.PointTo(newNode));
                     Debug.Log(value + " is inserted.");
                     yield break;
                 }
 
                 // Move to next node
-                yield return StartCoroutine(
+                yield return 
                     m_Current.PointTo(currentNode.m_NextPointer.GetData())
-                );
+                ;
+
+                Debug.Log($"Moved to: {currentNode.m_Data}");
             }
 
-            
+
+            m_Current.PointToNoAnim(m_Head.GetData());
 
             Debug.Log(value + " is inserted.");
         }

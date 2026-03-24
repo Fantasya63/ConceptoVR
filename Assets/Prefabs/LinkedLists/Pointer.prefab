@@ -264,6 +264,7 @@ MonoBehaviour:
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 1
   m_AnimDuration: 1
+  m_TweenType: 4
 --- !u!1 &7291742339245250698
 GameObject:
   m_ObjectHideFlags: 0

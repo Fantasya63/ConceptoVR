@@ -14,6 +14,7 @@ namespace Concepto
         [SerializeField] private Vector3 m_RotAngle = Vector3.zero;
         [SerializeField] private bool m_IsStationary = false;
         [SerializeField] private float m_AnimDuration = 1.0f;
+        [SerializeField] private LeanTweenType m_TweenType = LeanTweenType.easeInOutQuad;
 
         SpatialNode m_Data = null;
         
@@ -52,6 +53,11 @@ namespace Concepto
             }
         }
 
+        public Vector3 GetPointedPosition()
+        {
+            return transform.position + m_Offset;
+        }
+
         public IEnumerator PointTo(SpatialNode node)
         {
             SetData(node);
@@ -65,7 +71,7 @@ namespace Concepto
                 Vector3 fromPos = pos + Vector3.up * 0.5f;
                 node.transform.position = fromPos;
 
-                node.transform.LeanMove(pos, m_AnimDuration);
+                node.transform.LeanMove(pos, m_AnimDuration).setEase(m_TweenType);
                 Debug.Log("node move");
 
                 // Wait for animation to finish
@@ -74,7 +80,7 @@ namespace Concepto
             else
             {
                 // Animate pointer
-                transform.LeanMove(node.transform.position + m_Offset, m_AnimDuration);
+                transform.LeanMove(node.transform.position + m_Offset, m_AnimDuration).setEase(m_TweenType);
 
                 // Wait for animation to finish
                 yield return new WaitForSeconds(m_AnimDuration);

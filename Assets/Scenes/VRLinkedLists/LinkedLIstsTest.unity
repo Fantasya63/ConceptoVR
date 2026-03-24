@@ -1121,6 +1121,10 @@ PrefabInstance:
       propertyPath: m_DataLabel
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4824999174327115927, guid: ee7fa02668f9e6142bd88f3cc786822f, type: 3}
+      propertyPath: m_TweenType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7068846233599246751, guid: ee7fa02668f9e6142bd88f3cc786822f, type: 3}
       propertyPath: m_Name
       value: Head
