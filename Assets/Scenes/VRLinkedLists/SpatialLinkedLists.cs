@@ -49,10 +49,10 @@ namespace Concepto
                 //    int value = int.Parse(parts[1]);
                 //    Delete(value);
                 //}
-                //else if (command == "traverse")
-                //{
-                //    Traverse();
-                //}
+                else if (command == "traverse")
+                {
+                    yield return Traverse();
+                }
                 else
                 {
                     Debug.Log("Invalid command.");
@@ -119,27 +119,31 @@ namespace Concepto
             m_Current.PointToNoAnim(m_Head.GetData());
             //yield return StartCoroutine(m_Current.PointTo(m_Head.GetData()));
 
-            while (m_Current.GetData() != null)
+            while (m_Current.GetData().m_NextPointer.GetData() != null)
             {
                 SpatialNode currentNode = m_Current.GetData();
 
-                // If next is null  insert here
-                if (currentNode.m_NextPointer.GetData() == null)
-                {
-                    newNode.gameObject.SetActive(true);
-                    yield return (currentNode.m_NextPointer.PointTo(newNode));
-                    Debug.Log(value + " is inserted.");
-                    yield break;
-                }
+                //// If next is null  insert here
+                //if (currentNode.m_NextPointer.GetData() == null)
+                //{
+                //    yield return 
+                //    newNode.gameObject.SetActive(true);
+                //    yield return (currentNode.m_NextPointer.PointTo(newNode));
+                //    Debug.Log(value + " is inserted.");
+                //    yield break;
+                //}
 
                 // Move to next node
-                yield return 
-                    m_Current.PointTo(currentNode.m_NextPointer.GetData())
-                ;
+                yield return m_Current.PointTo(currentNode.m_NextPointer);
 
                 Debug.Log($"Moved to: {currentNode.m_Data}");
             }
+            SpatialPointer next = m_Current.GetData().m_NextPointer;
 
+            yield return m_Current.PointTo(m_Current.GetData().m_NextPointer);
+
+            newNode.gameObject.SetActive(true);
+            yield return next.PointTo(newNode);
 
             m_Current.PointToNoAnim(m_Head.GetData());
 
@@ -188,26 +192,76 @@ namespace Concepto
         //    }
         //}
 
-        //void Traverse()
-        //{
-        //    if (head == null)
-        //    {
-        //        Debug.Log("List is empty.");
-        //        return;
-        //    }
 
-        //    Node temp = head;
-        //    string output = "List: ";
+        IEnumerator Delete(string value)
+        {
+            if (m_Head.GetData() == null)
+            {
+                Debug.Log("List is empty.");
+                yield break;
+            }
 
-        //    while (temp != null)
-        //    {
-        //        output += temp.data + " -> ";
-        //        temp = temp.next;
-        //    }
+            // Start
+            if (m_Head.GetData().m_Data == value)
+            {
+                head = head.next;
 
-        //    output += "NULL";
+                if (head == null)
+                    Debug.Log(value + " is deleted. List is now empty.");
+                else
+                    Debug.Log(value + " is deleted.");
 
-        //    Debug.Log(output);
-        //}
+                return;
+            }
+
+            Node temp = head;
+
+            while (temp.next != null && temp.next.data != value)
+            {
+                temp = temp.next;
+            }
+
+            if (temp.next == null)
+            {
+                Debug.Log(value + " not found.");
+            }
+            else
+            {
+                temp.next = temp.next.next;
+
+                if (head == null)
+                    Debug.Log(value + " is deleted. List is now empty.");
+                else
+                    Debug.Log(value + " is deleted.");
+            }
+        }
+
+
+        IEnumerator Traverse()
+        {
+            if (m_Head.GetData() == null)
+            {
+                Debug.Log("List is empty.");
+                yield break;
+            }
+
+            m_Current.PointToNoAnim(m_Head);
+
+            //Node temp = head;
+
+            string output = "List: ";
+
+            while (m_Current.GetData() != null)
+            {
+                output += m_Current.GetData() + " -> ";
+                //temp = temp.next;
+                yield return m_Current.PointTo(m_Current.GetData().m_NextPointer);
+            }
+
+            output += "NULL";
+
+            m_Current.PointToNoAnim(m_Head);
+            Debug.Log(output);
+        }
     }
 }

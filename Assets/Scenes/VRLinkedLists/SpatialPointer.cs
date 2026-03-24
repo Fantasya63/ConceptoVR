@@ -53,9 +53,46 @@ namespace Concepto
             }
         }
 
+        public void PointToNoAnim(SpatialPointer otherPointer)
+        {
+            if (m_IsStationary)
+                return;
+
+            if (otherPointer.m_Data == null)
+            {
+                transform.position = otherPointer.GetPointedPosition() + m_Offset;
+                SetData(otherPointer.m_Data);
+            }
+            else
+            {
+                PointToNoAnim(otherPointer.m_Data);
+            }
+        }
+
         public Vector3 GetPointedPosition()
         {
             return transform.position + m_Offset;
+        }
+
+
+
+        public IEnumerator PointTo(SpatialPointer otherPointer)
+        {
+            if (m_IsStationary)
+                yield break;
+
+            if (otherPointer.m_Data == null)
+            {
+                transform.LeanMove(otherPointer.GetPointedPosition() + m_Offset, m_AnimDuration).setEase(m_TweenType);
+                SetData(otherPointer.m_Data);
+                yield return new WaitForSeconds(m_AnimDuration);
+                yield break;
+            }
+            else
+            {
+                yield return PointTo(otherPointer.m_Data);
+            }
+
         }
 
         public IEnumerator PointTo(SpatialNode node)

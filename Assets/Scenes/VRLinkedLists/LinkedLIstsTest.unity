@@ -359,6 +359,7 @@ MonoBehaviour:
   - insert 134
   - insert 135
   - insert 136
+  - traverse
 --- !u!20 &703048702 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 7917674758326848207, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
