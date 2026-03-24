@@ -99,12 +99,12 @@ namespace Concepto
         //    Debug.Log(value + " is inserted.");
         //}
 
-        public IEnumerator Insert(int value)
+        public IEnumerator Insert(int value, int index)
         {
 
             SpatialNode newNode = Instantiate(m_SpatialNodePrefab);
             newNode.gameObject.SetActive(false);
-            newNode.m_Data = value.ToString();
+            newNode.Data = value.ToString();
 
             // If head is empty
             if (m_Head.GetData() == null)
@@ -136,7 +136,7 @@ namespace Concepto
                 // Move to next node
                 yield return m_Current.PointTo(currentNode.m_NextPointer);
 
-                Debug.Log($"Moved to: {currentNode.m_Data}");
+                Debug.Log($"Moved to: {currentNode.Data}");
             }
             SpatialPointer next = m_Current.GetData().m_NextPointer;
 
@@ -193,48 +193,48 @@ namespace Concepto
         //}
 
 
-        IEnumerator Delete(string value)
-        {
-            if (m_Head.GetData() == null)
-            {
-                Debug.Log("List is empty.");
-                yield break;
-            }
+        //IEnumerator Delete(string value)
+        //{
+        //    if (m_Head.GetData() == null)
+        //    {
+        //        Debug.Log("List is empty.");
+        //        yield break;
+        //    }
 
-            // Start
-            if (m_Head.GetData().m_Data == value)
-            {
-                head = head.next;
+        //    // Start
+        //    if (m_Head.GetData().Data == value)
+        //    {
+        //        head = head.next;
 
-                if (head == null)
-                    Debug.Log(value + " is deleted. List is now empty.");
-                else
-                    Debug.Log(value + " is deleted.");
+        //        if (head == null)
+        //            Debug.Log(value + " is deleted. List is now empty.");
+        //        else
+        //            Debug.Log(value + " is deleted.");
 
-                return;
-            }
+        //        return;
+        //    }
 
-            Node temp = head;
+        //    Node temp = head;
 
-            while (temp.next != null && temp.next.data != value)
-            {
-                temp = temp.next;
-            }
+        //    while (temp.next != null && temp.next.data != value)
+        //    {
+        //        temp = temp.next;
+        //    }
 
-            if (temp.next == null)
-            {
-                Debug.Log(value + " not found.");
-            }
-            else
-            {
-                temp.next = temp.next.next;
+        //    if (temp.next == null)
+        //    {
+        //        Debug.Log(value + " not found.");
+        //    }
+        //    else
+        //    {
+        //        temp.next = temp.next.next;
 
-                if (head == null)
-                    Debug.Log(value + " is deleted. List is now empty.");
-                else
-                    Debug.Log(value + " is deleted.");
-            }
-        }
+        //        if (head == null)
+        //            Debug.Log(value + " is deleted. List is now empty.");
+        //        else
+        //            Debug.Log(value + " is deleted.");
+        //    }
+        //}
 
 
         IEnumerator Traverse()

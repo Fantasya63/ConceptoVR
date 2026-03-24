@@ -27,7 +27,7 @@ namespace Concepto
             if (data == null)
                 m_DataLabel.text = "Null";
             else
-                m_DataLabel.text = m_Data.m_Data;
+                m_DataLabel.text = m_Data.Data;
         }
 
         public SpatialPointer(SpatialNode data)

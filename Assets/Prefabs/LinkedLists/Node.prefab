@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Concepto.SpatialNode
   m_NextPointer: {fileID: 8997458441757035948}
+  m_Controller: {fileID: 8314448103847214947}
   m_Data: Null
 --- !u!1 &4738104411894918594
 GameObject:
@@ -307,10 +308,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8565ddf83352f1468ad1565b19ff903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Concepto.SpatialPointer
+  m_DataLabel: {fileID: 0}
   m_Offset: {x: 0, y: 0, z: 0.3}
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 1
   m_AnimDuration: 1
+  m_TweenType: 0
 --- !u!1 &4816673876148276810
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +488,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoxArray
       objectReference: {fileID: 0}
+    - target: {fileID: 6932753813798566948, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6936627
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932753813798566948, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.13723011
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932753813798566948, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.6936627
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932753813798566948, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.13723014
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932753813798566948, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.182
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932753813798566948, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.501
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932753813798566948, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 22.381
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -495,6 +526,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4835673437604352677, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
   m_PrefabInstance: {fileID: 1379695886423254825}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8314448103847214947 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6937637338359584842, guid: f24eef592d4fc97468c267b4fc8a9750, type: 3}
+  m_PrefabInstance: {fileID: 1379695886423254825}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f71b02d34fce14298402534a728e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxScriptController
 --- !u!1001 &6706898326626437089
 PrefabInstance:
   m_ObjectHideFlags: 0
