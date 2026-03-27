@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,13 @@ namespace Concepto
         [Header("References")]
         [SerializeField] SpatialPointer m_Head;
         [SerializeField] SpatialPointer m_Current;
+        [SerializeField] AudioSource m_AudioSource;
+        [SerializeField] AudioClip m_ErrorClip;
+
+        [Header("Options")]
+        [SerializeField] Vector3 m_NewNodeSpawnOffset = Vector3.up * 0.5f;
+        [SerializeField] float m_AnimDownwardDur = 1.0f;
+        [SerializeField] float m_PointerLookLerpDur = 0.5f;
 
         [Header("Prefabs")]
         [SerializeField] SpatialNode m_SpatialNodePrefab;
@@ -16,11 +24,21 @@ namespace Concepto
         // Type command in Inspector 
         public string[] commands;
 
+        int m_Size = 0;
+        public int Size { 
+            get
+            {
+                return m_Size;
+            }
+        }
+
         Coroutine m_CommandCoroutine;
 
         void Start()
         {
             Debug.Assert(m_Head != null);
+            Debug.Assert(m_ErrorClip != null);
+            Debug.Assert(m_AudioSource != null);
             
             if (m_CommandCoroutine != null)
                 StopCoroutine(m_CommandCoroutine);
@@ -99,7 +117,7 @@ namespace Concepto
         //    Debug.Log(value + " is inserted.");
         //}
 
-        public IEnumerator Insert(int value, int index)
+        public IEnumerator Insert(int value, int pos = -1)
         {
 
             SpatialNode newNode = Instantiate(m_SpatialNodePrefab);
@@ -115,23 +133,25 @@ namespace Concepto
                 yield break;
             }
 
+            // Check bounds
+            if (pos < 0 && pos >= m_Size)
+            {
+                m_AudioSource.clip = m_ErrorClip; 
+                m_AudioSource.Play();
+
+                yield break;
+            }
+
+
+
             // Move current pointer to head
             m_Current.PointToNoAnim(m_Head.GetData());
             //yield return StartCoroutine(m_Current.PointTo(m_Head.GetData()));
 
-            while (m_Current.GetData().m_NextPointer.GetData() != null)
+            int currentPos = 0;
+            while (m_Current.GetData().m_NextPointer.GetData() != null && currentPos + 1 != pos)
             {
                 SpatialNode currentNode = m_Current.GetData();
-
-                //// If next is null  insert here
-                //if (currentNode.m_NextPointer.GetData() == null)
-                //{
-                //    yield return 
-                //    newNode.gameObject.SetActive(true);
-                //    yield return (currentNode.m_NextPointer.PointTo(newNode));
-                //    Debug.Log(value + " is inserted.");
-                //    yield break;
-                //}
 
                 // Move to next node
                 yield return m_Current.PointTo(currentNode.m_NextPointer);
@@ -139,13 +159,63 @@ namespace Concepto
                 Debug.Log($"Moved to: {currentNode.Data}");
             }
             SpatialPointer next = m_Current.GetData().m_NextPointer;
+            Vector3 spawnPos = next.GetPointedPosition();
+            spawnPos += m_NewNodeSpawnOffset;
 
-            yield return m_Current.PointTo(m_Current.GetData().m_NextPointer);
+            // Prev Node
+            SpatialNode lastNode = next.GetData();
 
+            // Show New Node
+            newNode.transform.position = spawnPos;
             newNode.gameObject.SetActive(true);
-            yield return next.PointTo(newNode);
+            yield return next.LookAt(newNode);
 
-            m_Current.PointToNoAnim(m_Head.GetData());
+            //if (lastNode != null)
+            //{
+            //    yield return newNode.m_NextPointer.LookAt(lastNode);
+
+            //}
+
+            if (lastNode == null)
+            {
+                //next.PointToNoAnim(newNode);
+
+                bool moved = false;
+                LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
+                    .setOnUpdate((float val) =>
+                    {
+                        Debug.Log("Point Update");
+                        next.LookAtNoAnim(newNode);
+                    })
+                    .setOnComplete(() => { 
+                        moved = true;
+                    }
+                );
+                yield return new WaitUntil(() => moved);
+
+
+                // Move new Node Downwards
+                //newNode.transform.LeanMove(next.GetPointedPosition(), m_AnimDownwardDur);
+
+                //yield return new WaitForSeconds(m_AnimDownwardDur);
+
+                next.PointToNoAnim(newNode);
+                yield break;
+            }
+
+
+
+            //// Set New Node Pointer into the next node
+            //yield return newNode.m_NextPointer.LookAt(lastNode);
+
+            //lastNode.LeanMove(lastNode.transform.position + Vector3.right, m_PointerLookLerpDur);
+
+            //yield return m_Current.PointTo(next);
+
+            //newNode.gameObject.SetActive(true);
+            //yield return next.PointTo(newNode);
+
+            //m_Current.PointToNoAnim(m_Head.GetData());
 
             Debug.Log(value + " is inserted.");
         }

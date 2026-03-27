@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Concepto.SpatialPointer
   m_DataLabel: {fileID: 973194467943502139}
+  m_ArrowObject: {fileID: 7392042630516952682}
   m_Offset: {x: 0, y: 0, z: 0.3}
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 1
@@ -460,6 +461,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3459c7ab3c123184cb8c2ae48ad46bdc, type: 3}
+--- !u!1 &7392042630516952682 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3459c7ab3c123184cb8c2ae48ad46bdc, type: 3}
+  m_PrefabInstance: {fileID: 7661931704710132539}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7916799516285703376 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3459c7ab3c123184cb8c2ae48ad46bdc, type: 3}

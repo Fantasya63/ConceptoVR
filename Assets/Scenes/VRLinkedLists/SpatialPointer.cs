@@ -8,6 +8,7 @@ namespace Concepto
     {
         [Header("References")]
         [SerializeField] private TMP_Text m_DataLabel;
+        [SerializeField] private GameObject m_ArrowObject;
 
         [Header("Options")]
         [SerializeField] private Vector3 m_Offset = Vector3.up * 0.25f;
@@ -93,6 +94,19 @@ namespace Concepto
                 yield return PointTo(otherPointer.m_Data);
             }
 
+        }
+
+        public IEnumerator LookAt(SpatialNode node)
+        {
+            m_ArrowObject.transform.LookAt(node.transform);
+            SetData(node);
+            yield return new WaitForSeconds(m_AnimDuration);
+        }
+
+        public void LookAtNoAnim(SpatialNode node)
+        {
+            m_ArrowObject.transform.LookAt(node.transform);
+            SetData(node);
         }
 
         public IEnumerator PointTo(SpatialNode node)

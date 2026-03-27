@@ -351,6 +351,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Concepto.SpatialLinkedLists
   m_Head: {fileID: 1792351515}
   m_Current: {fileID: 1147187866}
+  m_AudioSource: {fileID: 0}
+  m_ErrorClip: {fileID: 0}
+  m_NewNodeSpawnOffset: {x: 0, y: 0.5, z: 0}
+  m_AnimDownwardDur: 1
+  m_PointerLookLerpDur: 1
   m_SpatialNodePrefab: {fileID: 7053321448670544811, guid: b9bdffe0cc100224e8bf617db8e30422, type: 3}
   commands:
   - insert 10

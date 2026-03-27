@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
 
 namespace Concepto
@@ -22,6 +23,27 @@ namespace Concepto
                 }
             }
         }
+
+        public void Move(Vector3 pos)
+        {
+            transform.position = pos;
+            SpatialNode next = m_NextPointer.GetData();
+            if (next != null)
+            {
+                next.Move(pos);
+            }
+        }
+
+        public void LeanMove(Vector3 pos, float time)
+        {
+            transform.LeanMove(pos, time);
+            SpatialNode next = m_NextPointer.GetData();
+            if (next != null)
+            {
+                next.LeanMove(pos, time);
+            }
+        }
+
 
         [SerializeField] private BoxScriptController m_Controller = null;
         [SerializeField] private string m_Data = "Null";
