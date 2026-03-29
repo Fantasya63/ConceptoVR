@@ -98,8 +98,19 @@ namespace Concepto
 
         public IEnumerator LookAt(SpatialNode node)
         {
+            Quaternion start = m_ArrowObject.transform.rotation;
             m_ArrowObject.transform.LookAt(node.transform);
+            Quaternion end = m_ArrowObject.transform.rotation;
+
+
             SetData(node);
+
+            LeanTween.value(0.0f, 1.0f, m_AnimDuration)
+                .setOnUpdate((float value) => {
+                    m_ArrowObject.transform.rotation = Quaternion.Slerp(start, end, value);
+
+                });
+
             yield return new WaitForSeconds(m_AnimDuration);
         }
 

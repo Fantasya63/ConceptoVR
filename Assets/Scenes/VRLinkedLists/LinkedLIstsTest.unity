@@ -356,14 +356,17 @@ MonoBehaviour:
   m_NewNodeSpawnOffset: {x: 0, y: 0.5, z: 0}
   m_AnimDownwardDur: 1
   m_PointerLookLerpDur: 1
+  m_NodeMoveAnimDur: 0.5
   m_SpatialNodePrefab: {fileID: 7053321448670544811, guid: b9bdffe0cc100224e8bf617db8e30422, type: 3}
   commands:
   - insert 10
   - insert 12
   - insert 13
   - insert 134
-  - insert 135
-  - insert 136
+  - traverse
+  - insertAt 20 2
+  - insertAt 19 0
+  - insertAt 18 -1
   - traverse
 --- !u!20 &703048702 stripped
 Camera:

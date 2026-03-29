@@ -40,7 +40,7 @@ namespace Concepto
             SpatialNode next = m_NextPointer.GetData();
             if (next != null)
             {
-                next.LeanMove(pos, time);
+                next.LeanMove(next.m_NextPointer.GetPointedPosition(), time);
             }
         }
 
