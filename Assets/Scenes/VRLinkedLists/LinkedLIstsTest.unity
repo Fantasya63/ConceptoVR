@@ -360,14 +360,10 @@ MonoBehaviour:
   m_SpatialNodePrefab: {fileID: 7053321448670544811, guid: b9bdffe0cc100224e8bf617db8e30422, type: 3}
   commands:
   - insert 10
-  - insert 12
+  - insertat 11 1
+  - insertat 12 0
   - insert 13
-  - insert 134
-  - traverse
-  - insertAt 20 2
-  - insertAt 19 0
-  - insertAt 18 -1
-  - traverse
+  - insertat 14 1
 --- !u!20 &703048702 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 7917674758326848207, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}

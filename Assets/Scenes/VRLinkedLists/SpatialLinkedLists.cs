@@ -1,6 +1,7 @@
 using NUnit.Framework.Constraints;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Concepto
 {
@@ -38,8 +39,8 @@ namespace Concepto
         void Start()
         {
             Debug.Assert(m_Head != null);
-            Debug.Assert(m_ErrorClip != null);
-            Debug.Assert(m_AudioSource != null);
+            //Debug.Assert(m_ErrorClip != null);
+            //Debug.Assert(m_AudioSource != null);
             
             if (m_CommandCoroutine != null)
                 StopCoroutine(m_CommandCoroutine);
@@ -88,46 +89,13 @@ namespace Concepto
             
         }
 
-        //void Insert(int value)
-        //{
-        //    SpatialNode newNode = Instantiate(m_SpatialNodePrefab);
-        //    newNode.m_Data = value.ToString();
-
-        //    //Node newNode = new Node(value);
-
-        //    if (m_Head.GetData() == null)
-        //    {
-        //        m_Head.PointTo(newNode);
-        //        Debug.Log(value + " is inserted. (Head)");
-        //        return;
-        //    }
-
-        //    m_Current.PointTo(m_Head.GetData());
-
-        //    while (m_Current.GetData() != null)
-        //    {
-        //        SpatialNode currentNode = m_Current.GetData();
-        //        if (currentNode.m_NextPointer.GetData() == null)
-        //        {
-        //            currentNode.m_NextPointer.PointTo(newNode);
-        //            break;
-        //        }
-        //        m_Current.PointTo(m_Current.GetData().m_NextPointer.GetData());
-
-        //        //temp = temp.next;
-        //    }
-
-        //    m_Current.GetData().m_NextPointer.PointTo(newNode);
-
-        //    //m_Current.GetData().m_NextPointer.PointTo(newNode);
-        //    ////temp.next = newNode;
-        //    Debug.Log(value + " is inserted.");
-        //}
-
         public IEnumerator Insert(int value, int pos = -1)
         {
             if (pos < 0)
+            {
                 pos = m_Size;
+                Debug.Log($"Negative Pos detected, retrying to insert at Pos: {pos}");
+            }
 
             Debug.Log($"Inserting: {value} at {pos}.");
             SpatialNode newNode = Instantiate(m_SpatialNodePrefab);
@@ -146,19 +114,26 @@ namespace Concepto
             }
 
             // Check bounds
-            if (pos < 0 && pos >= m_Size)
+            if (pos < 0 || pos > m_Size)
             {
+                Debug.LogWarning($"Aborting Insert of {value} at pos: {pos}. Pos is out of bounds with list size of: {m_Size}");
+
+                if (m_AudioSource == null || m_ErrorClip == null)
+                    yield break;
+                      
                 m_AudioSource.clip = m_ErrorClip; 
                 m_AudioSource.Play();
-
                 yield break;
             }
 
             // Move current pointer to head
             m_Current.PointToNoAnim(m_Head.GetData());
-            
-            int currentPos = 0;
-            while (currentPos < pos && m_Current.GetData().m_NextPointer.GetData() != null)
+
+            SpatialPointer next;
+            next = m_Head;
+            int currentPos = -1;
+
+            while (currentPos + 1 < pos)
             {
                 SpatialNode currentNode = m_Current.GetData();
 
@@ -167,9 +142,14 @@ namespace Concepto
 
                 Debug.Log($"Moved to: {currentNode.Data}");
                 currentPos++;
+                next = currentNode.m_NextPointer;
             }
 
-            SpatialPointer next = m_Current.GetData().m_NextPointer;
+
+            Debug.Log($"Next Pointer Val: {next.GetData()}");
+
+            
+
             Vector3 spawnPos = next.GetPointedPosition();
             spawnPos += m_NewNodeSpawnOffset;
 
@@ -206,8 +186,7 @@ namespace Concepto
                 );
                 yield return new WaitUntil(() => moved);
             }
-
-            if (lastNode == null)
+            else
             {
                 //next.PointToNoAnim(newNode);
 
@@ -229,13 +208,12 @@ namespace Concepto
                 //newNode.transform.LeanMove(next.GetPointedPosition(), m_AnimDownwardDur);
 
                 //yield return new WaitForSeconds(m_AnimDownwardDur);
-                m_Size++;
 
                 next.PointToNoAnim(newNode);
-                yield break;
             }
+            m_Size++;
 
-
+            m_Current.PointToNoAnim(m_Head);
             Debug.Log(value + " is inserted.");
         }
 
