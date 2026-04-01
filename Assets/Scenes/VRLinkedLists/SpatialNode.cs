@@ -30,19 +30,24 @@ namespace Concepto
             SpatialNode next = m_NextPointer.GetData();
             if (next != null)
             {
-                next.Move(pos);
+                next.Move(m_NextPointer.GetPointedPosition());
             }
         }
 
         public void LeanMove(Vector3 pos, float time)
         {
-            transform.LeanMove(pos, time);
+            LeanTween.cancel(transform.gameObject);
             SpatialNode next = m_NextPointer.GetData();
-            if (next != null)
-            {
-                Debug.Log($"Moving node at Pos: {pos}, moving child at: {next.m_NextPointer.GetPointedPosition()}");
-                next.LeanMove(next.m_NextPointer.GetPointedPosition(), time);
-            }
+
+            transform.LeanMove(pos, time)
+                .setOnUpdate((float t) => {
+                    if (next != null)
+                    {
+                        Debug.Log($"Moving node at Pos: {pos}, moving child at: {next.m_NextPointer.GetPointedPosition()}");
+                        //next.LeanMove(next.m_NextPointer.GetPointedPosition(), time);
+                        next.Move(m_NextPointer.GetPointedPosition());
+                    }
+                });
         }
 
 

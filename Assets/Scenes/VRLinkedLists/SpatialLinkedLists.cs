@@ -168,6 +168,7 @@ namespace Concepto
                 Vector3 startPos = lastNode.transform.position;
                 Vector3 endPos = lastNode.m_NextPointer.GetPointedPosition();
 
+                //lastNode.transform
                 lastNode.LeanMove(endPos, m_AnimDownwardDur);
 
                 bool moved = false;
@@ -281,6 +282,8 @@ namespace Concepto
                     nodeToRep.LeanMove(_pos, m_NodeMoveAnimDur);
                     yield return new WaitForSeconds(m_NodeMoveAnimDur);
                 }
+
+                yield return new WaitForSeconds(0.2f);
             }
         }
 
