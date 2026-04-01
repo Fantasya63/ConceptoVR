@@ -335,6 +335,7 @@ Transform:
   m_Children:
   - {fileID: 1792351514}
   - {fileID: 948623103}
+  - {fileID: 2144486791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &595866267
@@ -351,19 +352,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Concepto.SpatialLinkedLists
   m_Head: {fileID: 1792351515}
   m_Current: {fileID: 1147187866}
+  m_TempPtr: {fileID: 2144486792}
   m_AudioSource: {fileID: 0}
   m_ErrorClip: {fileID: 0}
   m_NewNodeSpawnOffset: {x: 0, y: 0.5, z: 0}
+  m_DelNodeMoveOffset: {x: 0, y: 0.25, z: 0}
   m_AnimDownwardDur: 1
   m_PointerLookLerpDur: 1
   m_NodeMoveAnimDur: 0.5
   m_SpatialNodePrefab: {fileID: 7053321448670544811, guid: b9bdffe0cc100224e8bf617db8e30422, type: 3}
-  commands:
-  - insert 10
-  - insertat 11 1
-  - insertat 12 0
-  - insert 13
-  - insertat 14 1
+  m_Commands:
+  - insert 1
+  - insert 3
+  - insert 4
+  - insertAt 2 1
+  - delete 3
+  - delete 1
+  - insertAt 0 0
+  - delete 0
 --- !u!20 &703048702 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 7917674758326848207, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
@@ -1066,6 +1072,95 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2144486790
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 595866266}
+    m_Modifications:
+    - target: {fileID: 1722500742700460, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 36c1d72681d7f8f44ad98a319db3f7be, type: 2}
+    - target: {fileID: 2272834858990449548, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_Name
+      value: Temp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4568614154547008132, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_DataLabel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6690367611949941228, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 703048702}
+    - target: {fileID: 8075611944938070824, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_text
+      value: Temp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.391
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.197
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+--- !u!4 &2144486791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+  m_PrefabInstance: {fileID: 2144486790}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2144486792 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4568614154547008132, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
+  m_PrefabInstance: {fileID: 2144486790}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8565ddf83352f1468ad1565b19ff903, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Concepto.SpatialPointer
 --- !u!1001 &8174061351070159445
 PrefabInstance:
   m_ObjectHideFlags: 0

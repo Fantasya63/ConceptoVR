@@ -1,7 +1,5 @@
-using NUnit.Framework.Constraints;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Concepto
 {
@@ -11,11 +9,13 @@ namespace Concepto
         [Header("References")]
         [SerializeField] SpatialPointer m_Head;
         [SerializeField] SpatialPointer m_Current;
+        [SerializeField] SpatialPointer m_TempPtr;
         [SerializeField] AudioSource m_AudioSource;
         [SerializeField] AudioClip m_ErrorClip;
 
         [Header("Options")]
-        [SerializeField] Vector3 m_NewNodeSpawnOffset = Vector3.up * 0.5f;
+        [SerializeField] Vector3 m_NewNodeSpawnOffset = Vector3.up * 0.25f;
+        [SerializeField] Vector3 m_DelNodeMoveOffset = Vector3.up * 0.25f;
         [SerializeField] float m_AnimDownwardDur = 1.0f;
         [SerializeField] float m_PointerLookLerpDur = 0.5f;
         [SerializeField] float m_NodeMoveAnimDur = 0.5f;
@@ -24,9 +24,8 @@ namespace Concepto
         [SerializeField] SpatialNode m_SpatialNodePrefab;
 
         // Type command in Inspector 
-        public string[] commands;
+        [SerializeField] string[] m_Commands;
 
-        int m_Size = 0;
         public int Size { 
             get
             {
@@ -35,12 +34,12 @@ namespace Concepto
         }
 
         Coroutine m_CommandCoroutine;
+        int m_Size = 0;
+
 
         void Start()
         {
             Debug.Assert(m_Head != null);
-            //Debug.Assert(m_ErrorClip != null);
-            //Debug.Assert(m_AudioSource != null);
             
             if (m_CommandCoroutine != null)
                 StopCoroutine(m_CommandCoroutine);
@@ -48,10 +47,10 @@ namespace Concepto
             m_CommandCoroutine = StartCoroutine(RunCommand());
         }
 
-        // Button
+
         public IEnumerator RunCommand()
         {
-            foreach (string _command in commands)
+            foreach (string _command in m_Commands)
             {
                 Debug.Log("Command: " + _command);
 
@@ -70,11 +69,11 @@ namespace Concepto
                     int pos = int.Parse(parts[2]);
                     yield return Insert(value, pos);
                 }
-                //else if (command == "delete")
-                //{
-                //    int value = int.Parse(parts[1]);
-                //    Delete(value);
-                //}
+                else if (command == "delete")
+                {
+                    int pos = int.Parse(parts[1]);
+                    yield return Delete(pos);
+                }
                 else if (command == "traverse")
                 {
                     yield return Traverse();
@@ -188,7 +187,6 @@ namespace Concepto
             }
             else
             {
-                //next.PointToNoAnim(newNode);
 
                 bool moved = false;
                 LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
@@ -204,104 +202,87 @@ namespace Concepto
                 yield return new WaitUntil(() => moved);
 
 
-                // Move new Node Downwards
-                //newNode.transform.LeanMove(next.GetPointedPosition(), m_AnimDownwardDur);
-
-                //yield return new WaitForSeconds(m_AnimDownwardDur);
-
                 next.PointToNoAnim(newNode);
             }
-            m_Size++;
 
+            m_Size++;
             m_Current.PointToNoAnim(m_Head);
+
             Debug.Log(value + " is inserted.");
         }
 
-        //void Delete(int value)
-        //{
-        //    if (head == null)
-        //    {
-        //        Debug.Log("List is empty.");
-        //        return;
-        //    }
+        IEnumerator Delete(int pos)
+        {
+            m_TempPtr.gameObject.SetActive(false);
 
-        //    if (head.data == value)
-        //    {
-        //        head = head.next;
+            if (m_Head.GetData() == null)
+            {
+                Debug.Log("List is empty.");
+                yield break;
+            }
 
-        //        if (head == null)
-        //            Debug.Log(value + " is deleted. List is now empty.");
-        //        else
-        //            Debug.Log(value + " is deleted.");
+            // Bounds Check
+            if (pos < 0 || pos >= m_Size)
+            {
+                Debug.Log($"Aborting Deletion at pos: {pos}. Pos it out of bounds. Size: {m_Size}");
+                yield break;
+            }
+            
 
-        //        return;
-        //    }
+            int currentPos = 0;
+            m_Current.PointToNoAnim(m_Head);
 
-        //    Node temp = head;
+            while (currentPos + 1 < pos)
+            {
+                yield return m_Current.PointTo(m_Current.GetData().m_NextPointer);
+                currentPos++;
+            }
 
-        //    while (temp.next != null && temp.next.data != value)
-        //    {
-        //        temp = temp.next;
-        //    }
+            SpatialNode currentNode = m_Current.GetData();
+            SpatialNode nodeToDelete = currentNode.m_NextPointer.GetData();
+            
+            Debug.Assert(currentNode != null);
+            Debug.Assert(nodeToDelete != null);
 
-        //    if (temp.next == null)
-        //    {
-        //        Debug.Log(value + " not found.");
-        //    }
-        //    else
-        //    {
-        //        temp.next = temp.next.next;
+            SpatialNode nodeToRep = nodeToDelete.m_NextPointer.GetData(); // Can be null if deleting the last node in the list
 
-        //        if (head == null)
-        //            Debug.Log(value + " is deleted. List is now empty.");
-        //        else
-        //            Debug.Log(value + " is deleted.");
-        //    }
-        //}
+            {
+                m_TempPtr.gameObject.SetActive(true);
+                m_TempPtr.PointToNoAnim(m_Current.GetData().m_NextPointer);
+
+                // Animate node upwards
+                bool moved = false;
+                nodeToDelete.gameObject.LeanMove(nodeToDelete.transform.position + m_DelNodeMoveOffset, m_NodeMoveAnimDur)
+                    .setOnUpdate((float time) => {
+                        currentNode.m_NextPointer.LookAtNoAnim(nodeToDelete);
+                        m_TempPtr.PointToNoAnim(nodeToDelete);
+
+                        if (nodeToRep != null)
+                            nodeToDelete.m_NextPointer.LookAtNoAnim(nodeToRep);
+                    })
+                    .setOnComplete(() => moved = true);
+
+                yield return new WaitUntil(() => moved);
+            }
+
+            {
+                // Set current node's next to the nodeToRep
+                yield return currentNode.m_NextPointer.LookAt(nodeToRep);
+
+                // Delete Node to delete
+                Destroy(nodeToDelete.gameObject);
+                m_TempPtr.gameObject.SetActive(false);
+                m_Size--;
 
 
-        //IEnumerator Delete(string value)
-        //{
-        //    if (m_Head.GetData() == null)
-        //    {
-        //        Debug.Log("List is empty.");
-        //        yield break;
-        //    }
-
-        //    // Start
-        //    if (m_Head.GetData().Data == value)
-        //    {
-        //        head = head.next;
-
-        //        if (head == null)
-        //            Debug.Log(value + " is deleted. List is now empty.");
-        //        else
-        //            Debug.Log(value + " is deleted.");
-
-        //        return;
-        //    }
-
-        //    Node temp = head;
-
-        //    while (temp.next != null && temp.next.data != value)
-        //    {
-        //        temp = temp.next;
-        //    }
-
-        //    if (temp.next == null)
-        //    {
-        //        Debug.Log(value + " not found.");
-        //    }
-        //    else
-        //    {
-        //        temp.next = temp.next.next;
-
-        //        if (head == null)
-        //            Debug.Log(value + " is deleted. List is now empty.");
-        //        else
-        //            Debug.Log(value + " is deleted.");
-        //    }
-        //}
+                if (nodeToRep != null)
+                {
+                    Vector3 _pos = currentNode.m_NextPointer.GetPointedPosition();
+                    nodeToRep.LeanMove(_pos, m_NodeMoveAnimDur);
+                    yield return new WaitForSeconds(m_NodeMoveAnimDur);
+                }
+            }
+        }
 
 
         IEnumerator Traverse()
