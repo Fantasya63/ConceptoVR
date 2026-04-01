@@ -5,9 +5,28 @@ using UnityEngine;
 public class ScriptVisualizer : MonoBehaviour
 {
     [TextArea(5, 20)]
-    public string code = "print(\"Hello World\");";
+    public string Code
+    {
+        set
+        {
+            code = value;
+            UpdateText();
+        }
+    }
+
+    public void SetCodeWithNotif(string _code)
+    {
+        Code = _code;
+        m_VisualizerAudioSource.clip = m_NotifClip;
+        m_VisualizerAudioSource.Play();
+    }
+
+    [SerializeField]
+    private string code = "print(\"Hello World\");";
 
     [SerializeField] private TMP_Text codeUI;
+    [SerializeField] private AudioSource m_VisualizerAudioSource;
+    [SerializeField] private AudioClip m_NotifClip;
 
     private void OnEnable()
     {

@@ -109,3 +109,5 @@ InitTestScene*.unity*
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+*.renderTexture

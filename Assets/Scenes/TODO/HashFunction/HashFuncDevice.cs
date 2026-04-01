@@ -1,6 +1,5 @@
-using Concepto.HashMap;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -33,6 +32,34 @@ namespace Concepto.HashMap
         [SerializeField]
         private Printer resultPrinter;
 
+        public UnityEvent<Paper> OnPaperPrinted;
+
+        [Header("Script Visualization")]
+        [SerializeField]
+        private ScriptVisualizer m_Visualizer;
+        
+        [SerializeField]
+        [TextArea(5, 20)]
+        private string m_ScriptTemplate;
+
+        public void Awake()
+        {
+            if (m_Visualizer == null)
+                Debug.LogWarning($"{name} has no Script Visualizer attached to it.");
+                resultPrinter.OnPaperPrinted.AddListener(
+                (Paper paper) => {
+                    Debug.Log("HashFuncDev: PaperPrinted");
+                    OnPaperPrinted.Invoke(paper); 
+                    
+                });
+        }
+
+        public void PrintPaperScripted(Paper paper)
+        {
+            XRBaseInteractable interactable = paper.GetComponent<XRBaseInteractable>();
+
+            Print(interactable);
+        }
 
         public void OnInputEntered()
         {
@@ -42,19 +69,31 @@ namespace Concepto.HashMap
             if (!inputSocketInteractor.hasSelection)
                 return;
 
+
             // Get interactable object
             XRBaseInteractable interactable =
                 (XRBaseInteractable)inputSocketInteractor.firstInteractableSelected;
 
+            // Remove paper from  input socket
+            inputSocketInteractor.interactionManager.SelectExit((IXRSelectInteractor)inputSocketInteractor, interactable);
+
+            Print(interactable);
+        }
+
+        string GetScriptEquivalent(string input, int hash)
+        {
+            return string.Format(m_ScriptTemplate, input, hash);
+        }
+
+        private void Print(XRBaseInteractable interactable)
+        {
             if (interactable == null)
                 return;
 
             GameObject paperObject = interactable.gameObject;
+
+
             
-
-            // Remove paper from  input socket
-            inputSocketInteractor.interactionManager.SelectExit((IXRSelectInteractor)inputSocketInteractor, interactable);
-
             string paperData;
             {
                 Paper insertedPaper = paperObject.GetComponent<Paper>();
@@ -79,7 +118,7 @@ namespace Concepto.HashMap
 
 
             int hashkey = HashMap.HashFunc.Hash(paperData, HashMap.HashFunc.NumBoxes);
-            
+
 
             paperObject.transform.position = inputPaperStartPos.position;
             paperObject.transform.rotation = inputPaperStartPos.rotation;
@@ -92,7 +131,11 @@ namespace Concepto.HashMap
                     Destroy(paperObject);
                     resultPrinter.PrintHashkey(hashkey.ToString());
                 });
+
+            if (m_Visualizer != null)
+                m_Visualizer.SetCodeWithNotif(GetScriptEquivalent(paperData, hashkey));
         }
     }
+    
 
 }

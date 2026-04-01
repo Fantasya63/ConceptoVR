@@ -360,6 +360,15 @@ MonoBehaviour:
   outputPaperEndPos: {fileID: 5133924051931750780}
   inputSlideDuration: 2
   resultPrinter: {fileID: 2301506461449452090}
+  OnPaperPrinted:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Visualizer: {fileID: 0}
+  m_ScriptTemplate: "// The hash function used to turn the key to an index.\n// Press
+    the red button on the Hash Function device to see the full code\n\nint Hash (string
+    key, int arraySize)\n{{\n\t...\n}}\n\nvar array = [\n\t...\n]\n\nstring input
+    = \"{0}\";\nint result = Hash(input, array.Length);\n\n// The resulting value
+    of the result variable is {1}\n"
 --- !u!82 &3692958898893030248
 AudioSource:
   m_ObjectHideFlags: 0
@@ -417,7 +426,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1555,6 +1564,10 @@ PrefabInstance:
     - target: {fileID: 8810849925855543752, guid: 17caeffc6b57d82499b12019b0268914, type: 3}
       propertyPath: m_Name
       value: OutputPrinter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8810849925855543752, guid: 17caeffc6b57d82499b12019b0268914, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

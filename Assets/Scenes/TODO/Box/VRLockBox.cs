@@ -17,7 +17,7 @@ public class SimpleVRBoxLock : MonoBehaviour
     {
         bool isOpen = boxAnimator.GetBool(openParameter);
 
-        Debug.Log("isOpen: " + isOpen + " | lastState: " + lastState);
+        // Debug.Log("isOpen: " + isOpen + " | lastState: " + lastState);
 
         if (isOpen != lastState)
         {
@@ -26,8 +26,8 @@ public class SimpleVRBoxLock : MonoBehaviour
             else
                 UnlockObjects();
 
-            lastState = isOpen;
         }
+
     }
 
     void LockObjects()

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Printer : MonoBehaviour
@@ -20,14 +21,59 @@ public class Printer : MonoBehaviour
     [Header("Print Settings")]
     [SerializeField] private float printMoveDuration = 2f;
 
+    [Header("Events")]
+    public UnityEvent<Paper> OnPaperPrinted;
+
+
     private bool IsPrinting = false;
     private void Awake()
     {
         renderCamera.enabled = false;
-       
-
-        //scaler.referenceResolution = new Vector2(renderTexture.width, renderTexture.height);
     }
+
+    public IEnumerator PrintNoAnimEnumarator(string text, System.Action<Paper> onFinished, Paper.PAPER_TYPE type)
+    {
+        yield return PrintRoutineNoAnim(text, type, onFinished);
+    }
+
+    public bool PrintNoAnim(string text, System.Action<Paper> onFinished, Paper.PAPER_TYPE type)
+    {
+        if (!IsPrinting)
+        {
+            StartCoroutine(PrintRoutineNoAnim(text, type, onFinished));
+            IsPrinting = true;
+            return true;
+        }
+        return false;
+    }
+    IEnumerator PrintRoutineNoAnim(string text, Paper.PAPER_TYPE type, System.Action<Paper> onFinished)
+    {
+        printerStamp.text = text;
+        printerStamp.ForceMeshUpdate();
+
+        yield return new WaitForEndOfFrame();
+        renderCamera.Render();
+
+        Texture2D snapshot = new Texture2D(textureWidth, textureHeight, TextureFormat.RGBA32, false);
+        RenderTexture.active = renderCamera.targetTexture;
+        snapshot.ReadPixels(new Rect(0, 0, textureWidth, textureHeight), 0, 0);
+        snapshot.Apply();
+        RenderTexture.active = null;
+
+        Paper paper = Instantiate(paperPrefab, paperStartPos.position, paperStartPos.rotation);
+        paper.data = text;
+        paper.PaperType = type;
+
+        MeshRenderer renderer = paper.GetComponent<MeshRenderer>();
+        Material newMat = new Material(renderer.material);
+        renderer.material = newMat;
+        renderer.material.SetTexture("_BaseMap", snapshot);
+
+        IsPrinting = false;
+
+        onFinished?.Invoke(paper);
+    }
+
 
     public void Print(string text)
     {
@@ -128,6 +174,8 @@ public class Printer : MonoBehaviour
         if (grab != null)
             grab.enabled = true;
 
+        Debug.Log("Printer: Paper Printed");
+        OnPaperPrinted.Invoke(paper);
         IsPrinting = false;
     }
 }

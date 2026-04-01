@@ -3,7 +3,7 @@ using UnityEngine;
 public class TestAnim : MonoBehaviour
 {
     public Animator animator;
-    public Animation animation;
+    public Animation animationClip;
 
     public void TestAnimator()
     {

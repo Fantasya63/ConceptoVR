@@ -3,7 +3,47 @@ guid: 8a92d4a6570c345449280f0983aae66a
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book cover
+    second: {fileID: 2100000, guid: b90e1983509ca304ba8b2ae4365e6ccb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Drawer
+    second: {fileID: 2100000, guid: 4ff3b36ff6794c94cbb86cf09d825398, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass vase
+    second: {fileID: 2100000, guid: f01816aa9be89544299ff8063b80fa71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pages
+    second: {fileID: 2100000, guid: 038efff703f1a5f489d2d1498c49c4b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV Plastic
+    second: {fileID: 2100000, guid: be86ab54dbf0d1c488ccf8db1875f02c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV Sreen
+    second: {fileID: 2100000, guid: b642ba649b6ffeb41adf0f1cb4a1c218, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV Table_
+    second: {fileID: 2100000, guid: 2ce39d5fd768eec41a8cba773673c921, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vase01
+    second: {fileID: 2100000, guid: 41923a534caf72548b5d44df9d2d0f5b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
