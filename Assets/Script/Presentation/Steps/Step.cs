@@ -87,5 +87,14 @@ namespace Canvas
             
             yield return new WaitWhile(() => source.isPlaying);
         }
+
+        protected IEnumerator GrowAndWait(GameObject go, float duration)
+        {
+            Vector3 startScale = go.transform.localScale;
+            go.transform.localScale = Vector3.zero;
+            go.LeanScale(startScale, duration);
+
+            yield return new WaitForSeconds(duration);
+        }
     }
 }
