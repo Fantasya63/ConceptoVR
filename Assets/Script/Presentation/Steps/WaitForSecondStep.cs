@@ -11,6 +11,8 @@ namespace Canvas
         private Coroutine waitRoutine;
         public override void Activate()
         {
+            Debug.Log($"Start to wait for {seconds} seconds");
+            Debug.Log($"Timescale is: {Time.timeScale}");
             waitRoutine = StartCoroutine(WaitRoutine());
         }
         public override void Deactivate()
@@ -30,8 +32,8 @@ namespace Canvas
         private IEnumerator WaitRoutine()
         {
             yield return new WaitForSeconds(seconds);
-            Complete();
             Debug.Log($"Waited for {seconds} seconds!");
+            Complete();
         }
     }
 }
