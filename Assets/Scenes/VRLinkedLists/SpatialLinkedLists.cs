@@ -137,11 +137,11 @@ namespace Concepto
                 SpatialNode currentNode = m_Current.GetData();
 
                 // Move to next node
-                yield return m_Current.PointTo(currentNode.m_NextPointer);
+                yield return m_Current.PointTo(currentNode.NextPointer);
 
                 Debug.Log($"Moved to: {currentNode.Data}");
                 currentPos++;
-                next = currentNode.m_NextPointer;
+                next = currentNode.NextPointer;
             }
 
 
@@ -162,11 +162,11 @@ namespace Concepto
 
             if (lastNode != null)
             {
-                yield return newNode.m_NextPointer.LookAt(lastNode);
+                yield return newNode.NextPointer.LookAt(lastNode);
 
                 // Move old node
                 Vector3 startPos = lastNode.transform.position;
-                Vector3 endPos = lastNode.m_NextPointer.GetPointedPosition();
+                Vector3 endPos = lastNode.NextPointer.GetPointedPosition();
 
                 //lastNode.transform
                 lastNode.LeanMove(endPos, m_AnimDownwardDur);
@@ -177,7 +177,7 @@ namespace Concepto
                     {
                         Debug.Log("Point Update");
                         next.LookAtNoAnim(newNode);
-                        newNode.m_NextPointer.LookAtNoAnim(lastNode);
+                        newNode.NextPointer.LookAtNoAnim(lastNode);
 
                     })
                     .setOnComplete(() => {
@@ -235,31 +235,31 @@ namespace Concepto
 
             while (currentPos + 1 < pos)
             {
-                yield return m_Current.PointTo(m_Current.GetData().m_NextPointer);
+                yield return m_Current.PointTo(m_Current.GetData().NextPointer);
                 currentPos++;
             }
 
             SpatialNode currentNode = m_Current.GetData();
-            SpatialNode nodeToDelete = currentNode.m_NextPointer.GetData();
+            SpatialNode nodeToDelete = currentNode.NextPointer.GetData();
             
             Debug.Assert(currentNode != null);
             Debug.Assert(nodeToDelete != null);
 
-            SpatialNode nodeToRep = nodeToDelete.m_NextPointer.GetData(); // Can be null if deleting the last node in the list
+            SpatialNode nodeToRep = nodeToDelete.NextPointer.GetData(); // Can be null if deleting the last node in the list
 
             {
                 m_TempPtr.gameObject.SetActive(true);
-                m_TempPtr.PointToNoAnim(m_Current.GetData().m_NextPointer);
+                m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
 
                 // Animate node upwards
                 bool moved = false;
                 nodeToDelete.gameObject.LeanMove(nodeToDelete.transform.position + m_DelNodeMoveOffset, m_NodeMoveAnimDur)
                     .setOnUpdate((float time) => {
-                        currentNode.m_NextPointer.LookAtNoAnim(nodeToDelete);
+                        currentNode.NextPointer.LookAtNoAnim(nodeToDelete);
                         m_TempPtr.PointToNoAnim(nodeToDelete);
 
                         if (nodeToRep != null)
-                            nodeToDelete.m_NextPointer.LookAtNoAnim(nodeToRep);
+                            nodeToDelete.NextPointer.LookAtNoAnim(nodeToRep);
                     })
                     .setOnComplete(() => moved = true);
 
@@ -268,7 +268,7 @@ namespace Concepto
 
             {
                 // Set current node's next to the nodeToRep
-                yield return currentNode.m_NextPointer.LookAt(nodeToRep);
+                yield return currentNode.NextPointer.LookAt(nodeToRep);
 
                 // Delete Node to delete
                 Destroy(nodeToDelete.gameObject);
@@ -278,7 +278,7 @@ namespace Concepto
 
                 if (nodeToRep != null)
                 {
-                    Vector3 _pos = currentNode.m_NextPointer.GetPointedPosition();
+                    Vector3 _pos = currentNode.NextPointer.GetPointedPosition();
                     nodeToRep.LeanMove(_pos, m_NodeMoveAnimDur);
                     yield return new WaitForSeconds(m_NodeMoveAnimDur);
                 }
@@ -306,7 +306,7 @@ namespace Concepto
             {
                 output += m_Current.GetData().Data + " -> ";
                 //temp = temp.next;
-                yield return m_Current.PointTo(m_Current.GetData().m_NextPointer);
+                yield return m_Current.PointTo(m_Current.GetData().NextPointer);
             }
 
             output += "NULL";

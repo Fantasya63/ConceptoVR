@@ -1,6 +1,5 @@
 using Canvas;
 using Concepto;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -12,7 +11,8 @@ public class LinkedListsIntroStep : Step
     [SerializeField] Vector3 m_NodeOffset = Vector3.back;
     [SerializeField] int m_NumOfInstances = 3;
     [SerializeField] float m_NodeShiftDur = 1.0f;
-    [SerializeField] float[] m_ShiftOffsets; 
+    [SerializeField] float[] m_ShiftOffsets;
+    [SerializeField] Transform m_PointerShowPos;
 
     [Header("References")]
     [SerializeField] AudioSource m_VoiceSource;
@@ -22,6 +22,8 @@ public class LinkedListsIntroStep : Step
     [SerializeField] AudioClip m_LinkedListsIsA;
     [SerializeField] AudioClip m_AndEachNodePoints;
     [SerializeField] AudioClip m_UnlikeArrays;
+    [SerializeField] AudioClip m_HoweverForTheSake;
+    [SerializeField] AudioClip m_ToConnectTheseNodes;
 
     [Header("Prefabs")]
     [SerializeField] SpatialNode m_SpatialNodePrefab;
@@ -36,10 +38,13 @@ public class LinkedListsIntroStep : Step
         Debug.Assert(m_LinkedListsIsA != null);
         Debug.Assert(m_AndEachNodePoints != null);
         Debug.Assert(m_UnlikeArrays != null);
+        Debug.Assert(m_HoweverForTheSake != null);
+        Debug.Assert(m_ToConnectTheseNodes != null);
 
         Debug.Assert(m_SpatialNodePrefab != null);
         Debug.Assert(m_NodeDefStartTransform != null);
         Debug.Assert(m_NumOfInstances > 1);
+        Debug.Assert(m_PointerShowPos != null);
     }
 
 
@@ -80,7 +85,7 @@ public class LinkedListsIntroStep : Step
                 _node.Data = i.ToString();
                 
                 nodes[i] = _node;
-                nodes[i -  1].m_NextPointer.LookAtNoAnim(_node);
+                nodes[i -  1].NextPointer.LookAtNoAnim(_node);
 
 
                 yield return GrowAndWait(_node.gameObject, m_NodeGrowDur);
@@ -109,14 +114,16 @@ public class LinkedListsIntroStep : Step
                         if (nextIndex< m_NumOfInstances)
                         {
                             SpatialNode nextNode = nodes[nextIndex];
-                            _node.m_NextPointer.LookAtNoAnim(nextNode);
+                            _node.NextPointer.LookAtNoAnim(nextNode);
                         }
                     });
 
             }
 
             yield return new WaitForSeconds(m_NodeShiftDur);
-            yield return new WaitUntil(() => m_VoiceSource.isPlaying);
+            yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
+
+            PlayVoiceNoWait(m_VoiceSource, m_HoweverForTheSake);
 
             for (int i = 0; i < m_NumOfInstances; ++i) 
             {
@@ -128,9 +135,22 @@ public class LinkedListsIntroStep : Step
                         if (nextIndex < m_NumOfInstances)
                         {
                             SpatialNode nextNode = nodes[nextIndex];
-                            _node.m_NextPointer.LookAtNoAnim(nextNode);
+                            _node.NextPointer.LookAtNoAnim(nextNode);
                         }
                     });
+
+            }
+
+            yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
+
+            PlayVoiceNoWait(m_VoiceSource, m_ToConnectTheseNodes);
+
+            {
+                SpatialPointer examplePointer = Instantiate(nodes[0].NextPointer);
+                
+                
+                Vector3 startPos = examplePointer.transform.position;
+                //examplePointer.transform.LeanMove()
 
             }
         }
