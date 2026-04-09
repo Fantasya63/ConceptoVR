@@ -18,6 +18,15 @@ namespace Canvas
 
         public abstract void OnSlideExit();
 
+        // Called when the SlideManager was told to go the next step.
+        // Returns: True if want to allow to go to the next step,
+
+        protected bool AllowNext = true;
+        
+        public virtual bool OnNextStep()
+        {
+            return AllowNext;
+        }
 
         // public abstract void Replay();
        
@@ -95,6 +104,11 @@ namespace Canvas
             go.LeanScale(startScale, duration);
 
             yield return new WaitForSeconds(duration);
+        }
+
+        protected IEnumerator WaitForAudioToFinish(AudioSource source)
+        {
+            yield return new WaitUntil(() => !source.isPlaying);
         }
     }
 }

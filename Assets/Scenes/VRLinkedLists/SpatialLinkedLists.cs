@@ -33,12 +33,23 @@ namespace Concepto
             }
         }
 
+        public SpatialPointer CurrentPointer
+        {
+            get
+            {
+                return m_Current;
+            }
+        }
+
         Coroutine m_CommandCoroutine;
         int m_Size = 0;
 
 
         void Start()
         {
+            m_TempPtr.gameObject.SetActive(false);
+
+            m_Size = 0;
             Debug.Assert(m_Head != null);
             
             if (m_CommandCoroutine != null)
@@ -85,6 +96,8 @@ namespace Concepto
 
                 yield return new WaitForSeconds(0.5f);
             }
+
+            yield break;
             
         }
 
@@ -314,5 +327,32 @@ namespace Concepto
             m_Current.PointToNoAnim(m_Head);
             Debug.Log(output);
         }
+
+        private void OnDestroy()
+        {
+            CleanupAllNodes();
+        }
+
+        void CleanupAllNodes()
+        {
+            if (m_Head == null) return;
+
+            SpatialNode current = m_Head.GetData();
+
+            while (current != null)
+            {
+                SpatialNode next = current.NextPointer != null
+                    ? current.NextPointer.GetData()
+                    : null;
+
+                Destroy(current.gameObject);
+                current = next;
+            }
+
+
+            m_Size = 0;
+        }
     }
+
+
 }

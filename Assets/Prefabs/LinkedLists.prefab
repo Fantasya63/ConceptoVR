@@ -126,34 +126,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2272834858990449548, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4578501489112377461}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
---- !u!1 &805599298565865799 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2272834858990449548, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
-  m_PrefabInstance: {fileID: 1487501828140741323}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4578501489112377461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805599298565865799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64625ab55556dba438b63b9a6e0ffe8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HideOnStart
 --- !u!114 &3153172119467728975 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4568614154547008132, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
   m_PrefabInstance: {fileID: 1487501828140741323}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805599298565865799}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8565ddf83352f1468ad1565b19ff903, type: 3}
@@ -279,7 +259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.70940006
       objectReference: {fileID: 0}
     - target: {fileID: 8742587295577261702, guid: bb08795e10b59f34a999b0ccb746d838, type: 3}
       propertyPath: m_LocalRotation.w

@@ -64,10 +64,17 @@ namespace Canvas
             }
         }
 
-
+        // returns true if want to go to the next slide
         public bool Next()
         {
             AssertIsValidState();
+            bool allowNext = steps[currentStep].OnNextStep();
+            if (!allowNext)
+            {
+                return false;
+            }
+
+
             if (currentStep == steps.Length - 1)
                 return true;
 

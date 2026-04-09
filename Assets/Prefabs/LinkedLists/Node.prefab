@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e3d74f6592a014aae874de260e67ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Concepto.SpatialNode
-  m_NextPointer: {fileID: 8997458441757035948}
+  NextPointer: {fileID: 8997458441757035948}
   m_Controller: {fileID: 8314448103847214947}
   m_Data: Null
 --- !u!1 &4738104411894918594

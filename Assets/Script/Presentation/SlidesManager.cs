@@ -94,6 +94,7 @@ namespace Canvas
         public void NextStep()
         {
             if (!IsValidState()) return;
+
             bool endReached = slides[currentSlideIndex].Next();
             if (endReached)
                 NextSlide();

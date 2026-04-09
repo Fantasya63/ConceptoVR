@@ -14,7 +14,7 @@ public class LinkedListsIntroStep : Step
     [SerializeField] float m_NodeShiftDur = 1.0f;
     [SerializeField] float[] m_ShiftOffsets;
     [SerializeField] float m_ExamplePointerUpSpeed = 0.5f;
-    [SerializeField] Transform m_HeadPointerDisplayTrans;
+    [SerializeField] float m_PointerDisplayYOffset = 0.25f;
     
 
     [Header("References")]
@@ -43,7 +43,7 @@ public class LinkedListsIntroStep : Step
         {
             for (int i = 0; i < m_TempNodes.Length; i++)
             {
-                Destroy(m_TempNodes[i]);
+                Destroy(m_TempNodes[i].gameObject);
             }
         }
         m_TempNodes = null;
@@ -62,7 +62,8 @@ public class LinkedListsIntroStep : Step
         Debug.Assert(m_SpatialNodePrefab != null);
         Debug.Assert(m_NodeDefStartTransform != null);
         Debug.Assert(m_NumOfInstances > 1);
-        Debug.Assert(m_HeadPointerDisplayTrans != null);
+
+        Debug.Assert(m_NumOfInstances == m_ShiftOffsets.Length);
     }
 
 
@@ -125,7 +126,7 @@ public class LinkedListsIntroStep : Step
             {
                 // Save local ref for the tweening
                 int index = i;
-                float offset = Random.value;
+                float offset = m_ShiftOffsets[i];
                 SpatialNode _node = m_TempNodes[i];
                 initPositions[i] = _node.transform.position;
                 Vector3 pos = _node.transform.position + Vector3.right * offset;
@@ -169,10 +170,11 @@ public class LinkedListsIntroStep : Step
             {
                 m_TempExamplePointer = Instantiate(m_TempNodes[0].NextPointer);
                 
-                
-                Vector3 startPos = m_TempExamplePointer.transform.position;
-                Vector3 endPos = startPos + Vector3.up;
 
+                Vector3 startPos = m_TempNodes[0].NextPointer.transform.position;
+                Vector3 endPos = startPos + Vector3.up * m_PointerDisplayYOffset;
+
+                m_TempExamplePointer.transform.position = startPos;
                 m_TempExamplePointer.transform.LeanMove(endPos, m_ExamplePointerUpSpeed);
                 //examplePointer.transform.LeanMove()
 
@@ -187,7 +189,7 @@ public class LinkedListsIntroStep : Step
     void CleanUP()
     {
         DestroyNodes();
-        Destroy(m_TempExamplePointer);
+        Destroy(m_TempExamplePointer.gameObject);
     }
 
     public override void Deactivate()
