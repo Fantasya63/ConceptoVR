@@ -79,6 +79,8 @@ namespace Concepto
 
         public IEnumerator PointTo(SpatialPointer otherPointer)
         {
+            Debug.Assert(otherPointer != null);
+
             if (m_IsStationary)
                 yield break;
 
