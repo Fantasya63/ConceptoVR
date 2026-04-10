@@ -4079,6 +4079,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1263572797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &711588445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711588447}
+  - component: {fileID: 711588446}
+  m_Layer: 0
+  m_Name: Deletion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &711588446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711588445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41b2cb502019c7445a1aa68f0f0ec43c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Canvas.LinkedListsDeleteStep
+  OnCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+  slide: {fileID: 0}
+  m_VoiceSource: {fileID: 888298634}
+  m_LinkedListsPrefab: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
+  m_LinkedListsStartTransform: {fileID: 525373897}
+  m_NowSupposeWeWantToDel: {fileID: 8300000, guid: 2b8963bf0705e9646b8cdde0dc8d29ec, type: 3}
+  m_NextWeCreateATemp: {fileID: 8300000, guid: a086e5159dde10c4bb10da8797bda88b, type: 3}
+  m_AfterThatWeSetTheCur: {fileID: 8300000, guid: 03c2a2aad9d1763438064f0f3a78df59, type: 3}
+  m_ThenWeCanSafelyDel: {fileID: 8300000, guid: cb0af4af805181843ab2d8cbe59d6cef, type: 3}
+  m_StartingValues: 17000000360000005901000024000000
+--- !u!4 &711588447
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711588445}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1301246762}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &730928876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7447,8 +7503,10 @@ MonoBehaviour:
   - {fileID: 372338987}
   - {fileID: 1323895375}
   - {fileID: 950370189}
+  - {fileID: 711588446}
+  - {fileID: 1980512378}
   manager: {fileID: 0}
-  m_DebugStartStepIndex: 0
+  m_DebugStartStepIndex: 9
   currentStep: -1
 --- !u!4 &1301246762
 Transform:
@@ -7471,6 +7529,8 @@ Transform:
   - {fileID: 372338986}
   - {fileID: 1323895374}
   - {fileID: 950370190}
+  - {fileID: 711588447}
+  - {fileID: 1980512379}
   m_Father: {fileID: 1293612252}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1316378631
@@ -11614,6 +11674,61 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 554979044}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1980512377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1980512379}
+  - component: {fileID: 1980512378}
+  m_Layer: 0
+  m_Name: Traverse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1980512378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980512377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df1ccdcdc35609b45a1fab5b58387637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Canvas.LinkedListsTraverseStep
+  OnCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+  slide: {fileID: 0}
+  m_VoiceSource: {fileID: 888298634}
+  m_LinkedListsPrefab: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
+  m_LinkedListsStartTransform: {fileID: 525373897}
+  m_ToTraverse: {fileID: 8300000, guid: b7e9ce6d3c239604196787850c8edaf7, type: 3}
+  m_ThisConcludes: {fileID: 8300000, guid: 2393a8dd8f5e4b34da064a6b37a2fe12, type: 3}
+  m_StartingValues: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
+  m_DelayDurTraverse: 1
+--- !u!4 &1980512379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980512377}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1301246762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2016302441 stripped
 MonoBehaviour:

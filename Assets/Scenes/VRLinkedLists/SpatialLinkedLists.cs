@@ -27,6 +27,32 @@ namespace Concepto
         // Type command in Inspector 
         [SerializeField] string[] m_Commands;
 
+        public void InitWithValues(int[] values)
+        {
+            Debug.Assert(m_Head.GetData() == null);
+            Debug.Assert(m_Size == 0);
+
+            if (values.Length == 0 )
+            {
+                return;
+            }
+
+            SpatialPointer temp = m_Head;
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
+                newNode.Data = values[i].ToString();
+                temp.PointToNoAnim(newNode);
+
+                temp = newNode.NextPointer;
+            }
+
+            m_Size = values.Length;
+        }    
+
+
+
         public int Size { 
             get
             {
@@ -49,9 +75,8 @@ namespace Concepto
 
         void Start()
         {
-            m_TempPtr.gameObject.SetActive(false);
-
             m_Size = 0;
+            m_TempPtr.gameObject.SetActive(false);
             Debug.Assert(m_Head != null);
             
             if (m_CommandCoroutine != null)
@@ -117,7 +142,7 @@ namespace Concepto
             }
 
             Debug.Log($"Inserting: {value} at {pos}.");
-            SpatialNode newNode = Instantiate(m_SpatialNodePrefab);
+            SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
             newNode.gameObject.SetActive(false);
             newNode.Data = value.ToString();
 
@@ -234,7 +259,7 @@ namespace Concepto
 
         public IEnumerator InsertAtPosNarrate(int value, AudioSource voiceSource, AudioClip finallyClip)
         {
-            SpatialNode newNode = Instantiate(m_SpatialNodePrefab);
+            SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
             newNode.gameObject.SetActive(false);
             newNode.Data = value.ToString();
 
@@ -392,6 +417,105 @@ namespace Concepto
             }
         }
 
+        public IEnumerator DeleteWithNarration(
+            int pos, AudioSource voiceSource, 
+            AudioClip nowSuppose, 
+            AudioClip nextWeCreate, 
+            AudioClip afterThatWeSet,
+            AudioClip thenWeCanSafely)
+        {
+            m_TempPtr.gameObject.SetActive(false);
+
+            if (m_Head.GetData() == null)
+            {
+                Debug.Log("List is empty.");
+                yield break;
+            }
+
+            // Bounds Check
+            if (pos < 0 || pos >= m_Size)
+            {
+                Debug.Log($"Aborting Deletion at pos: {pos}. Pos it out of bounds. Size: {m_Size}");
+                yield break;
+            }
+
+            voiceSource.clip = nowSuppose;
+            voiceSource.Play();
+
+
+            int currentPos = 0;
+            m_Current.PointToNoAnim(m_Head);
+
+            while (currentPos + 1 < pos)
+            {
+                yield return m_Current.PointTo(m_Current.GetData().NextPointer);
+                currentPos++;
+            }
+
+            yield return new WaitUntil(() => !voiceSource.isPlaying);
+
+            SpatialNode currentNode = m_Current.GetData();
+            SpatialNode nodeToDelete = currentNode.NextPointer.GetData();
+
+            Debug.Assert(currentNode != null);
+            Debug.Assert(nodeToDelete != null);
+
+            SpatialNode nodeToRep = nodeToDelete.NextPointer.GetData(); // Can be null if deleting the last node in the list
+
+            {
+                voiceSource.clip = nextWeCreate;
+                voiceSource.Play();
+
+                m_TempPtr.gameObject.SetActive(true);
+                m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
+
+
+
+                // Animate node upwards
+                bool moved = false;
+                nodeToDelete.gameObject.LeanMove(nodeToDelete.transform.position + m_DelNodeMoveOffset, m_NodeMoveAnimDur)
+                    .setOnUpdate((float time) => {
+                        currentNode.NextPointer.LookAtNoAnim(nodeToDelete);
+                        m_TempPtr.PointToNoAnim(nodeToDelete);
+
+                        if (nodeToRep != null)
+                            nodeToDelete.NextPointer.LookAtNoAnim(nodeToRep);
+                    })
+                    .setOnComplete(() => moved = true);
+
+                yield return new WaitUntil(() => moved);
+                yield return new WaitUntil(() => !voiceSource.isPlaying);
+
+            }
+
+            {
+                voiceSource.clip = afterThatWeSet;
+                voiceSource.Play();
+
+                // Set current node's next to the nodeToRep
+                yield return currentNode.NextPointer.LookAt(nodeToRep);
+
+                yield return new WaitUntil(() => !voiceSource.isPlaying);
+
+                voiceSource.clip = thenWeCanSafely;
+                voiceSource.Play();
+
+                // Delete Node to delete
+                Destroy(nodeToDelete.gameObject);
+                m_TempPtr.gameObject.SetActive(false);
+                m_Size--;
+
+
+                if (nodeToRep != null)
+                {
+                    Vector3 _pos = currentNode.NextPointer.GetPointedPosition();
+                    nodeToRep.LeanMove(_pos, m_NodeMoveAnimDur);
+                    yield return new WaitForSeconds(m_NodeMoveAnimDur);
+                }
+
+                yield return new WaitUntil(() => !voiceSource.isPlaying);
+            }
+        }
 
         public IEnumerator Traverse(int pos = -1, bool resetCurrent = true)
         {

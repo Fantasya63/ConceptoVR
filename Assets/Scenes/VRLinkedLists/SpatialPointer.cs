@@ -16,6 +16,7 @@ namespace Concepto
         [SerializeField] private bool m_IsStationary = false;
         [SerializeField] private float m_AnimDuration = 1.0f;
         [SerializeField] private LeanTweenType m_TweenType = LeanTweenType.easeInOutQuad;
+        [SerializeField] private bool ShowDataValOnLabel = false;
 
         SpatialNode m_Data = null;
         
@@ -31,9 +32,9 @@ namespace Concepto
                 return;
 
             if (data == null)
-                m_DataLabel.text = "Null";
+                m_DataLabel.text = $"Next: Null";
             else
-                m_DataLabel.text = m_Data.Data;
+                m_DataLabel.text = $"Next: {m_Data.Data}";
         }
 
         public SpatialPointer(SpatialNode data)

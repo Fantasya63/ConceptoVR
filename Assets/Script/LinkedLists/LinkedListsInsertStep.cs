@@ -102,7 +102,7 @@ namespace Canvas
 
             yield return m_LinkedListsInstance.Insert(54);
 
-            yield return m_LinkedListsInstance.Insert(23);
+            yield return m_LinkedListsInstance.Insert(36);
 
             yield return WaitForAudioToFinish(m_VoiceSource);
 
