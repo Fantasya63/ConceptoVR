@@ -19,6 +19,11 @@ namespace Concepto
 
         SpatialNode m_Data = null;
         
+        public void SetLabel(string label)
+        {
+            m_DataLabel.text = label;
+        }
+
         void SetData(SpatialNode data)
         {
             m_Data = data;

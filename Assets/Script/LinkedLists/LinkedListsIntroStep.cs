@@ -169,7 +169,8 @@ public class LinkedListsIntroStep : Step
 
             {
                 m_TempExamplePointer = Instantiate(m_TempNodes[0].NextPointer);
-                
+                string label = "Pointer";
+                m_TempExamplePointer.SetLabel(label);
 
                 Vector3 startPos = m_TempNodes[0].NextPointer.transform.position;
                 Vector3 endPos = startPos + Vector3.up * m_PointerDisplayYOffset;

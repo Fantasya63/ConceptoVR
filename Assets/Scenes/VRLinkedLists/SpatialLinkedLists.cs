@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Concepto
 {
@@ -40,6 +41,7 @@ namespace Concepto
                 return m_Current;
             }
         }
+
 
         Coroutine m_CommandCoroutine;
         int m_Size = 0;
@@ -88,6 +90,11 @@ namespace Concepto
                 else if (command == "traverse")
                 {
                     yield return Traverse();
+                }
+                else if (command == "traverse_till")
+                {
+                    int pos = int.Parse(parts[1]);
+                    yield return Traverse(pos);
                 }
                 else
                 {
@@ -225,7 +232,92 @@ namespace Concepto
             Debug.Log(value + " is inserted.");
         }
 
-        IEnumerator Delete(int pos)
+        public IEnumerator InsertAtPosNarrate(int value, AudioSource voiceSource, AudioClip finallyClip)
+        {
+            SpatialNode newNode = Instantiate(m_SpatialNodePrefab);
+            newNode.gameObject.SetActive(false);
+            newNode.Data = value.ToString();
+
+
+            SpatialNode currentNode = m_Current.GetData();
+            SpatialPointer next = currentNode.NextPointer;
+            Debug.Log($"Next Pointer Val: {next.GetData()}");
+
+
+
+            Vector3 spawnPos = next.GetPointedPosition();
+            spawnPos += m_NewNodeSpawnOffset;
+
+            // Prev Node
+            SpatialNode lastNode = next.GetData();
+
+            // Show New Node
+            newNode.transform.position = spawnPos;
+            newNode.gameObject.SetActive(true);
+
+            if (lastNode != null)
+            {
+                yield return newNode.NextPointer.LookAt(lastNode);
+
+                yield return new WaitUntil(() => !voiceSource.isPlaying);
+
+                voiceSource.clip = finallyClip;
+                voiceSource.Play();
+                yield return new WaitUntil(() => !voiceSource.isPlaying);
+
+
+                yield return next.LookAt(newNode);
+
+
+                // Move old node
+                Vector3 startPos = lastNode.transform.position;
+                Vector3 endPos = lastNode.NextPointer.GetPointedPosition();
+
+                //lastNode.transform
+                lastNode.LeanMove(endPos, m_AnimDownwardDur);
+
+                bool moved = false;
+                LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
+                    .setOnUpdate((float val) =>
+                    {
+                        Debug.Log("Point Update");
+                        next.LookAtNoAnim(newNode);
+                        newNode.NextPointer.LookAtNoAnim(lastNode);
+
+                    })
+                    .setOnComplete(() => {
+                        moved = true;
+                    }
+                );
+                yield return new WaitUntil(() => moved);
+            }
+            else
+            {
+
+                bool moved = false;
+                LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
+                    .setOnUpdate((float val) =>
+                    {
+                        Debug.Log("Point Update");
+                        next.LookAtNoAnim(newNode);
+                    })
+                    .setOnComplete(() => {
+                        moved = true;
+                    }
+                );
+                yield return new WaitUntil(() => moved);
+
+
+                next.PointToNoAnim(newNode);
+            }
+
+            m_Size++;
+            m_Current.PointToNoAnim(m_Head);
+
+            Debug.Log(value + " is inserted.");
+        }
+
+        public IEnumerator Delete(int pos)
         {
             m_TempPtr.gameObject.SetActive(false);
 
@@ -301,8 +393,13 @@ namespace Concepto
         }
 
 
-        IEnumerator Traverse()
+        public IEnumerator Traverse(int pos = -1, bool resetCurrent = true)
         {
+            if (pos < 0 || pos > m_Size - 1)
+            {
+                pos = m_Size;
+            }
+            
             if (m_Head.GetData() == null)
             {
                 Debug.Log("List is empty.");
@@ -314,17 +411,21 @@ namespace Concepto
             //Node temp = head;
 
             string output = "List: ";
-
-            while (m_Current.GetData() != null)
+            int currPos = -1;
+            while (m_Current.GetData() != null && currPos + 1 < pos)
             {
                 output += m_Current.GetData().Data + " -> ";
                 //temp = temp.next;
                 yield return m_Current.PointTo(m_Current.GetData().NextPointer);
+                currPos++;
             }
 
             output += "NULL";
 
-            m_Current.PointToNoAnim(m_Head);
+            if (resetCurrent)
+            {
+                m_Current.PointToNoAnim(m_Head);
+            }
             Debug.Log(output);
         }
 
