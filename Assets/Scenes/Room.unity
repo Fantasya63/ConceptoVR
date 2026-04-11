@@ -8973,6 +8973,7 @@ MonoBehaviour:
   m_ArrayOffset: {x: 0, y: 0, z: -0.25}
   m_SpawnDelay: 0.1
   m_IndexToBoxLerpDur: 1
+  m_ErrorOutlineDur: 3
   m_YouMightHave: {fileID: 8300000, guid: b7d9adf566281354089420916a667171, type: 3}
   m_WhenTwoKeys: {fileID: 8300000, guid: ffe1024fe7428634c8204e6e1c949fe8, type: 3}
   m_OneMethod: {fileID: 8300000, guid: 8e7bd6d96c020a54686d8ccbb41ecc3d, type: 3}
