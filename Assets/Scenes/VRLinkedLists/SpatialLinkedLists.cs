@@ -98,12 +98,12 @@ namespace Concepto
 
                 if (command == "insert")
                 {
-                    int value = int.Parse(parts[1]);
+                    string value = parts[1];
                     yield return Insert(value);
                 }
                 if (command == "insertat")
                 {
-                    int value = int.Parse(parts[1]);
+                    string value = parts[1];
                     int pos = int.Parse(parts[2]);
                     yield return Insert(value, pos);
                 }
@@ -133,7 +133,25 @@ namespace Concepto
             
         }
 
-        public IEnumerator Insert(int value, int pos = -1)
+
+        public bool CanInsert(string value, int pos)
+        {
+            if (pos < 0 || pos > m_Size)
+                return false;
+
+            return true;
+        }
+
+        public bool CanDelete(int pos)
+        {
+            if (pos < 0 || pos >= m_Size)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public IEnumerator Insert(string value, int pos = -1)
         {
             if (pos < 0)
             {

@@ -86,7 +86,7 @@ namespace Canvas
 
             yield return WaitForAudioToFinish(m_VoiceSource);
 
-            yield return m_LinkedListsInstance.Insert(23);
+            yield return m_LinkedListsInstance.Insert("23");
 
             yield return new WaitUntil(() => m_NextPressed);
             m_NextPressed = false;
@@ -100,9 +100,9 @@ namespace Canvas
 
             PlayVoiceNoWait(m_VoiceSource, m_NowWeCanJustInsertNodes);
 
-            yield return m_LinkedListsInstance.Insert(54);
+            yield return m_LinkedListsInstance.Insert("54");
 
-            yield return m_LinkedListsInstance.Insert(36);
+            yield return m_LinkedListsInstance.Insert("36");
 
             yield return WaitForAudioToFinish(m_VoiceSource);
 
