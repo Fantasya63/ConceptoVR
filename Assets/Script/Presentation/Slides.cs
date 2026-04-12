@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
 
 namespace Canvas
 {
@@ -15,23 +17,43 @@ namespace Canvas
         [SerializeField] private int m_DebugStartStepIndex = 0;
 #endif
 
+        private Dictionary<string, int> m_StepNameToIndexTable = new Dictionary<string, int>();
+
+
         public string SlideName
         {
             get { return gameObject.name; }
         }
 
-
-        public void Setup()
+        private void Awake()
         {
             Debug.Assert(steps != null, $"[Slides] Steps array is null on {name}");
             Debug.Assert(steps.Length > 0, $"[Slides] Steps array is empty on {name}");
 
+
+            int index = 0;
             foreach (Step step in steps)
             {
                 step.slide = this;
-                step.OnCompleted.AddListener(OnStepComplete);
-            }
+                if (m_StepNameToIndexTable.ContainsKey(step.name))
+                {
+                    Debug.LogError($"Warning! Duplicate Step Names Detected! Name: {step.name}.");
+                }
+                else
+                {
+                    m_StepNameToIndexTable[step.name] = index;
+                    Debug.Log($"{SlideName} Slide: Added {step.name} step.");
+                }
 
+
+                step.OnCompleted.AddListener(OnStepComplete);
+                index++;
+            }
+        }
+
+        public void Setup()
+        {
+            
             if (currentStep != -1)
                 Debug.LogWarning($"[Slides] Setup() called multiple times on {name}. Previous state will be overridden.");
 
@@ -41,7 +63,6 @@ namespace Canvas
 #if UNITY_EDITOR
             currentStep = m_DebugStartStepIndex;
 #endif
-
 
             // Activate first step
             steps[currentStep].Activate();
@@ -69,10 +90,7 @@ namespace Canvas
         {
             AssertIsValidState();
             bool allowNext = steps[currentStep].OnNextStep();
-            if (!allowNext)
-            {
-                return false;
-            }
+           
 
 
             if (currentStep == steps.Length - 1)
@@ -98,11 +116,28 @@ namespace Canvas
 
             steps[currentStep].Deactivate();
 
-            currentStep = (currentStep - 1 + steps.Length) % steps.Length;
-
+            currentStep -= 1;
+            
             AssertStepIsNotNull(currentStep);
             steps[currentStep].Activate();
             return false;
+        }
+
+        public void JumpToStep(Step destination)
+        {
+            if (!m_StepNameToIndexTable.ContainsKey(destination.name))
+            {
+                Debug.LogError("Aborting Jump Step. Step is not part of the slide");
+                return;
+            }
+
+            int index = m_StepNameToIndexTable[destination.name];
+            steps[currentStep].Deactivate();
+            currentStep = index;
+
+            AssertStepIsNotNull(currentStep);
+            steps[currentStep].Activate();
+
         }
 
         private void OnStepComplete()

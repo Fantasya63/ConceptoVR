@@ -14,7 +14,7 @@ public class LinkedListsTraverseControls : LinkedListsControls
 
     public void Traverse()
     {
-        if (m_Coroutine != null)
+        if (m_Coroutine != null || !m_LinkedLists.CanTraverse())
         {
             Error("Please wait till the operation is finished.");
             return;

@@ -31,7 +31,7 @@ public class LinkedListsIntroStep : Step
     [Header("Prefabs")]
     [SerializeField] SpatialNode m_SpatialNodePrefab;
 
-    [SerializeField] GameObject m_TempObjectsHolder = null;
+    GameObject m_TempObjectsHolder;
 
     SpatialNode[] m_TempNodes;
     SpatialPointer m_TempExamplePointer;
@@ -69,21 +69,23 @@ public class LinkedListsIntroStep : Step
 
     public override void Activate()
     {
-        if (m_Coroutine != null)
-            StopCoroutine(m_Coroutine);
+        CleanUP();
 
+        m_TempObjectsHolder = new GameObject();
         m_Coroutine = StartCoroutine(OnRoutine());
+
     }
+
 
     private IEnumerator OnRoutine()
     {
         PlayVoiceNoWait(m_VoiceSource, m_LinkedListsIsA);
 
-        SpatialNode node = GameObject.Instantiate(m_SpatialNodePrefab);
-        node.transform.position = m_NodeDefStartTransform.position;
-        Vector3 startScale = node.transform.localScale;
-        node.transform.localScale = Vector3.zero;
-        node.transform.LeanScale(startScale, m_NodeGrowDur);
+        SpatialNode m_NodeInstance = GameObject.Instantiate(m_SpatialNodePrefab, m_TempObjectsHolder.transform);
+        m_NodeInstance.transform.position = m_NodeDefStartTransform.position;
+        Vector3 startScale = m_NodeInstance.transform.localScale;
+        m_NodeInstance.transform.localScale = Vector3.zero;
+        m_NodeInstance.transform.LeanScale(startScale, m_NodeGrowDur);
 
         yield return new WaitForSeconds(m_NodeGrowDur);
         yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
@@ -95,14 +97,14 @@ public class LinkedListsIntroStep : Step
             DestroyNodes();
         }
         this.m_TempNodes = new SpatialNode[m_NumOfInstances];
-        m_TempNodes[0] = node;
+        m_TempNodes[0] = m_NodeInstance;
 
         {
-            Vector3 pos = node.transform.position;
+            Vector3 pos = m_NodeInstance.transform.position;
             for (int i = 1; i < m_NumOfInstances; ++i)
             {
                 pos += m_NodeOffset;
-                SpatialNode _node = GameObject.Instantiate(m_SpatialNodePrefab);
+                SpatialNode _node = GameObject.Instantiate(m_SpatialNodePrefab, m_TempObjectsHolder.transform);
                 _node.transform.position = pos;
                 _node.Data = i.ToString();
                 
@@ -189,8 +191,22 @@ public class LinkedListsIntroStep : Step
 
     void CleanUP()
     {
+        if (m_Coroutine != null)
+            StopCoroutine(m_Coroutine);
+
         DestroyNodes();
-        Destroy(m_TempExamplePointer.gameObject);
+
+        if (m_TempExamplePointer != null)
+        {
+            Destroy(m_TempExamplePointer.gameObject);
+            m_TempExamplePointer = null;
+        }
+
+        if (m_TempObjectsHolder)
+        {
+            Destroy(m_TempObjectsHolder.gameObject);
+            m_TempObjectsHolder = null;
+        }
     }
 
     public override void Deactivate()

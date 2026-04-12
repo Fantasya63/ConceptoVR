@@ -35,7 +35,6 @@ namespace Canvas
         {
             m_PositionalMarkersHolder.SetActive(false);
 
-            AllowNext = false;
             m_NextPressed = false;
 
             Debug.Assert(m_VoiceSource != null);
@@ -58,7 +57,6 @@ namespace Canvas
 
         public override void Activate()
         {
-            AllowNext = false;
 
             if (m_Coroutine != null)
             {
@@ -88,8 +86,6 @@ namespace Canvas
 
             yield return m_LinkedListsInstance.Insert("23");
 
-            yield return new WaitUntil(() => m_NextPressed);
-            m_NextPressed = false;
 
             PlayVoiceNoWait(m_VoiceSource, m_WeWillAlsoNeedA);
 
@@ -122,11 +118,10 @@ namespace Canvas
 
             yield return PlayAndWaitVoice(m_VoiceSource, m_WeHaveJustPreformed);
 
-
             Complete();
         }
 
-        public override void Deactivate()
+        void CleanUp()
         {
             if (m_Coroutine != null)
             {
@@ -135,11 +130,19 @@ namespace Canvas
             }
 
             m_PositionalMarkersHolder.SetActive(false);
+
+            if (m_LinkedListsInstance != null)
+                Destroy(m_LinkedListsInstance.gameObject);
+        }
+
+        public override void Deactivate()
+        {
+            CleanUp();
         }
 
         public override void OnSlideExit()
         {
-            Deactivate();
+            CleanUp();
         }
     }
 }

@@ -80,7 +80,7 @@ public class LinkedListsInsertControls : LinkedListsControls
 
     public void OnSubmit()
     {
-        if (m_Coroutine != null)
+        if (m_Coroutine != null || !m_LinkedLists.CanTraverse())
         {
             Error("Please wait till the operation is finished.");
             return;
@@ -131,28 +131,27 @@ public class LinkedListsInsertControls : LinkedListsControls
         Error(message);
         LeanTween.cancel(outline.gameObject);
 
-        int flashCount = 3;
-        float duration = 0.2f;
+       
 
-        for (int i = 0; i < flashCount; i++)
+        for (int i = 0; i < m_NumOfFlash; i++)
         {
             // Flash to error color
-            LeanTween.value(outline.gameObject, m_NormalColor, m_ErrorColor, duration)
+            LeanTween.value(outline.gameObject, m_NormalColor, m_ErrorColor, m_FlashDur)
                 .setOnUpdate((Color c) =>
                 {
                     outline.OutlineColor = c;
                 });
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(m_FlashDur);
 
             // Flash back to normal color
-            LeanTween.value(outline.gameObject, m_ErrorColor, m_NormalColor, duration)
+            LeanTween.value(outline.gameObject, m_ErrorColor, m_NormalColor, m_FlashDur)
                 .setOnUpdate((Color c) =>
                 {
                     outline.OutlineColor = c;
                 });
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(m_FlashDur);
         }
     }
 

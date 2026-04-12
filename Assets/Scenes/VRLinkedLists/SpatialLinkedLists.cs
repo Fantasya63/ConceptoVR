@@ -129,6 +129,7 @@ namespace Concepto
                 yield return new WaitForSeconds(0.5f);
             }
 
+            m_CommandCoroutine = null;
             yield break;
             
         }
@@ -136,7 +137,7 @@ namespace Concepto
 
         public bool CanInsert(string value, int pos)
         {
-            if (pos < 0 || pos > m_Size)
+            if (pos < 0 || pos > m_Size || m_CommandCoroutine != null)
                 return false;
 
             return true;
@@ -144,11 +145,16 @@ namespace Concepto
 
         public bool CanDelete(int pos)
         {
-            if (pos < 0 || pos >= m_Size)
+            if (pos < 0 || pos >= m_Size || m_CommandCoroutine != null)
             {
                 return false;
             }
             return true;
+        }
+
+        public bool CanTraverse()
+        {
+            return m_CommandCoroutine == null;
         }
 
         public IEnumerator Insert(string value, int pos = -1)
@@ -362,6 +368,9 @@ namespace Concepto
 
         public IEnumerator Delete(int pos)
         {
+            if (pos < 0)
+                pos = m_Size - 1;
+
             m_TempPtr.gameObject.SetActive(false);
 
             if (m_Head.GetData() == null)
@@ -371,7 +380,7 @@ namespace Concepto
             }
 
             // Bounds Check
-            if (pos < 0 || pos >= m_Size)
+            if (pos >= m_Size)
             {
                 Debug.Log($"Aborting Deletion at pos: {pos}. Pos it out of bounds. Size: {m_Size}");
                 yield break;

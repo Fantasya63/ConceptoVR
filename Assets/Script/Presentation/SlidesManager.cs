@@ -104,7 +104,11 @@ namespace Canvas
         // Moves the current step of the slide back, and moves to the prev slide if we reached the beginning limit of the steps
         public void PrevStep()
         {
-            if (!IsValidState()) return;
+            if (!IsValidState())
+            {
+                Debug.Log("Prev Step Aborted. System is in invalid state");
+                return; 
+            }
             bool startReached = slides[currentSlideIndex].Previous();
             if (startReached)
                 PrevSlide();
@@ -129,7 +133,7 @@ namespace Canvas
 
         public void JumpToSlide(Slides destination, bool restart = false)
         {
-            JumpToSlide(destination.name, restart);
+            JumpToSlide(destination.SlideName, restart);
         }
 
         public void JumpToSlide(string name, bool restart = false)

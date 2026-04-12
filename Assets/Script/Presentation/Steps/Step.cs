@@ -35,6 +35,7 @@ namespace Canvas
         /// </summary>
         protected void Complete()
         {
+            Debug.Log($"Step: {name} is completed");
             OnCompleted?.Invoke();
         }
 

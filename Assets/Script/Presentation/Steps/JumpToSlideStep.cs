@@ -8,30 +8,25 @@ namespace Canvas
 
         public override void Activate()
         {
-            
+            slide.manager.JumpToSlide(m_DestinationSlide);
         }
 
         public override void Deactivate()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public override void OnSlideExit()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-
+            Debug.Assert(m_DestinationSlide != null);
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 
 }
