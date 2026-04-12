@@ -52,11 +52,11 @@ namespace Concepto
 
             if (m_IsStationary)
             {
-                node.transform.position = transform.position + m_Offset;
+                node.transform.position = GetPointedPosition();
             }
             else
             {
-                transform.position = node.transform.position + m_Offset;
+                transform.position = node.transform.position + transform.rotation * m_Offset;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Concepto
 
             if (otherPointer.m_Data == null)
             {
-                transform.position = otherPointer.GetPointedPosition() + m_Offset;
+                transform.position = otherPointer.GetPointedPosition() + transform.rotation * m_Offset;
                 SetData(otherPointer.m_Data);
             }
             else
@@ -78,7 +78,7 @@ namespace Concepto
 
         public Vector3 GetPointedPosition()
         {
-            return transform.position + m_Offset;
+            return transform.position + transform.rotation * m_Offset;
         }
 
 
@@ -92,7 +92,7 @@ namespace Concepto
 
             if (otherPointer.m_Data == null)
             {
-                transform.LeanMove(otherPointer.GetPointedPosition() + m_Offset, m_AnimDuration).setEase(m_TweenType);
+                transform.LeanMove(otherPointer.GetPointedPosition() + transform.rotation * m_Offset, m_AnimDuration).setEase(m_TweenType);
                 SetData(otherPointer.m_Data);
                 yield return new WaitForSeconds(m_AnimDuration);
                 yield break;
@@ -144,7 +144,7 @@ namespace Concepto
             if (m_IsStationary)
             {
                 // Animate node
-                Vector3 pos = transform.position + m_Offset;
+                Vector3 pos = GetPointedPosition();
                 Vector3 fromPos = pos + Vector3.up * 0.5f;
                 node.transform.position = fromPos;
 
@@ -157,7 +157,7 @@ namespace Concepto
             else
             {
                 // Animate pointer
-                transform.LeanMove(node.transform.position + m_Offset, m_AnimDuration).setEase(m_TweenType);
+                transform.LeanMove(node.transform.position + transform.rotation * m_Offset, m_AnimDuration).setEase(m_TweenType);
 
                 // Wait for animation to finish
                 yield return new WaitForSeconds(m_AnimDuration);
