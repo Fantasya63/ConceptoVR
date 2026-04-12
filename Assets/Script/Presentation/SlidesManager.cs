@@ -127,6 +127,11 @@ namespace Canvas
 
         }
 
+        public void JumpToSlide(Slides destination, bool restart = false)
+        {
+            JumpToSlide(destination.name, restart);
+        }
+
         public void JumpToSlide(string name, bool restart = false)
         {
             JumpToSlide(m_SlideNameToIndexTable[name], restart);
