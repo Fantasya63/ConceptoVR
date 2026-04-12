@@ -4,14 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-public class LinkedListsInsertControls : MonoBehaviour
+public class LinkedListsInsertControls : LinkedListsControls
 {
     [Header("References")]
-    [SerializeField] AudioSource m_ErrorAudioSource;
 
     [SerializeField] XRSocketInteractor m_DataSocket;
     [SerializeField] XRSocketInteractor m_PositionSocket;
-    [SerializeField] SpatialLinkedLists m_LinkedLists;
 
     [Header("Error Options")]
     [SerializeField] Color m_NormalColor = Color.white;
@@ -19,7 +17,6 @@ public class LinkedListsInsertControls : MonoBehaviour
     [SerializeField] Color m_SuccessColor = Color.green;
     [SerializeField] float m_FlashDur = 0.2f;
     [SerializeField] int m_NumOfFlash = 3;
-    [SerializeField] ErrorPanel m_ErrorPanel;
 
 
     private Outline m_DataOutline;
@@ -85,7 +82,7 @@ public class LinkedListsInsertControls : MonoBehaviour
     {
         if (m_Coroutine != null)
         {
-            Error();
+            Error("Please wait till the operation is finished.");
             return;
         }
 
@@ -128,11 +125,6 @@ public class LinkedListsInsertControls : MonoBehaviour
         }
     }
 
-    void Error(string message = "LinkedListsInsert: Error")
-    {
-        m_ErrorPanel.ShowError(message);
-        m_ErrorAudioSource.Play();
-    }
 
     IEnumerator OnErrorRoutine(Outline outline, string message)
     {
@@ -166,10 +158,17 @@ public class LinkedListsInsertControls : MonoBehaviour
 
     IEnumerator OnInsertRoutine(string value, int pos)
     {
+        m_DataOutline.OutlineColor = m_SuccessColor;
+        m_PosOutline.OutlineColor = m_SuccessColor;
+
         yield return m_LinkedLists.Insert(value, pos);
         Debug.Log("Insert Control Routine Finished");
 
         m_Coroutine = null;
+
+        m_DataOutline.OutlineColor = m_NormalColor;
+        m_PosOutline.OutlineColor = m_NormalColor;
+
         yield break;
     }
 }
