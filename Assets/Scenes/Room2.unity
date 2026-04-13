@@ -12582,6 +12582,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Interaction Simulator Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5326217077169910985, guid: 61901f46a9e11924ba242ea9e781df5b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5708528067773138086, guid: 61901f46a9e11924ba242ea9e781df5b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.56667
