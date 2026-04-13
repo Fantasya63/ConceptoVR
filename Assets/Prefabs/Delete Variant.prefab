@@ -897,14 +897,14 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 7406320472255331985}
     - targetCorrespondingSourceObject: {fileID: 1881912446929355964, guid: cab5df0cc4e614f4cb07abc9192e14e2, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 999738419737317623}
+    - targetCorrespondingSourceObject: {fileID: 1881912446929355964, guid: cab5df0cc4e614f4cb07abc9192e14e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7526450675626008036}
     - targetCorrespondingSourceObject: {fileID: 293143964063742589, guid: cab5df0cc4e614f4cb07abc9192e14e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2636901855606577799}
-    - targetCorrespondingSourceObject: {fileID: 293143964063742589, guid: cab5df0cc4e614f4cb07abc9192e14e2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1372447585677521567}
     - targetCorrespondingSourceObject: {fileID: 293143964063742589, guid: cab5df0cc4e614f4cb07abc9192e14e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2745024377054127056}
@@ -1155,13 +1155,13 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.08, y: 0.060000002, z: 0.00050000113}
   m_Center: {x: 0, y: -0.030000001, z: 0.00024988136}
---- !u!1001 &6291941870054337247
+--- !u!1001 &5297735981281609911
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1610156784534330588}
+    m_TransformParent: {fileID: 600382375839883805}
     m_Modifications:
     - target: {fileID: 776004429223685886, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_Name
@@ -1209,23 +1209,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.16849999
+      value: 0.16850019
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13900003
+      value: 1.0269358
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.15234844
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.99138093
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: -0.13101137
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1237,7 +1237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -1250,93 +1250,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 776004429223685886, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5909520048454697874}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
---- !u!4 &1372447585677521567 stripped
+--- !u!4 &999738419737317623 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4925422889728497728, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
-  m_PrefabInstance: {fileID: 6291941870054337247}
+  m_PrefabInstance: {fileID: 5297735981281609911}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6743467686161744929 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 776004429223685886, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
-  m_PrefabInstance: {fileID: 6291941870054337247}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5909520048454697874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6743467686161744929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
-  m_InteractionManager: {fileID: 0}
-  m_Colliders: []
-  m_InteractionLayers:
-    m_Bits: 1
-  m_DistanceCalculationMode: 1
-  m_SelectMode: 0
-  m_FocusMode: 1
-  m_CustomReticle: {fileID: 0}
-  m_AllowGazeInteraction: 0
-  m_AllowGazeSelect: 0
-  m_OverrideGazeTimeToSelect: 0
-  m_GazeTimeToSelect: 0.5
-  m_OverrideTimeToAutoDeselectGaze: 0
-  m_TimeToAutoDeselectGaze: 3
-  m_AllowGazeAssistance: 0
-  m_FirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstFocusEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastFocusExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FocusEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FocusExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Activated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Deactivated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_StartingHoverFilters: []
-  m_StartingSelectFilters: []
-  m_StartingInteractionStrengthFilters: []
 --- !u!1001 &7895685739625559244
 PrefabInstance:
   m_ObjectHideFlags: 0

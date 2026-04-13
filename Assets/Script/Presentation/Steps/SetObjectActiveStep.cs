@@ -11,6 +11,7 @@ namespace Canvas
         {
             Debug.Assert(m_gameObject != null);
             m_gameObject.SetActive(true);
+            Debug.Log($"Set GameObject: {m_gameObject.name} to Active");
             Complete();
         }
 
