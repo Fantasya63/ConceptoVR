@@ -176,5 +176,13 @@ namespace Canvas
             Debug.Log("Replayed slide");
             manager.JumpToSlide(manager.CurrentSlideIndex, true);
         }
+
+        public bool IsCurrentStep(Step step)
+        {
+            Debug.Assert(m_StepNameToIndexTable.ContainsKey(step.name), $"Step: {step.name} is not part of the slide");
+
+            int index = m_StepNameToIndexTable[step.name];
+            return index == currentStep;
+        }
     }
 }
