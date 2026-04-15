@@ -75,25 +75,31 @@ public class Printer : MonoBehaviour
     }
 
 
-    public void Print(string text)
+    public void Print(string text, bool paperHasInteractivity = true)
     {
         if (!IsPrinting)
         {
-            StartCoroutine(PrintRoutine(text, Paper.PAPER_TYPE.Data));
+            StartCoroutine(PrintRoutine(text, Paper.PAPER_TYPE.Data, paperHasInteractivity));
             IsPrinting = true;
         }
     }
 
-    public void PrintHashkey(string key)
+    public void PrintHashkey(string key, bool paperHasInteractivity = true)
     {
         if (!IsPrinting)
         {
-            StartCoroutine(PrintRoutine(key, Paper.PAPER_TYPE.Hashkey));
+            StartCoroutine(PrintRoutine(key, Paper.PAPER_TYPE.Hashkey, paperHasInteractivity));
             IsPrinting = true;
         }
     }
 
-    private IEnumerator PrintRoutine(string text, Paper.PAPER_TYPE type)
+    public IEnumerator PrintHashkeyRoutine(string key, bool paperHasInteractivity = true)
+    {
+        yield return PrintRoutine(key, Paper.PAPER_TYPE.Hashkey, paperHasInteractivity);
+    }
+
+
+    private IEnumerator PrintRoutine(string text, Paper.PAPER_TYPE type, bool paperHasInteractivity)
     {
         // Set TMP text
         printerStamp.text = text;
@@ -116,6 +122,9 @@ public class Printer : MonoBehaviour
 
         // Spawn paper at start
         Paper paper = Instantiate(paperPrefab, paperStartPos.position, paperStartPos.rotation);
+        if (!paperHasInteractivity)
+            paper.RemoveInteractivity();
+
         paper.data = text;
         paper.PaperType = type;
 

@@ -1746,7 +1746,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   slide: {fileID: 0}
-  seconds: 5
+  seconds: 10
 --- !u!1 &213314367
 GameObject:
   m_ObjectHideFlags: 0
@@ -3270,7 +3270,7 @@ Transform:
   m_GameObject: {fileID: 449058956}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1466899, y: -0.691724, z: 0.1466899, w: 0.691724}
-  m_LocalPosition: {x: 0.241, y: 1.0890001, z: -1.0569999}
+  m_LocalPosition: {x: 0.241, y: 1.0890001, z: -0.432}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6951,7 +6951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4106129285770532639, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5713243162175387829, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_text
@@ -7834,7 +7834,7 @@ MonoBehaviour:
   prevSlideAction: {fileID: 0}
   toBeginningAction: {fileID: 0}
   toEndAction: {fileID: 0}
-  m_StartSlide: {fileID: 146583723}
+  m_StartSlide: {fileID: 1466811349}
 --- !u!1001 &1297770798
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8848,7 +8848,7 @@ MonoBehaviour:
   m_PerfectNowPlace: {fileID: 8300000, guid: 1a8cba77f2169e24b890e1d45d4f99a4, type: 3}
   m_YouCanNowPlace: {fileID: 8300000, guid: b55dfc552cf1b36418449919dd57fba0, type: 3}
   m_CongratsInsert: {fileID: 8300000, guid: 10d260262944bb9439fe272ab9c185b4, type: 3}
-  m_WhenYouWant_Next: {fileID: 0}
+  m_WhenYouWant_Next: {fileID: 8300000, guid: d753bb248b997d946830afe3c8000b71, type: 3}
   m_BoxGrowSpeed: 1
   m_BoxGrowDelay: 0.1
 --- !u!1 &1466811347
@@ -11796,7 +11796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5326217077169910985, guid: 61901f46a9e11924ba242ea9e781df5b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5708528067773138086, guid: 61901f46a9e11924ba242ea9e781df5b, type: 3}
       propertyPath: m_LocalPosition.x
