@@ -3,15 +3,15 @@ using UnityEngine;
 
 // T is the Data Type
 // U is the Pointer Type
-public abstract class BaseNode<T, U, TNode> : MonoBehaviour
-    where TNode : BaseNode<T, U, TNode>
-    where U : BasePointer<TNode>
+public abstract class BaseNode<TData, TPointer, TNode> : MonoBehaviour
+    where TNode : BaseNode<TData, TPointer, TNode>
+    where TPointer : BasePointer<TNode>
 {
     [Header("References")]
-    public U NextPointer;
-    [SerializeField] protected T m_Data;
+    public TPointer NextPointer;
+    [SerializeField] protected TData m_Data;
     
-    public abstract T Data
+    public abstract TData Data
     {
         get; set;
     }
@@ -19,7 +19,7 @@ public abstract class BaseNode<T, U, TNode> : MonoBehaviour
     public void Move(Vector3 pos)
     {
         transform.position = pos;
-        BaseNode<T, U, TNode> next = NextPointer.GetData();
+        BaseNode<TData, TPointer, TNode> next = NextPointer.GetData();
         if (next != null)
         {
             next.Move(NextPointer.GetPointedPosition());
@@ -29,7 +29,7 @@ public abstract class BaseNode<T, U, TNode> : MonoBehaviour
     public void LeanMove(Vector3 pos, float time)
     {
         LeanTween.cancel(transform.gameObject);
-        BaseNode<T, U, TNode> next = NextPointer.GetData();
+        BaseNode<TData, TPointer, TNode> next = NextPointer.GetData();
 
         transform.LeanMove(pos, time)
             .setOnUpdate((float t) => {

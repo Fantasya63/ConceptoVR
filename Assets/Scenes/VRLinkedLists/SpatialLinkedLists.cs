@@ -5,25 +5,8 @@ using static UnityEngine.Rendering.DebugUI;
 namespace Concepto
 {
     // TODO: MOVE CURRENT TO THE VACANT SPACE INSTEAD
-    public class SpatialLinkedLists : MonoBehaviour
+    public class SpatialLinkedLists : BaseLinkedLists<string, SpatialPointer, SpatialNode>
     {
-        [Header("References")]
-        [SerializeField] SpatialPointer m_Head;
-        [SerializeField] SpatialPointer m_Current;
-        [SerializeField] SpatialPointer m_TempPtr;
-        [SerializeField] AudioSource m_AudioSource;
-        [SerializeField] AudioClip m_ErrorClip;
-
-        [Header("Options")]
-        [SerializeField] Vector3 m_NewNodeSpawnOffset = Vector3.up * 0.25f;
-        [SerializeField] Vector3 m_DelNodeMoveOffset = Vector3.up * 0.25f;
-        [SerializeField] float m_AnimDownwardDur = 1.0f;
-        [SerializeField] float m_PointerLookLerpDur = 0.5f;
-        [SerializeField] float m_NodeMoveAnimDur = 0.5f;
-
-        [Header("Prefabs")]
-        [SerializeField] SpatialNode m_SpatialNodePrefab;
-
         // Type command in Inspector 
         [SerializeField] string[] m_Commands;
 
@@ -53,25 +36,8 @@ namespace Concepto
 
 
 
-        public int Size { 
-            get
-            {
-                return m_Size;
-            }
-        }
-
-        public SpatialPointer CurrentPointer
-        {
-            get
-            {
-                return m_Current;
-            }
-        }
-
-
         Coroutine m_CommandCoroutine;
-        int m_Size = 0;
-
+      
 
         void Start()
         {
@@ -135,27 +101,6 @@ namespace Concepto
         }
 
 
-        public bool CanInsert(string value, int pos)
-        {
-            if (pos < 0 || pos > m_Size || m_CommandCoroutine != null)
-                return false;
-
-            return true;
-        }
-
-        public bool CanDelete(int pos)
-        {
-            if (pos < 0 || pos >= m_Size || m_CommandCoroutine != null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool CanTraverse()
-        {
-            return m_CommandCoroutine == null;
-        }
 
         public IEnumerator Insert(string value, int pos = -1)
         {

@@ -7,8 +7,8 @@ public class SpatialHashmap : MonoBehaviour
 {
     [Header("Options")]
     [SerializeField] ScriptedHashFuncDev m_HashFuncDev;
-    [SerializeField] SpatialLinkedLists m_LinkedListsPrefab;
-    [SerializeField] int m_NumOfLists = 5;
+    [SerializeField] HashmapLinkedLists m_LinkedListsPrefab;
+    [SerializeField] int m_NumOfLists = Concepto.HashMap.HashFunc.NumBoxes;
     [SerializeField] Transform m_ArrStartTransform;
     [SerializeField] Vector3 m_ArrOffset;
 
@@ -22,7 +22,7 @@ public class SpatialHashmap : MonoBehaviour
     [SerializeField] Transform m_PaperMovementHeightTransform;
 
     //SpatialLinkedLists m_LinkedListsInstance;
-    SpatialLinkedLists[] m_LinkedListsArr;
+    HashmapLinkedLists[] m_LinkedListsArr;
 
     Coroutine m_InitRoutine;
     Coroutine m_CommandCoroutine;
@@ -36,7 +36,7 @@ public class SpatialHashmap : MonoBehaviour
         Debug.Assert(m_ArrStartTransform != null);
         Debug.Assert(m_ArrOffset.sqrMagnitude > 0);
 
-        m_LinkedListsArr = new SpatialLinkedLists[m_NumOfLists];
+        m_LinkedListsArr = new HashmapLinkedLists[m_NumOfLists];
 
         if (m_InitRoutine != null)
             StopCoroutine(m_InitRoutine);
@@ -56,10 +56,11 @@ public class SpatialHashmap : MonoBehaviour
         for (int i = 0; i < m_NumOfLists; i++)
         {
             Vector3 pos = m_ArrStartTransform.position + m_ArrOffset * i;
-            SpatialLinkedLists instance = Instantiate(m_LinkedListsPrefab, pos, m_ArrStartTransform.rotation, transform);
+            HashmapLinkedLists instance = Instantiate(m_LinkedListsPrefab, pos, m_ArrStartTransform.rotation, transform);
             instance.transform.localScale = Vector3.zero;
-
             instance.transform.LeanScale(Vector3.one, m_GrowDur);
+
+            m_LinkedListsArr[i] = instance;
             yield return new WaitForSeconds(m_GrowDur);
         }
 
