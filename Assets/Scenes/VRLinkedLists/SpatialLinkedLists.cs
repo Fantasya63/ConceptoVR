@@ -385,25 +385,36 @@ namespace Concepto
                 Debug.Log($"Aborting Deletion at pos: {pos}. Pos it out of bounds. Size: {m_Size}");
                 yield break;
             }
-            
 
-            int currentPos = 0;
-            m_Current.PointToNoAnim(m_Head);
-
-            while (currentPos + 1 < pos)
+            SpatialPointer currPointer = null;
+            SpatialNode nodeToDelete = null;
+            // If deleting from the start
+            if (pos == 0)
             {
-                yield return m_Current.PointTo(m_Current.GetData().NextPointer);
-                currentPos++;
+                currPointer = m_Head;
+                nodeToDelete = m_Head.GetData();
+            }
+            else
+            {
+
+                int currentPos = 0;
+                m_Current.PointToNoAnim(m_Head);
+
+                while (currentPos + 1 < pos)
+                {
+                    yield return m_Current.PointTo(m_Current.GetData().NextPointer);
+                    currentPos++;
+                }
+
+                currPointer = m_Current.GetData().NextPointer;
+                nodeToDelete = currPointer.GetData();
             }
 
-            SpatialNode currentNode = m_Current.GetData();
-            SpatialNode nodeToDelete = currentNode.NextPointer.GetData();
-            
-            Debug.Assert(currentNode != null);
+
+            Debug.Assert(currPointer != null);
             Debug.Assert(nodeToDelete != null);
 
             SpatialNode nodeToRep = nodeToDelete.NextPointer.GetData(); // Can be null if deleting the last node in the list
-
             {
                 m_TempPtr.gameObject.SetActive(true);
                 m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
@@ -412,7 +423,7 @@ namespace Concepto
                 bool moved = false;
                 nodeToDelete.gameObject.LeanMove(nodeToDelete.transform.position + m_DelNodeMoveOffset, m_NodeMoveAnimDur)
                     .setOnUpdate((float time) => {
-                        currentNode.NextPointer.LookAtNoAnim(nodeToDelete);
+                        currPointer.LookAtNoAnim(nodeToDelete);
                         m_TempPtr.PointToNoAnim(nodeToDelete);
 
                         if (nodeToRep != null)
@@ -425,7 +436,7 @@ namespace Concepto
 
             {
                 // Set current node's next to the nodeToRep
-                yield return currentNode.NextPointer.LookAt(nodeToRep);
+                yield return currPointer.LookAt(nodeToRep);
 
                 // Delete Node to delete
                 Destroy(nodeToDelete.gameObject);
@@ -435,7 +446,7 @@ namespace Concepto
 
                 if (nodeToRep != null)
                 {
-                    Vector3 _pos = currentNode.NextPointer.GetPointedPosition();
+                    Vector3 _pos = currPointer.GetPointedPosition();
                     nodeToRep.LeanMove(_pos, m_NodeMoveAnimDur);
                     yield return new WaitForSeconds(m_NodeMoveAnimDur);
                 }
