@@ -3,10 +3,11 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public abstract class BasePointer<T> : MonoBehaviour
-    where T : MonoBehaviour
+// T is the NodeType
+public abstract class BasePointer<TNode> : MonoBehaviour
+    where TNode : MonoBehaviour
 {
-    protected T m_Data;
+    protected TNode m_Node;
 
 
     [Header("References")]
@@ -27,9 +28,9 @@ public abstract class BasePointer<T> : MonoBehaviour
         m_DataLabel.text = label;
     }
 
-    protected abstract void SetData(T data);
+    protected abstract void SetData(TNode data);
 
-    public void PointToNoAnim(T node)
+    public void PointToNoAnim(TNode node)
     {
         SetData(node);
 
@@ -50,46 +51,46 @@ public abstract class BasePointer<T> : MonoBehaviour
         return transform.position + transform.rotation * m_Offset;
     }
 
-    public void PointToNoAnim(BasePointer<T> otherPointer)
+    public void PointToNoAnim(BasePointer<TNode> otherPointer)
     {
         if (m_IsStationary)
             return;
 
-        if (otherPointer.m_Data == null)
+        if (otherPointer.m_Node == null)
         {
             transform.position = otherPointer.GetPointedPosition() + transform.rotation * m_Offset;
-            SetData(otherPointer.m_Data);
+            SetData(otherPointer.m_Node);
         }
         else
         {
-            PointToNoAnim(otherPointer.m_Data);
+            PointToNoAnim(otherPointer.m_Node);
         }
     }
 
 
 
-    public IEnumerator PointTo(BasePointer<T> otherPointer)
+    public IEnumerator PointTo(BasePointer<TNode> otherPointer)
     {
         Debug.Assert(otherPointer != null);
 
         if (m_IsStationary)
             yield break;
 
-        if (otherPointer.m_Data == null)
+        if (otherPointer.m_Node == null)
         {
             transform.LeanMove(otherPointer.GetPointedPosition() + transform.rotation * m_Offset, m_AnimDuration).setEase(m_TweenType);
-            SetData(otherPointer.m_Data);
+            SetData(otherPointer.m_Node);
             yield return new WaitForSeconds(m_AnimDuration);
             yield break;
         }
         else
         {
-            yield return PointTo(otherPointer.m_Data);
+            yield return PointTo(otherPointer.m_Node);
         }
 
     }
 
-    public IEnumerator LookAt(T node)
+    public IEnumerator LookAt(TNode node)
     {
         SetData(node);
 
@@ -114,13 +115,13 @@ public abstract class BasePointer<T> : MonoBehaviour
         yield return new WaitForSeconds(m_AnimDuration);
     }
 
-    public void LookAtNoAnim(T node)
+    public void LookAtNoAnim(TNode node)
     {
         m_ArrowObject.transform.LookAt(node.transform);
         SetData(node);
     }
 
-    public IEnumerator PointTo(T node)
+    public IEnumerator PointTo(TNode node)
     {
         SetData(node);
 
@@ -149,8 +150,8 @@ public abstract class BasePointer<T> : MonoBehaviour
         }
     }
 
-    public T GetData()
+    public TNode GetData()
     {
-        return m_Data;
+        return m_Node;
     }
 }

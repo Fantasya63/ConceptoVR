@@ -14,14 +14,14 @@ namespace Concepto
 
         protected override void SetData(SpatialNode data)
         {
-            m_Data = data;
+            m_Node = data;
             if (m_DataLabel == null)
                 return;
 
             if (data == null)
                 m_DataLabel.text = $"Next: Null";
             else
-                m_DataLabel.text = $"Next: {m_Data.Data}";
+                m_DataLabel.text = $"Next: {m_Node.Data}";
         }
     }
 
