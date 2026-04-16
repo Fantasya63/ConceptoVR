@@ -553,7 +553,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: m_Commands.Array.size
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: 'm_Commands.Array.data[0]'
@@ -594,6 +594,10 @@ PrefabInstance:
     - target: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: 'm_Commands.Array.data[9]'
       value: delete -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
+      propertyPath: 'm_Commands.Array.data[10]'
+      value: traverse
       objectReference: {fileID: 0}
     - target: {fileID: 2182768278146812414, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: m_Name

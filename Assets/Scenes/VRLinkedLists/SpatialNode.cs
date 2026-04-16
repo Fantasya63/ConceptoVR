@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace Concepto
 {
-    public class SpatialNode : MonoBehaviour
+    public class SpatialNode : BaseNode<string>
     {
-        [Header("References")]
-        public SpatialPointer NextPointer;
-        public string Data
+        
+        public override string Data
         {
             get
             {
@@ -52,7 +51,6 @@ namespace Concepto
 
 
         [SerializeField] private BoxScriptController m_Controller = null;
-        [SerializeField] private string m_Data = "Null";
 
     }
 
