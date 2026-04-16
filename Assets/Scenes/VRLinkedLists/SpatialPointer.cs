@@ -4,28 +4,15 @@ using UnityEngine;
 
 namespace Concepto
 {
-    public class SpatialPointer : MonoBehaviour
+    public class SpatialPointer : BasePointer<SpatialNode>
     {
-        [Header("References")]
-        [SerializeField] private TMP_Text m_DataLabel;
-        [SerializeField] private GameObject m_ArrowObject;
-
-        [Header("Options")]
-        [SerializeField] private Vector3 m_Offset = Vector3.up * 0.25f;
-        [SerializeField] private Vector3 m_RotAngle = Vector3.zero;
-        [SerializeField] private bool m_IsStationary = false;
-        [SerializeField] private float m_AnimDuration = 1.0f;
-        [SerializeField] private LeanTweenType m_TweenType = LeanTweenType.easeInOutQuad;
-        [SerializeField] private bool ShowDataValOnLabel = false;
-
-        SpatialNode m_Data = null;
-        
-        public void SetLabel(string label)
+        public SpatialPointer(SpatialNode data)
         {
-            m_DataLabel.text = label;
+            transform.rotation = Quaternion.Euler(m_RotAngle);
+            SetData(data);
         }
 
-        void SetData(SpatialNode data)
+        protected override void SetData(SpatialNode data)
         {
             m_Data = data;
             if (m_DataLabel == null)
@@ -35,138 +22,6 @@ namespace Concepto
                 m_DataLabel.text = $"Next: Null";
             else
                 m_DataLabel.text = $"Next: {m_Data.Data}";
-        }
-
-        public SpatialPointer(SpatialNode data)
-        {
-            transform.rotation = Quaternion.Euler(m_RotAngle);
-            SetData(data);
-            
-        }
-
-        public void PointToNoAnim(SpatialNode node)
-        {
-            SetData(node);
-
-            if (node == null) return;
-
-            if (m_IsStationary)
-            {
-                node.transform.position = GetPointedPosition();
-            }
-            else
-            {
-                transform.position = node.transform.position + transform.rotation * m_Offset;
-            }
-        }
-
-        public void PointToNoAnim(SpatialPointer otherPointer)
-        {
-            if (m_IsStationary)
-                return;
-
-            if (otherPointer.m_Data == null)
-            {
-                transform.position = otherPointer.GetPointedPosition() + transform.rotation * m_Offset;
-                SetData(otherPointer.m_Data);
-            }
-            else
-            {
-                PointToNoAnim(otherPointer.m_Data);
-            }
-        }
-
-        public Vector3 GetPointedPosition()
-        {
-            return transform.position + transform.rotation * m_Offset;
-        }
-
-
-
-        public IEnumerator PointTo(SpatialPointer otherPointer)
-        {
-            Debug.Assert(otherPointer != null);
-
-            if (m_IsStationary)
-                yield break;
-
-            if (otherPointer.m_Data == null)
-            {
-                transform.LeanMove(otherPointer.GetPointedPosition() + transform.rotation * m_Offset, m_AnimDuration).setEase(m_TweenType);
-                SetData(otherPointer.m_Data);
-                yield return new WaitForSeconds(m_AnimDuration);
-                yield break;
-            }
-            else
-            {
-                yield return PointTo(otherPointer.m_Data);
-            }
-
-        }
-
-        public IEnumerator LookAt(SpatialNode node)
-        {
-            SetData(node);
-
-            if (node == null)
-            {
-                m_ArrowObject.transform.rotation = Quaternion.identity;
-                yield break;
-            }
-
-
-            Quaternion start = m_ArrowObject.transform.rotation;
-            m_ArrowObject.transform.LookAt(node.transform);
-            Quaternion end = m_ArrowObject.transform.rotation;
-
-
-            LeanTween.value(0.0f, 1.0f, m_AnimDuration)
-                .setOnUpdate((float value) => {
-                    m_ArrowObject.transform.rotation = Quaternion.Slerp(start, end, value);
-
-                });
-
-            yield return new WaitForSeconds(m_AnimDuration);
-        }
-
-        public void LookAtNoAnim(SpatialNode node)
-        {
-            m_ArrowObject.transform.LookAt(node.transform);
-            SetData(node);
-        }
-
-        public IEnumerator PointTo(SpatialNode node)
-        {
-            SetData(node);
-
-            if (node == null) yield break;
-
-            if (m_IsStationary)
-            {
-                // Animate node
-                Vector3 pos = GetPointedPosition();
-                Vector3 fromPos = pos + Vector3.up * 0.5f;
-                node.transform.position = fromPos;
-
-                node.transform.LeanMove(pos, m_AnimDuration).setEase(m_TweenType);
-                Debug.Log("node move");
-
-                // Wait for animation to finish
-                yield return new WaitForSeconds(m_AnimDuration);
-            }
-            else
-            {
-                // Animate pointer
-                transform.LeanMove(node.transform.position + transform.rotation * m_Offset, m_AnimDuration).setEase(m_TweenType);
-
-                // Wait for animation to finish
-                yield return new WaitForSeconds(m_AnimDuration);
-            }
-        }
-
-        public SpatialNode GetData()
-        {
-            return m_Data;
         }
     }
 
