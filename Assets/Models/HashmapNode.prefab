@@ -556,7 +556,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Next:  Null'
+  m_text: Next
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -820,17 +820,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3978397677290415920}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.00107, y: 0.00107, z: 0.00107}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8716597984555848570}
   m_Father: {fileID: 483137193196628809}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.053}
   m_SizeDelta: {x: 159.8983, y: 38.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &780765762174790623
@@ -971,6 +971,7 @@ MonoBehaviour:
   m_ToInsertPosDur: 0.75
   m_KeyValueSeperation: {x: 0, y: 0, z: 0.04465}
   m_BoxOpenDur: 1
+  m_InsertPauseDur: 1
   m_KeyValueIndicator: {fileID: 3978397677290415920}
 --- !u!1 &5102603271107545665
 GameObject:
@@ -1018,7 +1019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793a1ab449f8a3f4cb314e31975edf70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HashmapNodePointer
-  m_DataLabel: {fileID: 6250884699124621177}
+  m_DataLabel: {fileID: 0}
   m_ArrowObject: {fileID: 914649092347414595}
   m_Offset: {x: 0, y: 0.25, z: 0}
   m_RotAngle: {x: 0, y: 0, z: 0}
@@ -1547,7 +1548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4817868988863113119
 RectTransform:
   m_ObjectHideFlags: 0

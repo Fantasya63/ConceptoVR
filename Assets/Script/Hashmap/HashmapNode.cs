@@ -1,4 +1,5 @@
 using NUnit.Framework.Constraints;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -28,8 +29,21 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
 
     [SerializeField] GameObject m_KeyValueIndicator;
 
+    [Header("Equality Check Options")]
+    [SerializeField] Color m_NormalColor = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+    [SerializeField] Color m_ErrorColor = Color.red;
+    [SerializeField] Color m_SuccessColor = Color.green;
+    [SerializeField] float m_FlashDur = 0.2f;
+    [SerializeField] int m_NumOfFlash = 3;
+
+    float m_TotalFlashDur = 0.0f;
+    Coroutine m_KeyErrCoroutine = null;
+    Coroutine m_OtherKeyCoroutine = null;
+
     public void Start()
     {
+        m_TotalFlashDur = m_FlashDur * m_NumOfFlash * 2.0f;
+
         Debug.Assert(m_KeyValueIndicator != null);
         m_KeyValueIndicator.SetActive(false);
     }
@@ -61,7 +75,6 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
 
         // Open Box
         {
-            m_KeyValueIndicator.SetActive(true);
             m_Controller.Open();
             yield return new WaitForSeconds(m_BoxOpenDur);
         }
@@ -79,6 +92,7 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
             yield return new WaitForSeconds(m_ToQuerryPosDur);
         }
 
+        m_KeyValueIndicator.SetActive(true);
         yield return new WaitForSeconds(m_InsertPauseDur);
 
         // Move To Insert Pos
@@ -99,5 +113,140 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
 
         m_KeyValueIndicator.SetActive(false);
         m_Data = data;
+    }
+
+    void StartErrRoutine(Coroutine coroutine, Outline outline)
+    {
+
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+
+        coroutine = StartCoroutine(OnErrorRoutine(outline));
+    }
+
+    IEnumerator OnErrorRoutine(Outline outline)
+    {
+        outline.enabled = true;
+        LeanTween.cancel(outline.gameObject);
+
+
+
+        for (int i = 0; i < m_NumOfFlash; i++)
+        {
+            // Flash to error color
+            LeanTween.value(outline.gameObject, m_NormalColor, m_ErrorColor, m_FlashDur)
+                .setOnUpdate((Color c) =>
+                {
+                    outline.OutlineColor = c;
+                });
+
+            yield return new WaitForSeconds(m_FlashDur);
+
+            // Flash back to normal color
+            LeanTween.value(outline.gameObject, m_ErrorColor, m_NormalColor, m_FlashDur)
+                .setOnUpdate((Color c) =>
+                {
+                    outline.OutlineColor = c;
+                });
+
+            yield return new WaitForSeconds(m_FlashDur);
+        }
+
+        outline.enabled = false;
+    }
+
+    void StartSuccessRoutine(Coroutine coroutine, Outline outline)
+    {
+
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+
+        coroutine = StartCoroutine(OnSuccessRoutine(outline));
+    }
+
+    IEnumerator OnSuccessRoutine(Outline outline)
+    {
+        outline.enabled = true;
+        LeanTween.cancel(outline.gameObject);
+
+
+
+        for (int i = 0; i < m_NumOfFlash; i++)
+        {
+            // Flash to error color
+            LeanTween.value(outline.gameObject, m_NormalColor, m_SuccessColor, m_FlashDur)
+                .setOnUpdate((Color c) =>
+                {
+                    outline.OutlineColor = c;
+                });
+
+            yield return new WaitForSeconds(m_FlashDur);
+
+            // Flash back to normal color
+            LeanTween.value(outline.gameObject, m_SuccessColor, m_NormalColor, m_FlashDur)
+                .setOnUpdate((Color c) =>
+                {
+                    outline.OutlineColor = c;
+                });
+
+            yield return new WaitForSeconds(m_FlashDur);
+        }
+
+        outline.enabled = false;
+    }
+
+
+    public IEnumerator AnimatedInsertIfEqual(Paper otherKey, Paper otherValue, Action<bool> onFinish)
+    {
+        Outline keyOutline;
+        if (!m_Data.key.gameObject.TryGetComponent<Outline>(out keyOutline))
+        {
+            keyOutline = m_Data.key.gameObject.AddComponent<Outline>();
+        }
+
+        Outline otherOutline;
+        if (!otherKey.gameObject.TryGetComponent<Outline>(out otherOutline))
+        {
+            otherOutline = otherKey.gameObject.AddComponent<Outline>();
+        }
+
+
+        otherKey.transform.rotation = m_NodeValuesQuerryTransform.rotation;
+
+        bool isEqual = false;
+
+        // Open Box
+        {
+            m_Controller.Open();
+            yield return new WaitForSeconds(m_BoxOpenDur);
+        }
+
+        // Move to Querry Pos
+        {
+            Vector3 keyPos = m_NodeValuesQuerryTransform.position + m_KeyValueSeperation;
+            Vector3 otherKeyPos = m_NodeValuesQuerryTransform.position - m_KeyValueSeperation;
+
+
+            m_Data.key.transform.LeanMove(keyPos, m_ToInsertPosDur);
+            otherKey.transform.LeanMove(otherKeyPos, m_ToInsertPosDur);
+        }
+
+        // Check if they are equal
+        {
+            isEqual = m_Data.key.data == otherKey.data;
+            if (!isEqual)
+            {
+                StartErrRoutine(m_KeyErrCoroutine, keyOutline);
+                StartErrRoutine(m_OtherKeyCoroutine, otherOutline);
+            }
+            else
+            {
+                StartSuccessRoutine(m_KeyErrCoroutine, keyOutline);
+                StartSuccessRoutine(m_OtherKeyCoroutine, otherOutline);
+            }
+            yield return new WaitForSeconds(m_TotalFlashDur);
+
+        }
+        onFinish.Invoke(isEqual);
     }
 }
