@@ -59,6 +59,9 @@ public class Paper : MonoBehaviour
     
     public void RemoveInteractivity()
     {
+        if (!m_IsInteractive)
+            return;
+
         // Disable interaction while animating
         XRGrabInteractable grab = gameObject.GetComponent<XRGrabInteractable>();
         if (grab != null)

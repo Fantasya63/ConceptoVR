@@ -194,7 +194,7 @@ MonoBehaviour:
   m_AnimDownwardDur: 1
   m_PointerLookLerpDur: 0.5
   m_NodeMoveAnimDur: 0.5
-  m_SpatialNodePrefab: {fileID: 8375237690137327565, guid: e20a156193101d4429313858105121e9, type: 3}
+  m_HashmapNodePrefab: {fileID: 8375237690137327565, guid: e20a156193101d4429313858105121e9, type: 3}
   m_Commands: []
 --- !u!1 &1052855077363326685
 GameObject:
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HashmapNodePointer
   m_DataLabel: {fileID: 0}
   m_ArrowObject: {fileID: 1052855077363326685}
-  m_Offset: {x: 0, y: 0.25, z: 0}
+  m_Offset: {x: 0, y: 0, z: 0.3}
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 0
   m_AnimDuration: 1
@@ -1179,7 +1179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HashmapNodePointer
   m_DataLabel: {fileID: 0}
   m_ArrowObject: {fileID: 8481626583669292092}
-  m_Offset: {x: 0, y: 0.25, z: 0}
+  m_Offset: {x: 0, y: 0, z: 0.3}
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 1
   m_AnimDuration: 1
@@ -1300,7 +1300,7 @@ Transform:
   m_GameObject: {fileID: 8526662716058409284}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.391, z: 0.70940006}
+  m_LocalPosition: {x: 0, y: 0.391, z: 0.339}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1322,7 +1322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HashmapNodePointer
   m_DataLabel: {fileID: 0}
   m_ArrowObject: {fileID: 9149326811175027797}
-  m_Offset: {x: 0, y: 0.25, z: 0}
+  m_Offset: {x: 0, y: 0, z: 0.3}
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 0
   m_AnimDuration: 1

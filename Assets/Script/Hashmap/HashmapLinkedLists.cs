@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Concepto
@@ -75,129 +76,134 @@ namespace Concepto
 
 
 
-        //public IEnumerator Insert(string value, int pos = -1)
-        //{
-        //    if (pos < 0)
-        //    {
-        //        pos = m_Size;
-        //        Debug.Log($"Negative Pos detected, retrying to insert at Pos: {pos}");
-        //    }
+        public IEnumerator Insert(Paper key, Paper value, int pos = -1)
+        {
+            if (pos < 0)
+            {
+                pos = m_Size;
+                Debug.Log($"Negative Pos detected, retrying to insert at Pos: {pos}");
+            }
 
-        //    Debug.Log($"Inserting: {value} at {pos}.");
-        //    SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
-        //    newNode.gameObject.SetActive(false);
-        //    newNode.Data = value.ToString();
+            Debug.Log($"Inserting: {value} at {pos}.");
+            HashmapNode newNode = Instantiate(m_HashmapNodePrefab, transform);
+            newNode.gameObject.SetActive(false);
+            //newNode.Data = value;
 
-        //    // If head is empty
-        //    if (m_Head.GetData() == null)
-        //    {
-        //        newNode.gameObject.SetActive(true);
-        //        yield return (m_Head.PointTo(newNode));
-        //        Debug.Log(value + " is inserted. (Head)");
+            // If head is empty
+            if (m_Head.GetData() == null)
+            {
+                newNode.gameObject.SetActive(true);
+                yield return (m_Head.PointTo(newNode));
 
-        //        m_Size++;
-        //        yield break;
-        //    }
+                HashmapNodeData nodeData = new HashmapNodeData(key, value);
 
-        //    // Check bounds
-        //    if (pos < 0 || pos > m_Size)
-        //    {
-        //        Debug.LogWarning($"Aborting Insert of {value} at pos: {pos}. Pos is out of bounds with list size of: {m_Size}");
+                yield return newNode.SetDataAnimated(nodeData);
 
-        //        if (m_AudioSource == null || m_ErrorClip == null)
-        //            yield break;
+                m_Size++;
+                yield break;
+            }
 
-        //        m_AudioSource.clip = m_ErrorClip;
-        //        m_AudioSource.Play();
-        //        yield break;
-        //    }
+            // Check bounds
+            if (pos < 0 || pos > m_Size)
+            {
+                Debug.LogWarning($"Aborting Insert of {value} at pos: {pos}. Pos is out of bounds with list size of: {m_Size}");
 
-        //    // Move current pointer to head
-        //    m_Current.PointToNoAnim(m_Head.GetData());
+                if (m_AudioSource == null || m_ErrorClip == null)
+                    yield break;
 
-        //    SpatialPointer next;
-        //    next = m_Head;
-        //    int currentPos = -1;
+                m_AudioSource.clip = m_ErrorClip;
+                m_AudioSource.Play();
+                yield break;
+            }
 
-        //    while (currentPos + 1 < pos)
-        //    {
-        //        SpatialNode currentNode = m_Current.GetData();
+            // Move current pointer to head
+            m_Current.PointToNoAnim(m_Head.GetData());
 
-        //        // Move to next node
-        //        yield return m_Current.PointTo(currentNode.NextPointer);
+            HashmapNodePointer next;
+            next = m_Head;
+            int currentPos = -1;
 
-        //        Debug.Log($"Moved to: {currentNode.Data}");
-        //        currentPos++;
-        //        next = currentNode.NextPointer;
-        //    }
+            while (currentPos + 1 < pos)
+            {
+                HashmapNode currentNode = m_Current.GetData();
 
+                // Move to next node
+                yield return m_Current.PointTo(currentNode.NextPointer);
 
-        //    Debug.Log($"Next Pointer Val: {next.GetData()}");
-
-
-
-        //    Vector3 spawnPos = next.GetPointedPosition();
-        //    spawnPos += m_NewNodeSpawnOffset;
-
-        //    // Prev Node
-        //    SpatialNode lastNode = next.GetData();
-
-        //    // Show New Node
-        //    newNode.transform.position = spawnPos;
-        //    newNode.gameObject.SetActive(true);
-        //    yield return next.LookAt(newNode);
-
-        //    if (lastNode != null)
-        //    {
-        //        yield return newNode.NextPointer.LookAt(lastNode);
-
-        //        // Move old node
-        //        Vector3 startPos = lastNode.transform.position;
-        //        Vector3 endPos = lastNode.NextPointer.GetPointedPosition();
-
-        //        //lastNode.transform
-        //        lastNode.LeanMove(endPos, m_AnimDownwardDur);
-
-        //        bool moved = false;
-        //        LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
-        //            .setOnUpdate((float val) =>
-        //            {
-        //                Debug.Log("Point Update");
-        //                next.LookAtNoAnim(newNode);
-        //                newNode.NextPointer.LookAtNoAnim(lastNode);
-
-        //            })
-        //            .setOnComplete(() => {
-        //                moved = true;
-        //            }
-        //        );
-        //        yield return new WaitUntil(() => moved);
-        //    }
-        //    else
-        //    {
-
-        //        bool moved = false;
-        //        LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
-        //            .setOnUpdate((float val) =>
-        //            {
-        //                Debug.Log("Point Update");
-        //                next.LookAtNoAnim(newNode);
-        //            })
-        //            .setOnComplete(() => {
-        //                moved = true;
-        //            }
-        //        );
-        //        yield return new WaitUntil(() => moved);
+                Debug.Log($"Moved to: {currentNode.Data}");
+                currentPos++;
+                next = currentNode.NextPointer;
+            }
 
 
-        //        next.PointToNoAnim(newNode);
-        //    }
+            Debug.Log($"Next Pointer Val: {next.GetData()}");
 
-        //    m_Size++;
-        //    m_Current.PointToNoAnim(m_Head);
 
-        //    Debug.Log(value + " is inserted.");
-        //}
+
+            Vector3 spawnPos = next.GetPointedPosition();
+            spawnPos += m_NewNodeSpawnOffset;
+
+            // Prev Node
+            HashmapNode lastNode = next.GetData();
+
+            // Show New Node
+            newNode.transform.position = spawnPos;
+            newNode.gameObject.SetActive(true);
+            yield return next.LookAt(newNode);
+
+            if (lastNode != null)
+            {
+                yield return newNode.NextPointer.LookAt(lastNode);
+
+                // Move old node
+                Vector3 startPos = lastNode.transform.position;
+                Vector3 endPos = lastNode.NextPointer.GetPointedPosition();
+
+                //lastNode.transform
+                lastNode.LeanMove(endPos, m_AnimDownwardDur);
+
+                bool moved = false;
+                LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
+                    .setOnUpdate((float val) =>
+                    {
+                        Debug.Log("Point Update");
+                        next.LookAtNoAnim(newNode);
+                        newNode.NextPointer.LookAtNoAnim(lastNode);
+
+                    })
+                    .setOnComplete(() =>
+                    {
+                        moved = true;
+                    }
+                );
+                yield return new WaitUntil(() => moved);
+            }
+            else
+            {
+
+                bool moved = false;
+                LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
+                    .setOnUpdate((float val) =>
+                    {
+                        Debug.Log("Point Update");
+                        next.LookAtNoAnim(newNode);
+                    })
+                    .setOnComplete(() =>
+                    {
+                        moved = true;
+                    }
+                );
+                yield return new WaitUntil(() => moved);
+
+
+                next.PointToNoAnim(newNode);
+            }
+
+            m_Size++;
+            m_Current.PointToNoAnim(m_Head);
+
+            Debug.Log(value + " is inserted.");
+        }
 
         //public IEnumerator InsertAtPosNarrate(int value, AudioSource voiceSource, AudioClip finallyClip)
         //{

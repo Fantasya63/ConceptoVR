@@ -21,10 +21,7 @@ namespace Concepto
             }
         }
 
-       
 
-
-        [SerializeField] private BoxScriptController m_Controller = null;
 
     }
 

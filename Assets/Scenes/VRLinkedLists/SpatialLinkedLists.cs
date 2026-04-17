@@ -24,7 +24,7 @@ namespace Concepto
 
             for (int i = 0; i < values.Length; i++)
             {
-                SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
+                SpatialNode newNode = Instantiate(m_HashmapNodePrefab, transform);
                 newNode.Data = values[i].ToString();
                 temp.PointToNoAnim(newNode);
 
@@ -111,7 +111,7 @@ namespace Concepto
             }
 
             Debug.Log($"Inserting: {value} at {pos}.");
-            SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
+            SpatialNode newNode = Instantiate(m_HashmapNodePrefab, transform);
             newNode.gameObject.SetActive(false);
             newNode.Data = value.ToString();
 
@@ -228,7 +228,7 @@ namespace Concepto
 
         public IEnumerator InsertAtPosNarrate(int value, AudioSource voiceSource, AudioClip finallyClip)
         {
-            SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
+            SpatialNode newNode = Instantiate(m_HashmapNodePrefab, transform);
             newNode.gameObject.SetActive(false);
             newNode.Data = value.ToString();
 

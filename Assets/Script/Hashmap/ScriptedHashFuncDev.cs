@@ -71,8 +71,13 @@ namespace Concepto.HashMap
             return string.Format(m_ScriptTemplate, input, hash);
         }
 
-        public IEnumerator Hash(Paper key)
+        public IEnumerator Hash(Paper _key)
         {
+            Paper key = Instantiate(_key);
+            key.GetComponent<Renderer>().material = _key.GetComponent<Renderer>().material;
+            key.transform.position = _key.transform.position;
+            key.transform.rotation = _key.transform.rotation;
+
             Debug.Assert(key != null);
             if (key.IsInteractive)
                 key.RemoveInteractivity();

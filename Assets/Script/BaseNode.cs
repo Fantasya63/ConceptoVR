@@ -10,7 +10,9 @@ public abstract class BaseNode<TData, TPointer, TNode> : MonoBehaviour
     [Header("References")]
     public TPointer NextPointer;
     [SerializeField] protected TData m_Data;
-    
+    [SerializeField] protected BoxScriptController m_Controller = null;
+
+
     public abstract TData Data
     {
         get; set;

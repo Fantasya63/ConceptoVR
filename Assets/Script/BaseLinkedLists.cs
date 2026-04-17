@@ -23,7 +23,7 @@ namespace Concepto
         [SerializeField] protected float m_NodeMoveAnimDur = 0.5f;
 
         [Header("Prefabs")]
-        [SerializeField] protected TNode m_SpatialNodePrefab;
+        [SerializeField] protected TNode m_HashmapNodePrefab;
 
         protected int m_Size = 0;
 
