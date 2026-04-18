@@ -16,7 +16,7 @@ public class Printer : MonoBehaviour
 
     [Header("Texture Settings")]
     [SerializeField] private int textureWidth = 256;
-    [SerializeField] private int textureHeight = 256;
+    [SerializeField] private int textureHeight = 192;
 
     [Header("Print Settings")]
     [SerializeField] private float printMoveDuration = 2f;
