@@ -21381,6 +21381,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScriptedHashFuncDev
       objectReference: {fileID: 0}
+    - target: {fileID: 84070893222754952, guid: a227268c84140554fa576b34086be2f3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 748018258993324082, guid: a227268c84140554fa576b34086be2f3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.01681

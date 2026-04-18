@@ -128,12 +128,12 @@ namespace Concepto
                 HashmapNode currentNode = m_Current.GetData();
 
                 // Check if they have the same key
-                yield return currentNode.AnimatedInsertIfEqual(key, value, 
+                yield return currentNode.AnimatedInsertIfEqual(key, value,
                     (bool isEqual) =>
                     {
-
+                        Debug.Log("sameeeee");
                     }
-                )
+                );
 
 
                 // Move to next node

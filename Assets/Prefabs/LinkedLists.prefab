@@ -57,7 +57,7 @@ MonoBehaviour:
   m_AnimDownwardDur: 1
   m_PointerLookLerpDur: 1
   m_NodeMoveAnimDur: 0.5
-  m_SpatialNodePrefab: {fileID: 7053321448670544811, guid: b9bdffe0cc100224e8bf617db8e30422, type: 3}
+  m_HashmapNodePrefab: {fileID: 7053321448670544811, guid: b9bdffe0cc100224e8bf617db8e30422, type: 3}
   m_Commands: []
 --- !u!1001 &1487501828140741323
 PrefabInstance:
