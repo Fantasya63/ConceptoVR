@@ -180,7 +180,7 @@ namespace Concepto
                 Vector3 endPos = lastNode.NextPointer.GetPointedPosition();
 
                 //lastNode.transform
-                lastNode.LeanMove(endPos, m_AnimDownwardDur);
+                lastNode.LeanMoveWithData(endPos, m_AnimDownwardDur);
 
                 bool moved = false;
                 LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
@@ -227,90 +227,137 @@ namespace Concepto
             Debug.Log(value + " is inserted.");
         }
 
-        //public IEnumerator InsertAtPosNarrate(int value, AudioSource voiceSource, AudioClip finallyClip)
-        //{
-        //    SpatialNode newNode = Instantiate(m_SpatialNodePrefab, transform);
-        //    newNode.gameObject.SetActive(false);
-        //    newNode.Data = value.ToString();
+        public IEnumerator Remove(Paper key, System.Action<bool, string> onFinished)
+        {
+            if (m_Head.GetData() == null)
+            {
+                Debug.Log("List is empty.");
+                yield break;
+            }
+
+            HashmapNode nodeToRemove = null;
+            HashmapNodePointer currPointer = null;
+
+            // Check if we are removing at the start of the lists
+            {
+                HashmapNode node = m_Head.GetData();
+                bool isEqual = false;
+
+                // Check if they have the same key
+                yield return node.AnimatedCheckIfEqual(key,
+                    (bool _isEqual) =>
+                    {
+                        isEqual = _isEqual;
+                    }
+                );
+
+                if (isEqual)
+                {
+                    nodeToRemove = node;
+                    currPointer = m_Head;
+
+                    yield return m_Head.GetData().Close();
+                }
+                else
+                {
+                    yield return m_Head.GetData().Close();
+                    m_Current.PointToNoAnim(m_Head.GetData());
+
+                    bool foundKey = false;
+
+                    while (!foundKey)
+                    {
+                        // Bounds Check
+                        if (m_Current.GetData().NextPointer.GetData() == null)
+                        {
+                            string message = $"Error: Key is not found: {key.data}";
+                            onFinished.Invoke(false, message);
+                            yield break;
+                        }
+
+                        // Check if they have the same key
+                        yield return m_Current.GetData().NextPointer.GetData().AnimatedCheckIfEqual(key,
+                            (bool _isEqual) =>
+                            {
+                                foundKey = _isEqual;
+                            }
+                        );
+                        yield return m_Current.GetData().NextPointer.GetData().Close();
 
 
-        //    SpatialNode currentNode = m_Current.GetData();
-        //    SpatialPointer next = currentNode.NextPointer;
-        //    Debug.Log($"Next Pointer Val: {next.GetData()}");
+                        if (foundKey)
+                        {
+                            // Set variables then break the loop
+                            currPointer = m_Current.GetData().NextPointer;
+                            nodeToRemove = m_Current.GetData().NextPointer.GetData();
+                        }
+                        else
+                        {
+
+                            
+                           
+                                yield return m_Current.GetData().NextPointer.GetData().Close();
+                            
+                            // Continue moving
+                            yield return m_Current.PointTo(m_Current.GetData().NextPointer);
+                        }
+
+                    }
+                }
+            }
+
+            Debug.Assert(currPointer != null);
+            Debug.Assert(nodeToRemove != null);
 
 
+            HashmapNode nodeToRep = nodeToRemove.NextPointer.GetData(); // Can be null if deleting the last node in the list
+            {
+                m_TempPtr.gameObject.SetActive(true);
+                m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
 
-        //    Vector3 spawnPos = next.GetPointedPosition();
-        //    spawnPos += m_NewNodeSpawnOffset;
+                // Animate node upwards
+                bool moved = false;
+                nodeToRemove.gameObject.LeanMove(nodeToRemove.transform.position + m_DelNodeMoveOffset, m_NodeMoveAnimDur)
+                    .setOnUpdate((float time) =>
+                    {
+                        currPointer.LookAtNoAnim(nodeToRemove);
+                        m_TempPtr.PointToNoAnim(nodeToRemove);
 
-        //    // Prev Node
-        //    SpatialNode lastNode = next.GetData();
+                        if (nodeToRep != null)
+                            nodeToRemove.NextPointer.LookAtNoAnim(nodeToRep);
+                    })
+                    .setOnComplete(() => moved = true);
 
-        //    // Show New Node
-        //    newNode.transform.position = spawnPos;
-        //    newNode.gameObject.SetActive(true);
+                yield return new WaitUntil(() => moved);
+            }
 
-        //    if (lastNode != null)
-        //    {
-        //        yield return newNode.NextPointer.LookAt(lastNode);
+            {
+                // Set current node's next to the nodeToRep
+                yield return currPointer.LookAt(nodeToRep);
 
-        //        yield return new WaitUntil(() => !voiceSource.isPlaying);
-
-        //        voiceSource.clip = finallyClip;
-        //        voiceSource.Play();
-        //        yield return new WaitUntil(() => !voiceSource.isPlaying);
-
-
-        //        yield return next.LookAt(newNode);
-
-
-        //        // Move old node
-        //        Vector3 startPos = lastNode.transform.position;
-        //        Vector3 endPos = lastNode.NextPointer.GetPointedPosition();
-
-        //        //lastNode.transform
-        //        lastNode.LeanMove(endPos, m_AnimDownwardDur);
-
-        //        bool moved = false;
-        //        LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
-        //            .setOnUpdate((float val) =>
-        //            {
-        //                Debug.Log("Point Update");
-        //                next.LookAtNoAnim(newNode);
-        //                newNode.NextPointer.LookAtNoAnim(lastNode);
-
-        //            })
-        //            .setOnComplete(() => {
-        //                moved = true;
-        //            }
-        //        );
-        //        yield return new WaitUntil(() => moved);
-        //    }
-        //    else
-        //    {
-
-        //        bool moved = false;
-        //        LeanTween.move(newNode.gameObject, next.GetPointedPosition(), m_AnimDownwardDur)
-        //            .setOnUpdate((float val) =>
-        //            {
-        //                Debug.Log("Point Update");
-        //                next.LookAtNoAnim(newNode);
-        //            })
-        //            .setOnComplete(() => {
-        //                moved = true;
-        //            }
-        //        );
-        //        yield return new WaitUntil(() => moved);
+                // Delete Node to delete
+                Destroy(nodeToRemove.Data.key.gameObject);
+                Destroy(nodeToRemove.Data.value.gameObject);
+                Destroy(nodeToRemove.gameObject);
+                m_TempPtr.gameObject.SetActive(false);
+                m_Size--;
 
 
-        //        next.PointToNoAnim(newNode);
-        //    }
+                if (nodeToRep != null)
+                {
+                    Vector3 _pos = currPointer.GetPointedPosition();
+                    nodeToRep.LeanMoveWithData(_pos, m_NodeMoveAnimDur);
+                    yield return new WaitForSeconds(m_NodeMoveAnimDur);
+                }
 
-        //    m_Size++;
-        //    m_Current.PointToNoAnim(m_Head);
+                yield return new WaitForSeconds(0.2f);
+            }
 
-        //    Debug.Log(value + " is inserted.");
-        ////}
+            onFinished.Invoke(true, "Operation is successful");
+
+        }
+
+    }
 
         //public IEnumerator Delete(int pos)
         //{
@@ -561,7 +608,4 @@ namespace Concepto
 
         //    m_Size = 0;
         //}
-    }
-
-
 }

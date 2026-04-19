@@ -1,4 +1,5 @@
 using NUnit.Framework.Constraints;
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -63,6 +64,63 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
     {
         m_Controller.Close();
         yield return new WaitForSeconds(m_BoxOpenDur);
+    }
+
+    //public void LeanMoveWithData(Vector3 pos, float time)
+    //{
+    //    LeanTween.cancel(transform.gameObject);
+    //    transform.LeanMove(pos, time)
+    //        .setOnUpdate((float t) =>
+    //        {
+    //            if (m_Data != null)
+    //            {
+    //                m_Data.key.transform.position = m_BoxInsertTransform.position + m_KeyValueSeperation;
+    //                m_Data.value.transform.position = m_BoxInsertTransform.position - m_KeyValueSeperation;
+    //            }
+
+    //            HashmapNode next = NextPointer.GetData();
+    //            if (next != null)
+    //            {
+    //                next.MoveWithData(NextPointer.GetPointedPosition());
+    //            }
+    //        });
+    //}
+    public void LeanMoveWithData(Vector3 pos, float time)
+    {
+        //LeanTween.cancel(transform.gameObject);
+        HashmapNode next = NextPointer.GetData();
+
+        transform.LeanMove(pos, time)
+            .setOnUpdate((float t) => {
+                if (next != null)
+                {
+                    Debug.Log($"Moving node at Pos: {pos}, moving child at: {next.NextPointer.GetPointedPosition()}");
+                    next.MoveWithData(NextPointer.GetPointedPosition());
+
+                }
+                if (m_Data != null)
+                {
+                    m_Data.key.transform.position = m_BoxInsertTransform.position + m_KeyValueSeperation;
+                    m_Data.value.transform.position = m_BoxInsertTransform.position - m_KeyValueSeperation;
+                }
+            });
+    }
+
+    public void MoveWithData(Vector3 pos)
+    {
+        transform.position = pos;
+        if (m_Data != null)
+        {
+            m_Data.key.transform.position = m_BoxInsertTransform.position + m_KeyValueSeperation;
+            m_Data.value.transform.position = m_BoxInsertTransform.position - m_KeyValueSeperation;
+        }
+        
+        HashmapNode next = NextPointer.GetData();
+        if (next != null)
+        {
+            next.MoveWithData(NextPointer.GetPointedPosition());
+        }
+
     }
 
     public IEnumerator SetDataAnimated(HashmapNodeData data)

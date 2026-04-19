@@ -1,7 +1,11 @@
 using Concepto;
 using Concepto.HashMap;
+using System;
 using System.Collections;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class SpatialHashmap : MonoBehaviour
 {
@@ -11,9 +15,6 @@ public class SpatialHashmap : MonoBehaviour
     [SerializeField] int m_NumOfLists = Concepto.HashMap.HashFunc.NumBoxes;
     [SerializeField] Transform m_ArrStartTransform;
     [SerializeField] Vector3 m_ArrOffset;
-
-
-
 
     [SerializeField] Printer m_ScriptedPrinter;
 
@@ -122,7 +123,7 @@ public class SpatialHashmap : MonoBehaviour
                 }
 
                 keyPaper.RemoveInteractivity();
-                
+
 
                 Paper valuePaper = null;
                 {
@@ -148,7 +149,20 @@ public class SpatialHashmap : MonoBehaviour
 
                 yield return Insert(keyPaper, valuePaper);
             }
-           
+            else if (command == "remove")
+            {
+                string keyString = parts[1];
+
+                Paper key = null;
+                yield return StringToPaper(keyString, Paper.PAPER_TYPE.Hashkey, (Paper p) =>
+                {
+                    key = p;
+                });
+
+                Debug.Assert(key != null);
+                yield return Remove(key);
+            }
+
             else
             {
                 Debug.Log($"Invalid command: {command}");
@@ -160,6 +174,32 @@ public class SpatialHashmap : MonoBehaviour
         m_CommandCoroutine = null;
         yield break;
 
+    }
+
+    public IEnumerator StringToPaper(string input, Paper.PAPER_TYPE paperType,  System.Action<Paper> onFinished)
+    {
+        Paper keyPaper = null;
+        {
+            bool accepted = false;
+            bool finished = false;
+            while (!accepted)
+            {
+                accepted = m_ScriptedPrinter.PrintNoAnim(input, (Paper p) =>
+                {
+                    keyPaper = p;
+                    p.transform.SetParent(transform);
+                    finished = true;
+                }, Paper.PAPER_TYPE.Data);
+
+                // wait for next frame
+                yield return null;
+            }
+
+            yield return new WaitUntil(() => finished);
+
+        }
+
+        onFinished.Invoke(keyPaper);
     }
 
     public IEnumerator Insert(Paper key, Paper value)
@@ -224,8 +264,68 @@ public class SpatialHashmap : MonoBehaviour
     //    //
     //}
 
-    //public IEnumerator Remove(Paper key)
-    //{
-    //    //
-    //}
+    public IEnumerator Remove(Paper key)
+    {
+        key.RemoveInteractivity();
+
+        Paper index = null;
+        m_HashFuncDev.OnPaperPrinted.AddListener((Paper p) =>
+        {
+            index = p;
+        });
+
+        
+        // Hash
+        yield return m_HashFuncDev.Hash(key);
+
+        Debug.Assert(index != null);
+
+        int indexValue;
+        if (!int.TryParse(index.data, out indexValue))
+        {
+            Debug.LogError($"Paper Index has non integer value of : {index.data}");
+            yield break;
+        }
+
+
+        // Move to transit height 
+        {
+            Quaternion startRot = index.transform.rotation;
+            Quaternion endRot = m_TransitHeightTransform.rotation;
+            Vector3 pos = index.transform.position;
+            pos.y = m_TransitHeightTransform.position.y;
+            index.transform.LeanMove(pos, m_ToTransitHeightDur)
+                .setOnUpdate((float f) =>
+                {
+                    index.transform.rotation = Quaternion.Slerp(startRot, endRot, f / m_ToTransitHeightDur);
+                });
+            yield return new WaitForSeconds(m_ToTransitHeightDur);
+        }
+
+        // Move to index pos
+        {
+            Vector3 pos = GetIndexPos(indexValue);
+            index.transform.LeanMove(pos, m_ToIndexPosDur);
+            yield return new WaitForSeconds(m_ToIndexPosDur);
+        }
+
+        // Linked Lists Insert
+        {
+            yield return m_LinkedListsArr[indexValue].Remove(key, 
+                (bool success, string message) =>
+                {
+                    if (success)
+                    {
+                        Debug.Log($"Node with key: {key.data} is removed");
+                        Destroy(key.gameObject);
+                        Destroy(index.gameObject);
+                    }
+                    else
+                    {
+                        Debug.LogWarning(message);
+                    }
+                });
+        }
+
+    }
 }
