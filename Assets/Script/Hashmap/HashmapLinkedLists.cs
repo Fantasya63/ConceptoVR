@@ -357,255 +357,79 @@ namespace Concepto
 
         }
 
+
+        public IEnumerator Retrieve(Paper key, System.Action<bool, string, Paper> onFinished)
+        {
+            if (m_Head.GetData() == null)
+            {
+                Debug.Log("List is empty.");
+                yield break;
+            }
+
+            // Check if we are removing at the start of the lists
+            {
+                HashmapNode node = m_Head.GetData();
+                bool isEqual = false;
+
+                // Check if they have the same key
+                yield return node.AnimatedCheckIfEqual(key,
+                    (bool _isEqual) =>
+                    {
+                        isEqual = _isEqual;
+                    }
+                );
+                yield return m_Head.GetData().Close();
+
+                if (isEqual)
+                {
+                    onFinished.Invoke(true, "Operation is successful", node.Data.value);
+                    yield break;
+                }
+                else
+                {
+                    m_Current.PointToNoAnim(m_Head.GetData());
+
+                    bool foundKey = false;
+
+                    while (!foundKey)
+                    {
+                        // Bounds Check
+                        if (m_Current.GetData().NextPointer.GetData() == null)
+                        {
+                            string message = $"Error: Key is not found: {key.data}";
+                            onFinished.Invoke(false, message, null);
+                            yield break;
+                        }
+
+                        // Check if they have the same key
+                        yield return m_Current.GetData().NextPointer.GetData().AnimatedCheckIfEqual(key,
+                            (bool _isEqual) =>
+                            {
+                                foundKey = _isEqual;
+                            }
+                        );
+                        yield return m_Current.GetData().NextPointer.GetData().Close();
+
+
+                        if (foundKey)
+                        {
+                            onFinished.Invoke(true, "Operation is successful", m_Current.GetData().NextPointer.GetData().Data.value);
+                            yield break;
+                        }
+                        else
+                        {
+
+
+
+                            yield return m_Current.GetData().NextPointer.GetData().Close();
+
+                            // Continue moving
+                            yield return m_Current.PointTo(m_Current.GetData().NextPointer);
+                        }
+
+                    }
+                }
+            }
+        }
     }
-
-        //public IEnumerator Delete(int pos)
-        //{
-        //    if (pos < 0)
-        //        pos = m_Size - 1;
-
-        //    m_TempPtr.gameObject.SetActive(false);
-
-        //    if (m_Head.GetData() == null)
-        //    {
-        //        Debug.Log("List is empty.");
-        //        yield break;
-        //    }
-
-        //    // Bounds Check
-        //    if (pos >= m_Size)
-        //    {
-        //        Debug.Log($"Aborting Deletion at pos: {pos}. Pos it out of bounds. Size: {m_Size}");
-        //        yield break;
-        //    }
-
-        //    SpatialPointer currPointer = null;
-        //    SpatialNode nodeToDelete = null;
-        //    // If deleting from the start
-        //    if (pos == 0)
-        //    {
-        //        currPointer = m_Head;
-        //        nodeToDelete = m_Head.GetData();
-        //    }
-        //    else
-        //    {
-
-        //        int currentPos = 0;
-        //        m_Current.PointToNoAnim(m_Head);
-
-        //        while (currentPos + 1 < pos)
-        //        {
-        //            yield return m_Current.PointTo(m_Current.GetData().NextPointer);
-        //            currentPos++;
-        //        }
-
-        //        currPointer = m_Current.GetData().NextPointer;
-        //        nodeToDelete = currPointer.GetData();
-        //    }
-
-
-        //    Debug.Assert(currPointer != null);
-        //    Debug.Assert(nodeToDelete != null);
-
-        //    SpatialNode nodeToRep = nodeToDelete.NextPointer.GetData(); // Can be null if deleting the last node in the list
-        //    {
-        //        m_TempPtr.gameObject.SetActive(true);
-        //        m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
-
-        //        // Animate node upwards
-        //        bool moved = false;
-        //        nodeToDelete.gameObject.LeanMove(nodeToDelete.transform.position + m_DelNodeMoveOffset, m_NodeMoveAnimDur)
-        //            .setOnUpdate((float time) => {
-        //                currPointer.LookAtNoAnim(nodeToDelete);
-        //                m_TempPtr.PointToNoAnim(nodeToDelete);
-
-        //                if (nodeToRep != null)
-        //                    nodeToDelete.NextPointer.LookAtNoAnim(nodeToRep);
-        //            })
-        //            .setOnComplete(() => moved = true);
-
-        //        yield return new WaitUntil(() => moved);
-        //    }
-
-        //    {
-        //        // Set current node's next to the nodeToRep
-        //        yield return currPointer.LookAt(nodeToRep);
-
-        //        // Delete Node to delete
-        //        Destroy(nodeToDelete.gameObject);
-        //        m_TempPtr.gameObject.SetActive(false);
-        //        m_Size--;
-
-
-        //        if (nodeToRep != null)
-        //        {
-        //            Vector3 _pos = currPointer.GetPointedPosition();
-        //            nodeToRep.LeanMove(_pos, m_NodeMoveAnimDur);
-        //            yield return new WaitForSeconds(m_NodeMoveAnimDur);
-        //        }
-
-        //        yield return new WaitForSeconds(0.2f);
-        //    }
-        //}
-
-        //public IEnumerator DeleteWithNarration(
-        //    int pos, AudioSource voiceSource,
-        //    AudioClip nowSuppose,
-        //    AudioClip nextWeCreate,
-        //    AudioClip afterThatWeSet,
-        //    AudioClip thenWeCanSafely)
-        //{
-        //    m_TempPtr.gameObject.SetActive(false);
-
-        //    if (m_Head.GetData() == null)
-        //    {
-        //        Debug.Log("List is empty.");
-        //        yield break;
-        //    }
-
-        //    // Bounds Check
-        //    if (pos < 0 || pos >= m_Size)
-        //    {
-        //        Debug.Log($"Aborting Deletion at pos: {pos}. Pos it out of bounds. Size: {m_Size}");
-        //        yield break;
-        //    }
-
-        //    voiceSource.clip = nowSuppose;
-        //    voiceSource.Play();
-
-
-        //    int currentPos = 0;
-        //    m_Current.PointToNoAnim(m_Head);
-
-        //    while (currentPos + 1 < pos)
-        //    {
-        //        yield return m_Current.PointTo(m_Current.GetData().NextPointer);
-        //        currentPos++;
-        //    }
-
-        //    yield return new WaitUntil(() => !voiceSource.isPlaying);
-
-        //    SpatialNode currentNode = m_Current.GetData();
-        //    SpatialNode nodeToDelete = currentNode.NextPointer.GetData();
-
-        //    Debug.Assert(currentNode != null);
-        //    Debug.Assert(nodeToDelete != null);
-
-        //    SpatialNode nodeToRep = nodeToDelete.NextPointer.GetData(); // Can be null if deleting the last node in the list
-
-        //    {
-        //        voiceSource.clip = nextWeCreate;
-        //        voiceSource.Play();
-
-        //        m_TempPtr.gameObject.SetActive(true);
-        //        m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
-
-
-
-        //        // Animate node upwards
-        //        bool moved = false;
-        //        nodeToDelete.gameObject.LeanMove(nodeToDelete.transform.position + m_DelNodeMoveOffset, m_NodeMoveAnimDur)
-        //            .setOnUpdate((float time) => {
-        //                currentNode.NextPointer.LookAtNoAnim(nodeToDelete);
-        //                m_TempPtr.PointToNoAnim(nodeToDelete);
-
-        //                if (nodeToRep != null)
-        //                    nodeToDelete.NextPointer.LookAtNoAnim(nodeToRep);
-        //            })
-        //            .setOnComplete(() => moved = true);
-
-        //        yield return new WaitUntil(() => moved);
-        //        yield return new WaitUntil(() => !voiceSource.isPlaying);
-
-        //    }
-
-        //    {
-        //        voiceSource.clip = afterThatWeSet;
-        //        voiceSource.Play();
-
-        //        // Set current node's next to the nodeToRep
-        //        yield return currentNode.NextPointer.LookAt(nodeToRep);
-
-        //        yield return new WaitUntil(() => !voiceSource.isPlaying);
-
-        //        voiceSource.clip = thenWeCanSafely;
-        //        voiceSource.Play();
-
-        //        // Delete Node to delete
-        //        Destroy(nodeToDelete.gameObject);
-        //        m_TempPtr.gameObject.SetActive(false);
-        //        m_Size--;
-
-
-        //        if (nodeToRep != null)
-        //        {
-        //            Vector3 _pos = currentNode.NextPointer.GetPointedPosition();
-        //            nodeToRep.LeanMove(_pos, m_NodeMoveAnimDur);
-        //            yield return new WaitForSeconds(m_NodeMoveAnimDur);
-        //        }
-
-        //        yield return new WaitUntil(() => !voiceSource.isPlaying);
-        //    }
-        //}
-
-        //public IEnumerator Traverse(int pos = -1, bool resetCurrent = true)
-        //{
-        //    if (pos < 0 || pos > m_Size - 1)
-        //    {
-        //        pos = m_Size;
-        //    }
-
-        //    if (m_Head.GetData() == null)
-        //    {
-        //        Debug.Log("List is empty.");
-        //        yield break;
-        //    }
-
-        //    m_Current.PointToNoAnim(m_Head);
-
-        //    //Node temp = head;
-
-        //    string output = "List: ";
-        //    int currPos = -1;
-        //    while (m_Current.GetData() != null && currPos + 1 < pos)
-        //    {
-        //        output += m_Current.GetData().Data + " -> ";
-        //        //temp = temp.next;
-        //        yield return m_Current.PointTo(m_Current.GetData().NextPointer);
-        //        currPos++;
-        //    }
-
-        //    output += "NULL";
-
-        //    if (resetCurrent)
-        //    {
-        //        m_Current.PointToNoAnim(m_Head);
-        //    }
-        //    Debug.Log(output);
-        //}
-
-        //private void OnDestroy()
-        //{
-        //    CleanupAllNodes();
-        //}
-
-        //void CleanupAllNodes()
-        //{
-        //    if (m_Head == null) return;
-
-        //    SpatialNode current = m_Head.GetData();
-
-        //    while (current != null)
-        //    {
-        //        SpatialNode next = current.NextPointer != null
-        //            ? current.NextPointer.GetData()
-        //            : null;
-
-        //        Destroy(current.gameObject);
-        //        current = next;
-        //    }
-
-
-        //    m_Size = 0;
-        //}
 }

@@ -17,6 +17,9 @@ public class SpatialHashmap : MonoBehaviour
     [SerializeField] Vector3 m_ArrOffset;
 
     [SerializeField] Printer m_ScriptedPrinter;
+    [SerializeField] Transform m_RetrievedValTransform;
+    [SerializeField] float m_ToRetrievedValDur = 2.0f;
+    [SerializeField] float m_ToRetrievedValShowDur = 3.0f;
 
     // Type command in Inspector 
     [SerializeField] string[] m_Commands;
@@ -52,6 +55,7 @@ public class SpatialHashmap : MonoBehaviour
         Debug.Assert(m_ArrStartTransform != null);
         Debug.Assert(m_ArrOffset.sqrMagnitude > 0);
         Debug.Assert(m_TransitHeightTransform != null);
+        Debug.Assert(m_RetrievedValTransform != null);
 
         m_LinkedListsArr = new HashmapLinkedLists[m_NumOfLists];
 
@@ -162,7 +166,19 @@ public class SpatialHashmap : MonoBehaviour
                 Debug.Assert(key != null);
                 yield return Remove(key);
             }
+            else if (command == "retrieve")
+            {
+                string keyString = parts[1];
 
+                Paper key = null;
+                yield return StringToPaper(keyString, Paper.PAPER_TYPE.Hashkey, (Paper p) =>
+                {
+                    key = p;
+                });
+
+                Debug.Assert(key != null);
+                yield return Retrieve(key);
+            }
             else
             {
                 Debug.Log($"Invalid command: {command}");
@@ -259,10 +275,92 @@ public class SpatialHashmap : MonoBehaviour
         Debug.Log($"Paper is: {index.name}");
     }
 
-    //public IEnumerator Retrieve(Paper key)
-    //{
-    //    //
-    //}
+    public IEnumerator Retrieve(Paper key)
+    {
+        key.RemoveInteractivity();
+
+        Paper index = null;
+        m_HashFuncDev.OnPaperPrinted.AddListener((Paper p) =>
+        {
+            index = p;
+        });
+
+
+        // Hash
+        yield return m_HashFuncDev.Hash(key);
+
+        Debug.Assert(index != null);
+
+        int indexValue;
+        if (!int.TryParse(index.data, out indexValue))
+        {
+            Debug.LogError($"Paper Index has non integer value of : {index.data}");
+            yield break;
+        }
+
+
+        // Move to transit height 
+        {
+            Quaternion startRot = index.transform.rotation;
+            Quaternion endRot = m_TransitHeightTransform.rotation;
+            Vector3 pos = index.transform.position;
+            pos.y = m_TransitHeightTransform.position.y;
+            index.transform.LeanMove(pos, m_ToTransitHeightDur)
+                .setOnUpdate((float f) =>
+                {
+                    index.transform.rotation = Quaternion.Slerp(startRot, endRot, f / m_ToTransitHeightDur);
+                });
+            yield return new WaitForSeconds(m_ToTransitHeightDur);
+        }
+
+        // Move to index pos
+        {
+            Vector3 pos = GetIndexPos(indexValue);
+            index.transform.LeanMove(pos, m_ToIndexPosDur);
+            yield return new WaitForSeconds(m_ToIndexPosDur);
+        }
+
+
+        // Linked Lists Retrive
+        {
+            bool success = false;
+            string message = null;
+            Paper paper = null;
+
+            yield return m_LinkedListsArr[indexValue].Retrieve(key,
+                (bool _success, string _message, Paper _paper) =>
+                {
+                    success = _success;
+                    message = _message;
+                    paper = _paper;
+                });
+
+
+
+            if (success)
+            {
+                Paper newPaper = Instantiate(paper);
+                newPaper.transform.position = paper.transform.position;
+                newPaper.transform.rotation = paper.transform.rotation;
+                newPaper.GetComponent<MeshRenderer>().material = paper.GetComponent<MeshRenderer>().material;
+                newPaper.RemoveInteractivity();
+
+                newPaper.transform.LeanMove(m_RetrievedValTransform.position, m_ToRetrievedValDur);
+                yield return new WaitForSeconds(m_ToRetrievedValDur);
+
+                yield return new WaitForSeconds(m_ToRetrievedValShowDur);
+
+                Destroy(key.gameObject);
+                Destroy(index.gameObject);
+                Destroy(newPaper.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning(message);
+            }
+        }
+
+    }
 
     public IEnumerator Remove(Paper key)
     {

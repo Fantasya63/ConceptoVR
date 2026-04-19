@@ -3965,16 +3965,13 @@ MonoBehaviour:
   m_ArrStartTransform: {fileID: 16179835}
   m_ArrOffset: {x: 0, y: 0, z: 0.3}
   m_ScriptedPrinter: {fileID: 2016302441}
+  m_RetrievedValTransform: {fileID: 2034725464}
+  m_ToRetrievedValDur: 2
+  m_ToRetrievedValShowDur: 3
   m_Commands:
   - insert abc 53
   - insert abd 53
-  - insert abd 532
-  - insert abj 32
-  - insert abp 32
-  - insert abv 322
-  - remove abj
-  - remove abd
-  - remove abd
+  - retrieve abc
   m_GrowDur: 0.5
   m_TransitHeightTransform: {fileID: 1694818901}
   m_ToTransitHeightDur: 1
@@ -12617,6 +12614,37 @@ Transform:
   m_Children:
   - {fileID: 1869398564}
   m_Father: {fileID: 1708361629}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2034725463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2034725464}
+  m_Layer: 0
+  m_Name: ShowRetrievedValTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2034725464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034725463}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.158, z: -0.423}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2059741032
 GameObject:
@@ -21611,3 +21639,4 @@ SceneRoots:
   - {fileID: 1547784893}
   - {fileID: 592662145}
   - {fileID: 9120261323966171573}
+  - {fileID: 2034725464}
