@@ -71,10 +71,7 @@ namespace Concepto
 
         //    m_CommandCoroutine = null;
         //    yield break;
-
         //}
-
-
 
         public IEnumerator Insert(Paper key, Paper value, int pos = -1)
         {
@@ -83,6 +80,9 @@ namespace Concepto
                 pos = m_Size;
                 Debug.Log($"Negative Pos detected, retrying to insert at Pos: {pos}");
             }
+
+            HashmapNodeData nodeData = new HashmapNodeData(key, value);
+
 
             Debug.Log($"Inserting: {value} at {pos}.");
             HashmapNode newNode = Instantiate(m_HashmapNodePrefab, transform);
@@ -95,7 +95,6 @@ namespace Concepto
                 newNode.gameObject.SetActive(true);
                 yield return (m_Head.PointTo(newNode));
 
-                HashmapNodeData nodeData = new HashmapNodeData(key, value);
 
                 yield return newNode.SetDataAnimated(nodeData);
 
@@ -126,14 +125,26 @@ namespace Concepto
             while (currentPos + 1 < pos)
             {
                 HashmapNode currentNode = m_Current.GetData();
+                bool isEqual = false;
 
                 // Check if they have the same key
-                yield return currentNode.AnimatedInsertIfEqual(key, value,
-                    (bool isEqual) =>
+                yield return currentNode.AnimatedCheckIfEqual(key,
+                    (bool _isEqual) =>
                     {
-                        Debug.Log("sameeeee");
+                        isEqual = _isEqual;
                     }
                 );
+
+                if (isEqual)
+                {
+                    yield return currentNode.AnimatedReplaceValue(key, value);
+                    Destroy(key.gameObject);
+                    yield break;
+                }
+                else
+                {
+                    yield return currentNode.Close();
+                }
 
 
                 // Move to next node
@@ -207,6 +218,8 @@ namespace Concepto
 
                 next.PointToNoAnim(newNode);
             }
+
+            yield return newNode.SetDataAnimated(nodeData);
 
             m_Size++;
             m_Current.PointToNoAnim(m_Head);

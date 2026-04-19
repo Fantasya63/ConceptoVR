@@ -972,7 +972,14 @@ MonoBehaviour:
   m_KeyValueSeperation: {x: 0, y: 0, z: 0.04465}
   m_BoxOpenDur: 1
   m_InsertPauseDur: 1
+  m_PaperShrinkDur: 0.5
+  m_ReplaceAndInsertWait: 1
   m_KeyValueIndicator: {fileID: 3978397677290415920}
+  m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
+  m_ErrorColor: {r: 1, g: 0, b: 0, a: 1}
+  m_SuccessColor: {r: 0, g: 1, b: 0, a: 1}
+  m_FlashDur: 0.2
+  m_NumOfFlash: 3
 --- !u!1 &5102603271107545665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,9 +1028,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HashmapNodePointer
   m_DataLabel: {fileID: 0}
   m_ArrowObject: {fileID: 914649092347414595}
-  m_Offset: {x: 0, y: 0.25, z: 0}
+  m_Offset: {x: 0, y: 0, z: 0.3}
   m_RotAngle: {x: 0, y: 0, z: 0}
-  m_IsStationary: 0
+  m_IsStationary: 1
   m_AnimDuration: 1
   m_TweenType: 4
   ShowDataValOnLabel: 0

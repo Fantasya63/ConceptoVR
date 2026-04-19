@@ -3968,6 +3968,9 @@ MonoBehaviour:
   m_Commands:
   - insert abc 53
   - insert abd 53
+  - insert abd 532
+  - insert abj 32
+  - insert abp 32
   m_GrowDur: 0.5
   m_TransitHeightTransform: {fileID: 1694818901}
   m_ToTransitHeightDur: 1

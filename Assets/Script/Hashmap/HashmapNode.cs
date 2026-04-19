@@ -26,6 +26,8 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
     [SerializeField] Vector3 m_KeyValueSeperation = Vector3.forward * 0.1f;
     [SerializeField] float m_BoxOpenDur = 1.0f;
     [SerializeField] float m_InsertPauseDur = 0.5f;
+    [SerializeField] float m_PaperShrinkDur = 0.5f;
+    [SerializeField] float m_ReplaceAndInsertWait = 1.0f;
 
     [SerializeField] GameObject m_KeyValueIndicator;
 
@@ -35,6 +37,9 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
     [SerializeField] Color m_SuccessColor = Color.green;
     [SerializeField] float m_FlashDur = 0.2f;
     [SerializeField] int m_NumOfFlash = 3;
+
+
+
 
     float m_TotalFlashDur = 0.0f;
     Coroutine m_KeyErrCoroutine = null;
@@ -51,6 +56,13 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
     public override HashmapNodeData Data {
         get => m_Data;
         set => m_Data = value; 
+    }
+
+
+    public IEnumerator Close()
+    {
+        m_Controller.Close();
+        yield return new WaitForSeconds(m_BoxOpenDur);
     }
 
     public IEnumerator SetDataAnimated(HashmapNodeData data)
@@ -196,7 +208,7 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
     }
 
 
-    public IEnumerator AnimatedInsertIfEqual(Paper otherKey, Paper otherValue, Action<bool> onFinish)
+    public IEnumerator AnimatedCheckIfEqual(Paper otherKey, Action<bool> onFinish)
     {
         Outline keyOutline;
         if (!m_Data.key.gameObject.TryGetComponent<Outline>(out keyOutline))
@@ -229,6 +241,7 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
 
             m_Data.key.transform.LeanMove(keyPos, m_ToInsertPosDur);
             otherKey.transform.LeanMove(otherKeyPos, m_ToInsertPosDur);
+            yield return new WaitForSeconds(m_ToInsertPosDur);
         }
 
         // Check if they are equal
@@ -247,6 +260,49 @@ public class HashmapNode : BaseNode<HashmapNodeData, HashmapNodePointer, Hashmap
             yield return new WaitForSeconds(m_TotalFlashDur);
 
         }
+        
+        m_Data.key.transform.position = m_BoxInsertTransform.position + m_KeyValueSeperation;
+
+
         onFinish.Invoke(isEqual);
+    }
+
+    public IEnumerator AnimatedReplaceValue(Paper newKey, Paper newValue)
+    {
+        Debug.Assert(newValue != null);
+        Debug.Assert(m_Data.value != null);
+
+        newKey.gameObject.SetActive(false);
+        Vector3 valuePos = m_NodeValuesQuerryTransform.position - m_KeyValueSeperation;
+
+        // Move to Querry Pos
+        {
+            m_Data.value.transform.LeanMove(valuePos, m_ToInsertPosDur);
+            yield return new WaitForSeconds(m_ToInsertPosDur);
+        }
+
+        // Hide Old Value
+        m_Data.value.gameObject.SetActive(false);
+        
+        yield return new WaitForSeconds(m_ReplaceAndInsertWait);
+
+        // Insert Value
+        {
+            newValue.transform.position = valuePos;
+            newValue.transform.rotation = m_NodeValuesQuerryTransform.rotation;
+
+            Vector3 insertedPos = m_BoxInsertTransform.position - m_KeyValueSeperation;
+            newValue.transform.LeanMove(insertedPos, m_ToInsertPosDur);
+            yield return new WaitForSeconds(m_ToInsertPosDur);
+        }
+
+        // Update internal values
+        {
+            Destroy(m_Data.value.gameObject);
+            m_Data.value = newValue;
+        }
+
+        m_Controller.Close();
+        yield return new WaitForSeconds(m_BoxOpenDur);
     }
 }

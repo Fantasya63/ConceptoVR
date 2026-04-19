@@ -592,7 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HashmapNodePointer
   m_DataLabel: {fileID: 0}
   m_ArrowObject: {fileID: 1052855077363326685}
-  m_Offset: {x: 0, y: 0, z: 0.3}
+  m_Offset: {x: 0, y: 0, z: -0.391}
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 0
   m_AnimDuration: 1
@@ -1322,7 +1322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HashmapNodePointer
   m_DataLabel: {fileID: 0}
   m_ArrowObject: {fileID: 9149326811175027797}
-  m_Offset: {x: 0, y: 0, z: 0.3}
+  m_Offset: {x: 0, y: 0, z: -0.391}
   m_RotAngle: {x: 0, y: 0, z: 0}
   m_IsStationary: 0
   m_AnimDuration: 1
