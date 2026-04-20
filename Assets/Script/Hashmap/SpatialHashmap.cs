@@ -434,6 +434,14 @@ public class SpatialHashmap : MonoBehaviour
             if (!success)
             {
                 onFinished.Invoke(false, message);
+
+                if (index != null)
+                {
+                    m_TempObjects.Remove(index.gameObject);
+                    Destroy(index.gameObject);
+                }
+
+
                 Debug.LogWarning(message);
 
                 yield break;
@@ -454,8 +462,11 @@ public class SpatialHashmap : MonoBehaviour
                 Destroy(key.gameObject);
             
             if (index != null)
+            {
+                m_TempObjects.Remove(index.gameObject);
                 Destroy(index.gameObject);
-            
+            }
+
             if (newPaper != null)
                 Destroy(newPaper.gameObject);
 
