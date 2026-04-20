@@ -464,7 +464,10 @@ public class SpatialHashmap : MonoBehaviour
         int indexValue;
         if (!int.TryParse(index.data, out indexValue))
         {
-            Debug.LogError($"Paper Index has non integer value of : {index.data}");
+            //Debug.LogError($"Paper Index has non integer value of : {index.data}");
+            onFinished.Invoke(false, $"Paper Index has non integer value of : {index.data}");
+            Destroy(index.gameObject);
+
             yield break;
         }
 
@@ -510,6 +513,9 @@ public class SpatialHashmap : MonoBehaviour
                     onFinished.Invoke(success, message);
                 });
         }
+
+        if (index != null)
+            Destroy(index.gameObject);
 
     }
 }
