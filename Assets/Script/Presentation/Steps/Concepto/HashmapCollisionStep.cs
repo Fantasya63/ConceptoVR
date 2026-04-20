@@ -87,6 +87,7 @@ namespace Canvas
                 m_PaperKeyValuesInstances[i] = new PaperKeyValue(null, null);
             }
         }
+        Paper[] m_PrintedIndexes;
 
         private void Start()
         {
@@ -105,7 +106,7 @@ namespace Canvas
 
             for (int i = 0; i < 2; i++)
             {
-                HashFuncDevice instance = Instantiate(m_ScriptHashFuncDevPrefab);
+                HashFuncDevice instance = Instantiate(m_ScriptHashFuncDevPrefab, transform);
                 m_TempObjects.Add(instance.gameObject);
 
                 instance.transform.position = m_ScriptHashFuncDevStartTransform.position + m_HashFuncDevOffset * i;
@@ -118,6 +119,7 @@ namespace Canvas
                 m_ScriptHashFuncDevInstances[i] = instance;
             }
 
+            m_PrintedIndexes = new Paper[m_PaperKeyValuesInstances.Length];
         }
 
         public override void Activate()
@@ -182,7 +184,6 @@ namespace Canvas
 
             yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
 
-            Paper[] printedIndexes = new Paper[m_PaperKeyValuesInstances.Length];
             {
                 Debug.Log("PaperColisionTest");
                 Debug.Log($"Length: {m_PaperKeyValuesInstances.Length}");
@@ -200,7 +201,7 @@ namespace Canvas
                     m_ScriptHashFuncDevInstances[currIndex].OnPaperPrinted.AddListener((Paper p) =>
                     {
                         Debug.Log("Hash");
-                        printedIndexes[currIndex] = p;
+                        m_PrintedIndexes[currIndex] = p;
                         m_HasPrintedArr[currIndex] = true;
                     });
 
@@ -239,10 +240,10 @@ namespace Canvas
 
             // Move Paper into key position:
             {
-                Outline[] outlines = new Outline[printedIndexes.Length];
-                for (int i = 0; i < printedIndexes.Length; i++) 
+                Outline[] outlines = new Outline[m_PrintedIndexes.Length];
+                for (int i = 0; i < m_PrintedIndexes.Length; i++) 
                 {
-                    Paper indexPaper = printedIndexes[i];
+                    Paper indexPaper = m_PrintedIndexes[i];
                     Rigidbody rbody = indexPaper.GetComponent<Rigidbody>();
                     rbody.isKinematic = true;
 
@@ -295,6 +296,13 @@ namespace Canvas
                 m_SlideCoroutine = null;
             }
 
+            for (int i = 0; i < m_PrintedIndexes.Length; i++)
+            {
+                Paper p = m_PrintedIndexes[i];
+                if (p != null)
+                    Destroy(p.gameObject);
+            }
+
             for (int i = 0; i < m_PaperKeyValuesInstances.Length; i++)
             {
                 PaperKeyValue paperKeyValue = m_PaperKeyValuesInstances[i];
@@ -315,7 +323,7 @@ namespace Canvas
             {
                 foreach (var instance in m_BoxScriptinstances)
                 {
-                    Destroy(instance);
+                    Destroy(instance.gameObject);
                 }
             }
         }

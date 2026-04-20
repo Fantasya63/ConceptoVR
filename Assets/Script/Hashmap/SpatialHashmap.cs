@@ -226,8 +226,8 @@ public class SpatialHashmap : MonoBehaviour
             index = p;
         });
 
-        m_TempObjects.Add(index.gameObject);
         yield return m_HashFuncDev.Hash(key);
+        m_TempObjects.Add(index.gameObject);
 
         onComplete.Invoke(index);
 

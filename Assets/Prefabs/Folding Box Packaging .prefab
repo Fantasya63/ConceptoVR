@@ -906,7 +906,7 @@ MonoBehaviour:
 
 
     hashTable[{0}]
-    = "{1}";'
+    = ''{1}'';'
   - '// Retrieval
 
     string hashTable[]; // The internal array used by the hashmap
