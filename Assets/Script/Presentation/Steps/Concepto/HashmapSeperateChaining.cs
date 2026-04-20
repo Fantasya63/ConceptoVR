@@ -55,6 +55,8 @@ namespace Canvas {
             Debug.Assert(m_HashmapPrefab != null);
         }
 
+        List<GameObject> m_TempObjects = new List<GameObject>();
+
 
         public override void Activate()
         {
@@ -67,11 +69,11 @@ namespace Canvas {
             m_HashmapInstance = Instantiate(m_HashmapPrefab, transform);
             m_HashmapInstance.m_ScriptedPrinter = m_ScriptedPrinter;
             m_HashmapInstance.transform.position = m_SpatialHashmapPosTransform.position;
+            m_TempObjects.Add(m_HashmapInstance.gameObject);
 
             m_Coroutine = StartCoroutine(StepRoutine());
         }
 
-        List<GameObject> m_TempObjects = new List<GameObject>();
 
         IEnumerator StepRoutine()
         {
@@ -210,7 +212,7 @@ namespace Canvas {
 
             }
 
-            PlayAndWaitVoice(m_VoiceSource, m_ThisConcludesOurTopic);
+            yield return PlayAndWaitVoice(m_VoiceSource, m_ThisConcludesOurTopic);
 
             Debug.Log("Seperate Chaining step finished");
             Complete();
