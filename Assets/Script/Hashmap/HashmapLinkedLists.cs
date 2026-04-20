@@ -237,6 +237,7 @@ namespace Concepto
 
             HashmapNode nodeToRemove = null;
             HashmapNodePointer currPointer = null;
+            m_Current.PointToNoAnim(m_Head);
 
             // Check if we are removing at the start of the lists
             {
@@ -294,8 +295,6 @@ namespace Concepto
                         else
                         {
 
-                            
-                           
                                 yield return m_Current.GetData().NextPointer.GetData().Close();
                             
                             // Continue moving
@@ -313,7 +312,8 @@ namespace Concepto
             HashmapNode nodeToRep = nodeToRemove.NextPointer.GetData(); // Can be null if deleting the last node in the list
             {
                 m_TempPtr.gameObject.SetActive(true);
-                m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
+                HashmapNode currNode = m_Current.GetData();
+                m_TempPtr.PointToNoAnim(currNode.NextPointer);
 
                 // Animate node upwards
                 bool moved = false;

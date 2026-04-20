@@ -493,7 +493,7 @@ public class SpatialHashmap : MonoBehaviour
             yield return new WaitForSeconds(m_ToIndexPosDur);
         }
 
-        // Linked Lists Insert
+        // Linked Lists Remove
         {
             yield return m_LinkedListsArr[indexValue].Remove(key, 
                 (bool success, string message) =>

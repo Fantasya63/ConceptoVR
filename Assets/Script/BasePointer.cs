@@ -22,6 +22,13 @@ public abstract class BasePointer<TNode> : MonoBehaviour
     [SerializeField] protected LeanTweenType m_TweenType = LeanTweenType.easeInOutQuad;
     [SerializeField] protected bool ShowDataValOnLabel = false;
 
+    Quaternion m_DefaultRot = Quaternion.identity;
+
+    private void Awake()
+    {
+        m_DefaultRot = m_ArrowObject.transform.rotation;
+    }
+
 
     public void SetLabel(string label)
     {
@@ -96,7 +103,7 @@ public abstract class BasePointer<TNode> : MonoBehaviour
 
         if (node == null)
         {
-            m_ArrowObject.transform.rotation = Quaternion.identity;
+            m_ArrowObject.transform.rotation = m_DefaultRot;
             yield break;
         }
 
