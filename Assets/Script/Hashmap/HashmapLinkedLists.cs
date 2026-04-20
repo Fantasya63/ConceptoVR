@@ -363,6 +363,7 @@ namespace Concepto
             if (m_Head.GetData() == null)
             {
                 Debug.Log("List is empty.");
+                onFinished.Invoke(false, "List is empty.", null);
                 yield break;
             }
 
@@ -418,8 +419,6 @@ namespace Concepto
                         }
                         else
                         {
-
-
 
                             yield return m_Current.GetData().NextPointer.GetData().Close();
 

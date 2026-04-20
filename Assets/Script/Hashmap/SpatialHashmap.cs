@@ -389,6 +389,7 @@ public class SpatialHashmap : MonoBehaviour
         if (!int.TryParse(index.data, out indexValue))
         {
             Debug.LogError($"Paper Index has non integer value of : {index.data}");
+            Destroy(index.gameObject);
             yield break;
         }
 
