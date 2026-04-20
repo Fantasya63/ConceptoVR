@@ -217,7 +217,6 @@ public class SpatialHashmap : MonoBehaviour
         key.GetComponent<MeshRenderer>().material = _key.GetComponent<MeshRenderer>().material;
         key.RemoveInteractivity();
 
-        key.RemoveInteractivity();
         // Hash the key
         Paper index = null;
 
@@ -230,6 +229,8 @@ public class SpatialHashmap : MonoBehaviour
         m_TempObjects.Add(index.gameObject);
 
         onComplete.Invoke(index);
+        if (key != null)
+            Destroy(key.gameObject);
 
         yield break;
     }

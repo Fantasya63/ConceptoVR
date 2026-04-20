@@ -149,6 +149,7 @@ namespace Canvas {
                     secondKey = p;
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => secondKey != null);
+                secondKey.RemoveInteractivity();
 
                 secondKey.transform.position = m_KeyStartTransform.position;
                 secondKey.transform.rotation = m_KeyStartTransform.rotation;
@@ -159,7 +160,7 @@ namespace Canvas {
                     secondVal = p;
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => secondVal != null);
-
+                secondVal.RemoveInteractivity();
 
                 secondVal.transform.position = m_ValStartTransform.position;
                 secondVal.transform.rotation = m_ValStartTransform.rotation;
@@ -171,6 +172,9 @@ namespace Canvas {
                 yield return PlayAndWaitVoice(m_VoiceSource, m_HoweverIfThereIsANode);
                 yield return m_HashmapInstance.Insert(secondKey, secondVal);
 
+                if (secondKey != null)
+                    Destroy(secondKey.gameObject);
+
             }
 
             // Third key value pair
@@ -181,9 +185,11 @@ namespace Canvas {
                     _key = p;
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => _key != null);
+                _key.RemoveInteractivity();
 
                 _key.transform.position = m_KeyStartTransform.position;
                 _key.transform.rotation = m_KeyStartTransform.rotation;
+
 
                 Paper _val = null;
                 yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_ThirdValExample, (Paper p) =>
@@ -192,6 +198,7 @@ namespace Canvas {
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => _val != null);
 
+                _val.RemoveInteractivity();
                 _val.transform.position = m_ValStartTransform.position;
                 _val.transform.rotation = m_ValStartTransform.rotation;
 
