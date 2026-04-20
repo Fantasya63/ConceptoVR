@@ -13,9 +13,9 @@ namespace Canvas {
         [SerializeField] AudioSource m_VoiceSource;
         [SerializeField] SpatialHashmap m_HashmapPrefab;
         [SerializeField] Printer m_ScriptedPrinter;
-        [SerializeField] Transform m_KeyStartTransform;
         [SerializeField] Transform m_SpatialHashmapPosTransform;
-
+        [SerializeField] Transform m_KeyStartTransform;
+        [SerializeField] Transform m_ValStartTransform;
 
         [Header("Voice Overs")]
         [SerializeField] AudioClip m_OneMethod;
@@ -51,6 +51,7 @@ namespace Canvas {
             Debug.Assert(m_HoweverIfThereIsANode != null);
             Debug.Assert(m_ThisConcludesOurTopic != null);
             Debug.Assert(m_KeyStartTransform != null);
+            Debug.Assert(m_ValStartTransform != null);
 
             Debug.Assert(m_HashmapPrefab != null);
         }
@@ -95,13 +96,20 @@ namespace Canvas {
             yield return new WaitUntil(() => key != null);
             key.RemoveInteractivity();
 
+            key.transform.position = m_KeyStartTransform.position;
+            key.transform.rotation = m_KeyStartTransform.rotation;
+
             Paper val = null;
             yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_FirstValExample, (Paper p) =>
             {
                 val = p;
             }, Paper.PAPER_TYPE.Data);
+
             yield return new WaitUntil(() => val != null);
             val.RemoveInteractivity();
+
+            val.transform.position = m_ValStartTransform.position;
+            val.transform.rotation = m_ValStartTransform.rotation;
 
 
             Debug.Assert(val != null);
@@ -142,6 +150,8 @@ namespace Canvas {
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => secondKey != null);
 
+                secondKey.transform.position = m_KeyStartTransform.position;
+                secondKey.transform.rotation = m_KeyStartTransform.rotation;
 
                 Paper secondVal = null;
                 yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_SecondValExample, (Paper p) =>
@@ -150,6 +160,9 @@ namespace Canvas {
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => secondVal != null);
 
+
+                secondVal.transform.position = m_ValStartTransform.position;
+                secondVal.transform.rotation = m_ValStartTransform.rotation;
 
                 m_TempObjects.Add(secondKey.gameObject);
                 m_TempObjects.Add(secondVal.gameObject);
@@ -169,6 +182,8 @@ namespace Canvas {
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => _key != null);
 
+                _key.transform.position = m_KeyStartTransform.position;
+                _key.transform.rotation = m_KeyStartTransform.rotation;
 
                 Paper _val = null;
                 yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_ThirdValExample, (Paper p) =>
@@ -177,6 +192,8 @@ namespace Canvas {
                 }, Paper.PAPER_TYPE.Data);
                 yield return new WaitUntil(() => _val != null);
 
+                _val.transform.position = m_ValStartTransform.position;
+                _val.transform.rotation = m_ValStartTransform.rotation;
 
                 m_TempObjects.Add(_key.gameObject);
                 m_TempObjects.Add(_val.gameObject);
@@ -187,30 +204,30 @@ namespace Canvas {
 
             }
 
-            // Fourth key value pair
-            {
-                Paper _key = null;
-                yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_FourthKeyExample, (Paper p) =>
-                {
-                    _key = p;
-                }, Paper.PAPER_TYPE.Data);
-                yield return new WaitUntil(() => _key != null);
+            //// Fourth key value pair
+            //{
+            //    Paper _key = null;
+            //    yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_FourthKeyExample, (Paper p) =>
+            //    {
+            //        _key = p;
+            //    }, Paper.PAPER_TYPE.Data);
+            //    yield return new WaitUntil(() => _key != null);
 
 
-                Paper _val = null;
-                yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_FourthValExample, (Paper p) =>
-                {
-                    _val = p;
-                }, Paper.PAPER_TYPE.Data);
-                yield return new WaitUntil(() => _val != null);
+            //    Paper _val = null;
+            //    yield return m_ScriptedPrinter.PrintNoAnimEnumarator(m_FourthValExample, (Paper p) =>
+            //    {
+            //        _val = p;
+            //    }, Paper.PAPER_TYPE.Data);
+            //    yield return new WaitUntil(() => _val != null);
 
-                m_TempObjects.Add(_key.gameObject);
-                m_TempObjects.Add(_val.gameObject);
+            //    m_TempObjects.Add(_key.gameObject);
+            //    m_TempObjects.Add(_val.gameObject);
 
-                //yield return PlayAndWaitVoice(m_VoiceSource, m_HoweverIfThereIsANode);
-                yield return m_HashmapInstance.Insert(_key, _val);
+            //    //yield return PlayAndWaitVoice(m_VoiceSource, m_HoweverIfThereIsANode);
+            //    yield return m_HashmapInstance.Insert(_key, _val);
 
-            }
+            //}
 
             yield return PlayAndWaitVoice(m_VoiceSource, m_ThisConcludesOurTopic);
 

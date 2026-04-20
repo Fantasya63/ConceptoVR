@@ -968,7 +968,7 @@ MonoBehaviour:
   m_NodeValuesQuerryTransform: {fileID: 483137193196628809}
   m_BoxInsertTransform: {fileID: 3490117894965263904}
   m_ToQuerryPosDur: 1
-  m_ToInsertPosDur: 0.75
+  m_ToInsertPosDur: 2
   m_KeyValueSeperation: {x: 0, y: 0, z: 0.04465}
   m_BoxOpenDur: 1
   m_InsertPauseDur: 1

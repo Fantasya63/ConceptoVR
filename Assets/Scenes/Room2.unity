@@ -3826,8 +3826,9 @@ MonoBehaviour:
   m_VoiceSource: {fileID: 888298634}
   m_HashmapPrefab: {fileID: 2605596578143744919, guid: 4b40e555d6c7f3546bb2cd1bfe04a90a, type: 3}
   m_ScriptedPrinter: {fileID: 2016302441}
-  m_KeyStartTransform: {fileID: 1213999607}
   m_SpatialHashmapPosTransform: {fileID: 1536901450}
+  m_KeyStartTransform: {fileID: 1202077871}
+  m_ValStartTransform: {fileID: 1173440316}
   m_OneMethod: {fileID: 8300000, guid: 8e7bd6d96c020a54686d8ccbb41ecc3d, type: 3}
   m_InsteadOfJust: {fileID: 8300000, guid: 7b4ba2495f1591642a88e2a16d457072, type: 3}
   m_FirstWeHashTheKeys: {fileID: 8300000, guid: 5ea90c9bb4f6a2d4080b9b20b72a25e1, type: 3}
