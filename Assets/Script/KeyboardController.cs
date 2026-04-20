@@ -121,7 +121,7 @@ public class KeyboardController : MonoBehaviour
     {
         if (typed.Count == 0)
         {
-            Debug.LogError("Error: Empty input!");
+            Debug.LogWarning("Error: Empty input!");
             return;
         }
 

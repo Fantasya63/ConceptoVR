@@ -1,7 +1,9 @@
 using Concepto;
 using Concepto.HashMap;
+using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,6 +39,8 @@ public class SpatialHashmap : MonoBehaviour
     Coroutine m_CommandCoroutine;
 
     bool m_Initialized = false;
+
+    List<GameObject> m_TempObjects = new List<GameObject>();
 
     Vector3 GetIndexPos(int index)
     {
@@ -186,7 +190,11 @@ public class SpatialHashmap : MonoBehaviour
                 });
 
                 Debug.Assert(key != null);
-                yield return Retrieve(key);
+                yield return Retrieve(key, (bool success, string message)=>
+                {
+                    if (!success)
+                        Debug.LogWarning(message);
+                });
             }
             else
             {
@@ -218,6 +226,7 @@ public class SpatialHashmap : MonoBehaviour
             index = p;
         });
 
+        m_TempObjects.Add(index.gameObject);
         yield return m_HashFuncDev.Hash(key);
 
         onComplete.Invoke(index);
@@ -358,7 +367,7 @@ public class SpatialHashmap : MonoBehaviour
         Debug.Log($"Paper is: {index.name}");
     }
 
-    public IEnumerator Retrieve(Paper key)
+    public IEnumerator Retrieve(Paper key, System.Action<bool, string> onFinished)
     {
         key.RemoveInteractivity();
 
@@ -368,6 +377,7 @@ public class SpatialHashmap : MonoBehaviour
             index = p;
         });
 
+        m_TempObjects.Add(index.gameObject);
 
         // Hash
         yield return m_HashFuncDev.Hash(key);
@@ -419,28 +429,35 @@ public class SpatialHashmap : MonoBehaviour
                 });
 
 
-
-            if (success)
+            if (!success)
             {
-                Paper newPaper = Instantiate(paper, transform);
-                newPaper.transform.position = paper.transform.position;
-                newPaper.transform.rotation = paper.transform.rotation;
-                newPaper.GetComponent<MeshRenderer>().material = paper.GetComponent<MeshRenderer>().material;
-                newPaper.RemoveInteractivity();
-
-                newPaper.transform.LeanMove(m_RetrievedValTransform.position, m_ToRetrievedValDur);
-                yield return new WaitForSeconds(m_ToRetrievedValDur);
-
-                yield return new WaitForSeconds(m_ToRetrievedValShowDur);
-
-                Destroy(key.gameObject);
-                Destroy(index.gameObject);
-                Destroy(newPaper.gameObject);
-            }
-            else
-            {
+                onFinished.Invoke(false, message);
                 Debug.LogWarning(message);
+
+                yield break;
             }
+
+            Paper newPaper = Instantiate(paper, transform);
+            newPaper.transform.position = paper.transform.position;
+            newPaper.transform.rotation = paper.transform.rotation;
+            newPaper.GetComponent<MeshRenderer>().material = paper.GetComponent<MeshRenderer>().material;
+            newPaper.RemoveInteractivity();
+
+            newPaper.transform.LeanMove(m_RetrievedValTransform.position, m_ToRetrievedValDur);
+            yield return new WaitForSeconds(m_ToRetrievedValDur);
+
+            yield return new WaitForSeconds(m_ToRetrievedValShowDur);
+
+            if (key != null)
+                Destroy(key.gameObject);
+            
+            if (index != null)
+                Destroy(index.gameObject);
+            
+            if (newPaper != null)
+                Destroy(newPaper.gameObject);
+
+            onFinished.Invoke(true, "Retrieval success");
         }
 
     }
@@ -518,4 +535,22 @@ public class SpatialHashmap : MonoBehaviour
             Destroy(index.gameObject);
 
     }
+
+    private void OnDestroy()
+    {
+        if (m_TempObjects == null)
+            return;
+
+        for (int i = 0; i < m_TempObjects.Count; i++)
+        {
+            GameObject go = m_TempObjects[i];
+
+            if (go != null)
+                Destroy(go);
+        }
+
+        m_TempObjects.Clear();
+    }
+
+    
 }
