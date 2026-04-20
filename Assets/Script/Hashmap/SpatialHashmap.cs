@@ -377,12 +377,13 @@ public class SpatialHashmap : MonoBehaviour
             index = p;
         });
 
-        m_TempObjects.Add(index.gameObject);
 
         // Hash
         yield return m_HashFuncDev.Hash(key);
 
         Debug.Assert(index != null);
+        m_TempObjects.Add(index.gameObject);
+
 
         int indexValue;
         if (!int.TryParse(index.data, out indexValue))
