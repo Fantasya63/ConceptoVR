@@ -167,7 +167,13 @@ public class SpatialHashmap : MonoBehaviour
                 });
 
                 Debug.Assert(key != null);
-                yield return Remove(key);
+                yield return Remove(key, (bool success, string message) =>
+                {
+                    if (!success)
+                    {
+                        Debug.LogWarning(message);
+                    }    
+                });
             }
             else if (command == "retrieve")
             {
@@ -438,8 +444,8 @@ public class SpatialHashmap : MonoBehaviour
         }
 
     }
-
-    public IEnumerator Remove(Paper key)
+    
+    public IEnumerator Remove(Paper key, System.Action<bool, string> onFinished)
     {
         key.RemoveInteractivity();
 
@@ -489,16 +495,19 @@ public class SpatialHashmap : MonoBehaviour
             yield return m_LinkedListsArr[indexValue].Remove(key, 
                 (bool success, string message) =>
                 {
+                    if (key != null) 
                     if (success)
                     {
-                        Debug.Log($"Node with key: {key.data} is removed");
-                        Destroy(key.gameObject);
-                        Destroy(index.gameObject);
+                        Debug.Log($"Node with key: {key.data} is removed");   
                     }
                     else
                     {
                         Debug.LogWarning(message);
                     }
+
+                    Destroy(index.gameObject);
+
+                    onFinished.Invoke(success, message);
                 });
         }
 
