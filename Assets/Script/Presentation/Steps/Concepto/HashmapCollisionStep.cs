@@ -1,8 +1,7 @@
 using Concepto.HashMap;
 using System.Collections;
-using System.Diagnostics.Tracing;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Canvas
 {
@@ -33,6 +32,8 @@ namespace Canvas
                return $"Key: {key.data}, value: {value.data}";
             }
         }
+
+        List<GameObject> m_TempObjects = new List<GameObject>();
 
 
         [Header("References")]
@@ -105,6 +106,8 @@ namespace Canvas
             for (int i = 0; i < 2; i++)
             {
                 HashFuncDevice instance = Instantiate(m_ScriptHashFuncDevPrefab);
+                m_TempObjects.Add(instance.gameObject);
+
                 instance.transform.position = m_ScriptHashFuncDevStartTransform.position + m_HashFuncDevOffset * i;
                 instance.transform.rotation = m_ScriptHashFuncDevStartTransform.rotation;
                 instance.gameObject.SetActive(false);
@@ -272,39 +275,6 @@ namespace Canvas
                 }
             }
 
-
-            // Narrate Seperate chaining
-            PlayVoiceNoWait(m_VoiceSource, m_OneMethod);
-
-            // Switch array to array of linked lists
-            {
-                for (int i = 0; i < m_BoxScriptinstances.Length; i++)
-                {
-                    Destroy(m_BoxScriptinstances[i]);
-                    yield return new WaitForSeconds(m_SpawnDelay);
-                }
-
-                // Create Linked Lists
-                {
-
-                }
-            }
-
-            // Demonstrate insertion
-            {
-
-            }
-
-            // Demonstrate resize
-            {
-
-            }
-
-            // Summary
-            {
-
-            }
-
             // Sandbox
             Debug.Log("Finished");
             Complete();
@@ -313,6 +283,12 @@ namespace Canvas
 
         public override void Deactivate()
         {
+            for (int i = 0; i < m_TempObjects.Count; i++)
+            {
+                Destroy(m_TempObjects[i]);
+            }
+            m_TempObjects.Clear();
+
             if (m_SlideCoroutine != null)
             {
                 StopCoroutine(m_SlideCoroutine);
