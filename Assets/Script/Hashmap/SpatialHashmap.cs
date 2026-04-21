@@ -1,13 +1,8 @@
 using Concepto;
 using Concepto.HashMap;
-using NUnit.Framework;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI;
 
 public class SpatialHashmap : MonoBehaviour
 {

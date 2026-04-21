@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
-using static UnityEditor.U2D.ScriptablePacker;
 
 namespace Concepto.HashMap
 {
