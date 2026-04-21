@@ -509,6 +509,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  pressCooldown: 0
 --- !u!1 &5792538958702072385
 GameObject:
   m_ObjectHideFlags: 0

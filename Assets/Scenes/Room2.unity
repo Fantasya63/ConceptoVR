@@ -269,6 +269,10 @@ PrefabInstance:
       value: Prev
       objectReference: {fileID: 0}
     - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
+      propertyPath: pressCooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -3046,6 +3050,10 @@ PrefabInstance:
       value: Continue
       objectReference: {fileID: 0}
     - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
+      propertyPath: pressCooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -3346,6 +3354,10 @@ PrefabInstance:
     - target: {fileID: 776004429223685886, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_Name
       value: Continue
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
+      propertyPath: pressCooldown
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.size
@@ -7856,6 +7868,10 @@ PrefabInstance:
     - target: {fileID: 776004429223685886, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: m_Name
       value: Prev
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
+      propertyPath: pressCooldown
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2353334286149567034, guid: b4e6200ae9df05c49abde1b961ddb7d9, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.size

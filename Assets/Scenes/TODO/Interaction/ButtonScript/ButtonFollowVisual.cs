@@ -26,6 +26,11 @@ public class ButtonFollowVisual : MonoBehaviour
     public UnityEvent OnPressed;
     public UnityEvent OnReleased;
 
+    [Header("Cooldown")]
+    [SerializeField] private float pressCooldown = 0f; // 0 = spammable
+    private float lastPressTime = -Mathf.Infinity;
+
+
     private Transform pokeAttachTransform;
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable;
     private bool isPoked = false;
@@ -100,9 +105,14 @@ public class ButtonFollowVisual : MonoBehaviour
         {
             if (!wasIsPressed)
             {
-                if (OnPressed != null)
-                    OnPressed.Invoke();
-
+                if (Time.time >= lastPressTime + pressCooldown)
+                {
+                    lastPressTime = Time.time;
+                    
+                    if (OnPressed != null)
+                        OnPressed.Invoke();
+                }
+                
             }
         }
         else
