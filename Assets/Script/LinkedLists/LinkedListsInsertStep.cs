@@ -105,6 +105,7 @@ namespace Canvas
         {
             PlayVoiceNoWait(m_VoiceSource, m_ToInsert);
 
+            m_ScriptVisualizer.gameObject.SetActive(true);
             m_ScriptVisualizer.Code = m_InsertStartCode;
             yield return GrowAndWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
 
@@ -178,6 +179,7 @@ namespace Canvas
             }
 
             m_PositionalMarkersHolder.SetActive(false);
+            m_ScriptVisualizer.gameObject.SetActive(false);
 
             if (m_LinkedListsInstance != null)
                 Destroy(m_LinkedListsInstance.gameObject);
