@@ -51,12 +51,19 @@ namespace Canvas
             Complete();
         }
 
+        void _Reset()
+        {
+            m_DisplayHeader.gameObject.SetActive(false);
+        }
+
         public override void Deactivate()
         {
+            _Reset();
         }
 
         public override void OnSlideExit()
         {
+            _Reset();
         }
     }
 

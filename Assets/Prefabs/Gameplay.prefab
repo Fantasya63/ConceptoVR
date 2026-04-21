@@ -157,6 +157,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Insert Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4958909536667386274, guid: a89eb73cab493004886262c32af937b7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941451951254692046, guid: a89eb73cab493004886262c32af937b7, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 6b1994f960eb5724cb10d46cd8b00484, type: 2}
+    - target: {fileID: 6941172548784194878, guid: a89eb73cab493004886262c32af937b7, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 478d305beddb5964a8dca8d844286d63, type: 2}
     - target: {fileID: 8087542152797705677, guid: a89eb73cab493004886262c32af937b7, type: 3}
       propertyPath: m_LinkedLists
       value: 
@@ -189,15 +201,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: 'm_Commands.Array.data[0]'
-      value: insert 1
+      value: insert 0
       objectReference: {fileID: 0}
     - target: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: 'm_Commands.Array.data[1]'
-      value: insert 2
+      value: insert 1
       objectReference: {fileID: 0}
     - target: {fileID: 744431547488409921, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: 'm_Commands.Array.data[2]'
-      value: insert 3
+      value: insert 2
       objectReference: {fileID: 0}
     - target: {fileID: 2182768278146812414, guid: 17170a26df7818b4ca1b2fc4e12a7fbe, type: 3}
       propertyPath: m_Name

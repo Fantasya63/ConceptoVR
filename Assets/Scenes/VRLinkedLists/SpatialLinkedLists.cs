@@ -500,7 +500,7 @@ namespace Concepto
             }
         }
 
-        public IEnumerator Traverse(int pos = -1, bool resetCurrent = true)
+        public IEnumerator Traverse(int pos = -1, bool resetCurrent = true, System.Action<bool, string> onComplete = null)
         {
             if (pos < 0 || pos > m_Size - 1)
             {
@@ -533,7 +533,10 @@ namespace Concepto
             {
                 m_Current.PointToNoAnim(m_Head);
             }
+
             Debug.Log(output);
+            if (onComplete != null)
+                onComplete.Invoke(true, output);
         }
 
         private void OnDestroy()

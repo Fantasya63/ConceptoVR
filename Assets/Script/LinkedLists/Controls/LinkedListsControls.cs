@@ -8,9 +8,13 @@ public abstract class LinkedListsControls : MonoBehaviour
     [SerializeField] protected SpatialLinkedLists m_LinkedLists;
 
 
-    protected void Error(string message = "LinkedListsInsert: Error")
+    protected void Error(string message = "Error", AudioSource audioSource = null)
     {
         m_ErrorPanel.ShowError(message);
-        m_ErrorAudioSource.Play();
+
+        if (audioSource != null)
+            audioSource.Play();
+        else
+            m_ErrorAudioSource.Play();
     }
 }
