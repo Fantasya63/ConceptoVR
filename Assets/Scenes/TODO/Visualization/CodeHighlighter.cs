@@ -14,7 +14,7 @@ public static class CodeHighlighter
     // ====== KEYWORDS ======
     private static readonly string[] Keywords =
     {
-        "public", "private", "protected", "class", "void", "int", "var",
+        "public", "private", "protected", "class", "Node", "void", "int", "var",
         "float", "double", "bool", "string", "if", "else",
         "for", "while", "return", "new", "static", "using",
         "namespace", "null", "true", "false"

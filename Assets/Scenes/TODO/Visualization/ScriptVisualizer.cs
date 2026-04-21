@@ -4,6 +4,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class ScriptVisualizer : MonoBehaviour
 {
+    [SerializeField]
     [TextArea(5, 20)]
     public string Code
     {
@@ -22,6 +23,7 @@ public class ScriptVisualizer : MonoBehaviour
     }
 
     [SerializeField]
+    [TextArea(5, 20)]
     private string code = "print(\"Hello World\");";
 
     [SerializeField] private TMP_Text codeUI;

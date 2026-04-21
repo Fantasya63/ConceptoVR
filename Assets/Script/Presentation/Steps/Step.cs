@@ -101,10 +101,21 @@ namespace Canvas
         protected IEnumerator GrowAndWait(GameObject go, float duration)
         {
             Vector3 startScale = go.transform.localScale;
+            go.SetActive(true);
+
             go.transform.localScale = Vector3.zero;
             go.LeanScale(startScale, duration);
 
             yield return new WaitForSeconds(duration);
+        }
+
+        protected void GrowNoWait(GameObject go, float duration)
+        {
+            Vector3 startScale = go.transform.localScale;
+            go.SetActive(true);
+
+            go.transform.localScale = Vector3.zero;
+            go.LeanScale(startScale, duration);
         }
 
         protected IEnumerator WaitForAudioToFinish(AudioSource source)

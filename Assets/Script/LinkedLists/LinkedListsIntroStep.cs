@@ -4,6 +4,7 @@ using NUnit.Framework.Constraints;
 using System.Collections;
 using UnityEngine;
 
+
 public class LinkedListsIntroStep : Step
 {
     [Header("Anim References")]
@@ -15,10 +16,22 @@ public class LinkedListsIntroStep : Step
     [SerializeField] float[] m_ShiftOffsets;
     [SerializeField] float m_ExamplePointerUpSpeed = 0.5f;
     [SerializeField] float m_PointerDisplayYOffset = 0.25f;
-    
+
+    [SerializeField] float m_InBetAnimDur = 0.2f;
 
     [Header("References")]
     [SerializeField] AudioSource m_VoiceSource;
+    [SerializeField] ScriptVisualizer m_ScriptVisualizer;
+    [SerializeField] ScriptVisualizer m_LinkedListsScriptViz;
+
+    [Header("Code Samples")]
+    [SerializeField]
+    [TextArea(5, 20)]
+    string m_NodeCode;
+
+    [SerializeField]
+    [TextArea(5, 20)]
+    string m_ConnectCode;
 
     [Header("Voice Clips")]
     [SerializeField] AudioClip m_PleaseHeadOver;
@@ -63,6 +76,9 @@ public class LinkedListsIntroStep : Step
         Debug.Assert(m_NodeDefStartTransform != null);
         Debug.Assert(m_NumOfInstances > 1);
 
+        Debug.Assert(m_LinkedListsScriptViz != null);
+        Debug.Assert(m_ScriptVisualizer != null);
+
         Debug.Assert(m_NumOfInstances == m_ShiftOffsets.Length);
     }
 
@@ -81,13 +97,22 @@ public class LinkedListsIntroStep : Step
     {
         PlayVoiceNoWait(m_VoiceSource, m_LinkedListsIsA);
 
+        // Script Visualizer
+        
+
         SpatialNode m_NodeInstance = GameObject.Instantiate(m_SpatialNodePrefab, m_TempObjectsHolder.transform);
         m_NodeInstance.transform.position = m_NodeDefStartTransform.position;
         Vector3 startScale = m_NodeInstance.transform.localScale;
         m_NodeInstance.transform.localScale = Vector3.zero;
         m_NodeInstance.transform.LeanScale(startScale, m_NodeGrowDur);
 
-        yield return new WaitForSeconds(m_NodeGrowDur);
+        yield return new WaitForSeconds(m_InBetAnimDur);
+        yield return GrowAndWait(m_LinkedListsScriptViz.gameObject, m_NodeGrowDur);
+        yield return new WaitForSeconds(m_InBetAnimDur);
+
+        m_ScriptVisualizer.Code = m_NodeCode;
+        GrowNoWait(m_ScriptVisualizer.gameObject, m_NodeGrowDur);
+
         yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
 
         PlayVoiceNoWait(m_VoiceSource, m_AndEachNodePoints);
@@ -166,6 +191,7 @@ public class LinkedListsIntroStep : Step
             }
 
             yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
+            m_ScriptVisualizer.gameObject.SetActive(false);
 
             PlayVoiceNoWait(m_VoiceSource, m_ToConnectTheseNodes);
 
@@ -182,9 +208,11 @@ public class LinkedListsIntroStep : Step
                 //examplePointer.transform.LeanMove()
 
             }
-
+            m_ScriptVisualizer.Code = m_ConnectCode;
+            yield return GrowAndWait(m_ScriptVisualizer.gameObject, m_NodeGrowDur);
             yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
 
+            m_ScriptVisualizer.gameObject.SetActive(false);
             Complete();
         }
     }
@@ -207,6 +235,9 @@ public class LinkedListsIntroStep : Step
             Destroy(m_TempObjectsHolder.gameObject);
             m_TempObjectsHolder = null;
         }
+
+        m_ScriptVisualizer.gameObject.SetActive(false);
+        m_LinkedListsScriptViz.gameObject.SetActive(false);
     }
 
     public override void Deactivate()

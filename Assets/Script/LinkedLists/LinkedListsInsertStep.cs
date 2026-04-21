@@ -1,4 +1,5 @@
 using Concepto;
+using NUnit.Framework.Constraints;
 using System.Collections;
 using UnityEngine;
 
@@ -8,12 +9,32 @@ namespace Canvas
     {
         [Header("Animation References")]
         [SerializeField] float m_CurrentPtrGrowSpeed = 0.5f;
+        [SerializeField] float m_ScriptGrowSpeed = 1.0f;
+        [SerializeField] float m_GrowDelaySpeed = 0.2f;
 
         [Header("References")]
         [SerializeField] AudioSource m_VoiceSource;
         [SerializeField] SpatialLinkedLists m_LinkedListsPrefab;
         [SerializeField] Transform m_LinkedListsStartTransform;
         [SerializeField] GameObject m_PositionalMarkersHolder;
+        [SerializeField] ScriptVisualizer m_ScriptVisualizer;
+
+        [Header("Code Samples")]
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_InsertStartCode;
+
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_CurrentPointerCode;
+
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_InsertAtTheEndCode;
+
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_InsertAtTheMiddleCode;
 
         [Header("Voice Overs")]
         [SerializeField] AudioClip m_ToInsert;
@@ -47,6 +68,7 @@ namespace Canvas
             Debug.Assert(m_ThenWeCreateANewNode != null);
             Debug.Assert(m_WeHaveJustPreformed != null);
             Debug.Assert(m_FinallyWeCanSet != null);
+            Debug.Assert(m_ScriptVisualizer != null);
         }
 
         public override bool OnNextStep()
@@ -70,6 +92,7 @@ namespace Canvas
             m_LinkedListsInstance.transform.position = m_LinkedListsStartTransform.position;
             //m_LinkedListsInstance.CurrentPointer.gameObject.SetActive(false);
 
+            m_ScriptVisualizer.gameObject.SetActive(false);
 
             m_LinkedListsInstance.CurrentPointer.transform.localScale = Vector3.zero;
 
@@ -82,19 +105,36 @@ namespace Canvas
         {
             PlayVoiceNoWait(m_VoiceSource, m_ToInsert);
 
+            m_ScriptVisualizer.Code = m_InsertStartCode;
+            yield return GrowAndWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
+
             yield return WaitForAudioToFinish(m_VoiceSource);
 
             yield return m_LinkedListsInstance.Insert("23");
 
+            
+            
 
             PlayVoiceNoWait(m_VoiceSource, m_WeWillAlsoNeedA);
+
+            m_ScriptVisualizer.gameObject.SetActive(false);
+            yield return new WaitForSeconds(m_GrowDelaySpeed);
+            m_ScriptVisualizer.Code = m_CurrentPointerCode;
+            GrowNoWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
 
             m_LinkedListsInstance.CurrentPointer.transform.localScale = Vector3.one;
             yield return GrowAndWait(m_LinkedListsInstance.CurrentPointer.gameObject, m_CurrentPtrGrowSpeed);
 
+
             yield return WaitForAudioToFinish(m_VoiceSource);
 
+
             PlayVoiceNoWait(m_VoiceSource, m_NowWeCanJustInsertNodes);
+            
+            m_ScriptVisualizer.gameObject.SetActive(false);
+            m_ScriptVisualizer.Code = m_InsertAtTheEndCode;
+            GrowNoWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
+
 
             yield return m_LinkedListsInstance.Insert("54");
 
@@ -103,9 +143,16 @@ namespace Canvas
             yield return WaitForAudioToFinish(m_VoiceSource);
 
             m_PositionalMarkersHolder.gameObject.SetActive(true);
+
+            m_ScriptVisualizer.gameObject.SetActive(false);
             yield return PlayAndWaitVoice(m_VoiceSource, m_HoweverSuppose);
 
             PlayVoiceNoWait(m_VoiceSource, m_ToInsertANodeBet);
+            yield return new WaitForSeconds(m_GrowDelaySpeed);
+
+            m_ScriptVisualizer.Code = m_InsertAtTheMiddleCode;
+            GrowNoWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
+
             //yield return m_LinkedListsInstance.Insert(345, 1);
             yield return m_LinkedListsInstance.Traverse(1, false);
 
@@ -118,6 +165,7 @@ namespace Canvas
 
             yield return PlayAndWaitVoice(m_VoiceSource, m_WeHaveJustPreformed);
 
+            m_ScriptVisualizer.gameObject.SetActive(false);
             Complete();
         }
 
