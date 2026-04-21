@@ -22,7 +22,7 @@ namespace Canvas
 
         public override void OnSlideExit()
         {
-            
+            m_gameObject.SetActive(false);
         }
     }
 }

@@ -22,7 +22,8 @@ namespace Canvas
 
         public override void OnSlideExit()
         {
-            
+            if (player.isPlaying)
+                player.Stop();
         }
     }
 }

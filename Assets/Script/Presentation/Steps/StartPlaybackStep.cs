@@ -8,14 +8,14 @@ namespace Canvas
         private MessagePlaybackBar m_PlaybackBar;
 
         [SerializeField]
-        private AudioClip m_audioClip;
+        private AudioClip m_AudioClip;
 
         public override void Activate()
         {
             Debug.Assert(m_PlaybackBar != null);
-            Debug.Assert(m_audioClip != null);
+            Debug.Assert(m_AudioClip != null);
 
-            m_PlaybackBar.StartPlayback(m_audioClip.length);
+            m_PlaybackBar.StartPlayback(m_AudioClip.length);
             Complete();
         }
 
