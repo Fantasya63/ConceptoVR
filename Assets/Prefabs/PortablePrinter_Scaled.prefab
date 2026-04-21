@@ -602,6 +602,7 @@ GameObject:
   - component: {fileID: 8649751218084610301}
   - component: {fileID: 5106867115114958654}
   - component: {fileID: 6852387390439397744}
+  - component: {fileID: 6291611581401370032}
   m_Layer: 0
   m_Name: ButtonViz
   m_TagString: Untagged
@@ -681,6 +682,124 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6291611581401370032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3859530538610460856}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 1
+  bakeKeys:
+  - {fileID: 3958000347771782481, guid: 37b3a40ce5f71bc4ba7479010fd14945, type: 3}
+  bakeValues:
+  - data:
+    - {x: 0, y: 1, z: 0}
+    - {x: -0.18301333, y: 0.68301255, z: 0.7071067}
+    - {x: 0, y: 0.8944272, z: 0.4472136}
+    - {x: -0.25881997, y: 0.96592563, z: 0}
+    - {x: -0.35355362, y: 0.6123723, z: 0.7071067}
+    - {x: -0.50000036, y: 0.86602527, z: 0}
+    - {x: -0.499999, y: 0.50000095, z: 0.70710677}
+    - {x: -0.70710534, y: 0.70710814, z: 0}
+    - {x: -0.61237234, y: 0.35355353, z: 0.70710677}
+    - {x: -0.86602527, y: 0.5000002, z: 0}
+    - {x: -0.6830126, y: 0.18301286, z: 0.70710677}
+    - {x: -0.9659257, y: 0.25881925, z: 0}
+    - {x: -0.70710677, y: 0, z: 0.70710677}
+    - {x: -1, y: 0, z: 0}
+    - {x: -0.6830126, y: -0.18301292, z: 0.70710677}
+    - {x: -0.9659257, y: -0.25881934, z: 0}
+    - {x: -0.6123725, y: -0.35355332, z: 0.70710677}
+    - {x: -0.8660255, y: -0.4999999, z: 0}
+    - {x: -0.49999917, y: -0.50000083, z: 0.70710677}
+    - {x: -0.7071056, y: -0.70710796, z: 0}
+    - {x: -0.35355338, y: -0.61237246, z: 0.70710677}
+    - {x: -0.49999997, y: -0.86602545, z: 0}
+    - {x: -0.18301338, y: -0.68301255, z: 0.7071067}
+    - {x: -0.25882003, y: -0.96592563, z: 0}
+    - {x: 0, y: -0.70710677, z: 0.70710677}
+    - {x: 0, y: -1, z: 0}
+    - {x: 0.18301298, y: -0.6830126, z: 0.70710677}
+    - {x: 0.25881943, y: -0.9659257, z: 0}
+    - {x: 0.35355365, y: -0.6123723, z: 0.7071067}
+    - {x: 0.5000004, y: -0.86602527, z: 0}
+    - {x: 0.50000083, y: -0.4999991, z: 0.70710677}
+    - {x: 0.70710796, y: -0.7071055, z: 0}
+    - {x: 0.6123731, y: -0.35355222, z: 0.7071067}
+    - {x: 0.8660264, y: -0.4999984, z: 0}
+    - {x: 0.6830122, y: -0.18301463, z: 0.7071067}
+    - {x: 0.96592516, y: -0.2588218, z: 0}
+    - {x: 0.70710677, y: 0, z: 0.70710677}
+    - {x: 1, y: 0, z: 0}
+    - {x: 0.68301225, y: 0.18301459, z: 0.70710677}
+    - {x: 0.96592516, y: 0.2588217, z: 0}
+    - {x: 0.61237305, y: 0.35355246, z: 0.70710677}
+    - {x: 0.8660262, y: 0.49999866, z: 0}
+    - {x: 0.50000066, y: 0.4999993, z: 0.70710677}
+    - {x: 0.7071077, y: 0.7071058, z: 0}
+    - {x: 0.35355404, y: 0.61237204, z: 0.7071067}
+    - {x: 0.50000095, y: 0.8660249, z: 0}
+    - {x: 0.18301293, y: 0.6830126, z: 0.70710677}
+    - {x: 0.25881937, y: 0.9659257, z: 0}
+    - {x: 0, y: 0.8944272, z: 0.4472136}
+    - {x: 0, y: 1, z: 0}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.35355404, y: 0.61237204, z: 0.7071067}
+    - {x: 0.18301293, y: 0.6830126, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.50000066, y: 0.4999993, z: 0.70710677}
+    - {x: 0, y: 0.8944272, z: 0.4472136}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.61237305, y: 0.35355246, z: 0.70710677}
+    - {x: -0.18301333, y: 0.68301255, z: 0.7071067}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.68301225, y: 0.18301459, z: 0.70710677}
+    - {x: -0.35355362, y: 0.6123723, z: 0.7071067}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.70710677, y: 0, z: 0.70710677}
+    - {x: -0.499999, y: 0.50000095, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.6830122, y: -0.18301463, z: 0.7071067}
+    - {x: -0.61237234, y: 0.35355353, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.6123731, y: -0.35355222, z: 0.7071067}
+    - {x: -0.6830126, y: 0.18301286, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.50000083, y: -0.4999991, z: 0.70710677}
+    - {x: -0.70710677, y: 0, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.35355365, y: -0.6123723, z: 0.7071067}
+    - {x: -0.6830126, y: -0.18301292, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0.18301298, y: -0.6830126, z: 0.70710677}
+    - {x: -0.6123725, y: -0.35355332, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: -0.70710677, z: 0.70710677}
+    - {x: -0.49999917, y: -0.50000083, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
+    - {x: 0, y: 0, z: 1}
+    - {x: -0.18301338, y: -0.68301255, z: 0.7071067}
+    - {x: -0.35355338, y: -0.61237246, z: 0.70710677}
+    - {x: 0, y: 0, z: 1}
 --- !u!1 &3889431481524427539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,6 +1358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HashFuncVisualizer
   visualizer: {fileID: 1262454447333587536}
   printerPivot: {fileID: 6046545145021921056}
+  buttonOutline: {fileID: 6291611581401370032}
   printerCloseRot: 0
   printerOpenRot: -133.755
   rotationTime: 0.3
@@ -1317,9 +1437,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1984492587582974241}
   - component: {fileID: 6870669736372738398}
+  - component: {fileID: 2273432911948060946}
   - component: {fileID: 4931050395631217656}
   - component: {fileID: 1351856316019336647}
-  - component: {fileID: 2273432911948060946}
   m_Layer: 0
   m_Name: Interactable
   m_TagString: Untagged
@@ -1363,6 +1483,54 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.023651, y: 0.018692553, z: 0.023651}
   m_Center: {x: 0, y: -0.009143561, z: 0}
+--- !u!114 &2273432911948060946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8996991993303116310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ec7f7ebcd522b40af99f37979a9790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonFollowVisual
+  visualTarget: {fileID: 8649751218084610301}
+  resetSpeed: 5
+  followAngleThreshold: 45
+  isToggleable: 0
+  unpressedHeight: {fileID: 8839399522918551337}
+  pressedHeight: {fileID: 7813063885762556928}
+  OnPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4633756320167666214}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6196872696928771932}
+        m_TargetAssemblyTypeName: HashFuncVisualizer, Assembly-CSharp
+        m_MethodName: Toggle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnReleased:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4931050395631217656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1457,54 +1625,6 @@ MonoBehaviour:
       m_EnablePokeAngleThreshold: 1
       m_PokeAngleThreshold: 45
     m_Variable: {fileID: 0}
---- !u!114 &2273432911948060946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8996991993303116310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11ec7f7ebcd522b40af99f37979a9790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ButtonFollowVisual
-  visualTarget: {fileID: 8649751218084610301}
-  resetSpeed: 5
-  followAngleThreshold: 45
-  isToggleable: 0
-  unpressedHeight: {fileID: 8839399522918551337}
-  pressedHeight: {fileID: 7813063885762556928}
-  OnPressed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4633756320167666214}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6196872696928771932}
-        m_TargetAssemblyTypeName: HashFuncVisualizer, Assembly-CSharp
-        m_MethodName: Toggle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnReleased:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &8316295391573450966
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ public class HashFuncVisualizer : MonoBehaviour
 {
     [SerializeField] private GameObject visualizer;
     [SerializeField] private Transform printerPivot;
+    [SerializeField] Outline buttonOutline;
 
     [Header("Rotation Settings")]
     [SerializeField] private float printerCloseRot = 0f;
@@ -20,6 +21,8 @@ public class HashFuncVisualizer : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Assert(buttonOutline != null);
+
         if (printerPivot != null)
             baseLocalRotation = printerPivot.localRotation;
     }
@@ -40,7 +43,7 @@ public class HashFuncVisualizer : MonoBehaviour
     public void Toggle()
     {
         open = !open;
-
+        buttonOutline.enabled = open;
         if (open)
             Visualize();
         else
