@@ -461,6 +461,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5620067768904607762, guid: df14e86657accf94388c42a530c8ef92, type: 3}
+      propertyPath: far clip plane
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6496753959354642760, guid: df14e86657accf94388c42a530c8ef92, type: 3}
       propertyPath: m_Name
       value: XR Origin Hands (XR Rig) Variant

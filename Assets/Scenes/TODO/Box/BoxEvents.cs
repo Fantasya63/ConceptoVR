@@ -10,8 +10,8 @@ public class BoxEvents : MonoBehaviour
     enum ACTION_TYPE
     {
         Insertion = 0,
-        Retrieval,
-        RetriveAndReplace
+        Retrieval = 1,
+        RetriveAndReplace = 2,
     }
 
     [SerializeField]
@@ -74,10 +74,21 @@ public class BoxEvents : MonoBehaviour
     void EmitIndexRemoved(SelectExitEventArgs arg0)
     {
         Paper indexPaper = ((XRBaseInteractable)arg0.interactableObject).GetComponent<Paper>();
-        Paper dataPaper = Utils.GetInsertedPaper(m_PaperIndexSocket);
+        Paper dataPaper = Utils.GetInsertedPaper(m_PaperDataSocket);
+        string indexStr = null;
+        string currDataStr = null;
 
+        if (indexPaper != null)
+        {
+            indexStr = indexPaper.data;
+        }
 
-        DetermineAction(indexPaper.data, dataPaper.data);
+        if (dataPaper != null)
+        {
+            currDataStr = dataPaper.data;
+        }
+
+        DetermineAction(indexStr, currDataStr);
 
         OnIndexRemoved.Invoke(indexPaper);
         

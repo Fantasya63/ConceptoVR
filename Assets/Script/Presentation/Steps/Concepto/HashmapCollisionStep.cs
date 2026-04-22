@@ -281,8 +281,7 @@ namespace Canvas
             Complete();
         }
 
-
-        public override void Deactivate()
+        void _Reset()
         {
             for (int i = 0; i < m_TempObjects.Count; i++)
             {
@@ -328,9 +327,14 @@ namespace Canvas
             }
         }
 
+        public override void Deactivate()
+        {
+            _Reset();
+        }
+
         public override void OnSlideExit()
         {
-           
+            _Reset();
         }
     }
 
