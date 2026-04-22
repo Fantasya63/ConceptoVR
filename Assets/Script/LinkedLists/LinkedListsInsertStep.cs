@@ -178,6 +178,11 @@ namespace Canvas
                 m_Coroutine = null;
             }
 
+            if (m_VoiceSource.isPlaying)
+            {
+                m_VoiceSource.Stop();
+            }
+
             m_PositionalMarkersHolder.SetActive(false);
             m_ScriptVisualizer.gameObject.SetActive(false);
 

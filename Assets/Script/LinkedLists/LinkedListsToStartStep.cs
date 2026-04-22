@@ -53,6 +53,10 @@ namespace Canvas
 
         void _Reset()
         {
+            if (m_VoiceSource.isPlaying)
+            {
+                m_VoiceSource.Stop();
+            }
             m_DisplayHeader.gameObject.SetActive(false);
         }
 

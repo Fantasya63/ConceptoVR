@@ -104,8 +104,21 @@ namespace Canvas
                 && m_PaperKeyValuesInstances.Length == m_ScriptHashFuncDevInstances.Length
             );
 
+            
+
+            m_PrintedIndexes = new Paper[m_PaperKeyValuesInstances.Length];
+        }
+
+        public override void Activate()
+        {
             for (int i = 0; i < 2; i++)
             {
+                HashFuncDevice test = m_ScriptHashFuncDevInstances[i];
+                if (test != null)
+                {
+                    Destroy(test.gameObject);
+                }
+
                 HashFuncDevice instance = Instantiate(m_ScriptHashFuncDevPrefab, transform);
                 m_TempObjects.Add(instance.gameObject);
 
@@ -119,11 +132,6 @@ namespace Canvas
                 m_ScriptHashFuncDevInstances[i] = instance;
             }
 
-            m_PrintedIndexes = new Paper[m_PaperKeyValuesInstances.Length];
-        }
-
-        public override void Activate()
-        {
             if (m_SlideCoroutine != null)
                 StopCoroutine(m_SlideCoroutine);
 
@@ -283,6 +291,12 @@ namespace Canvas
 
         void _Reset()
         {
+            if (m_SlideCoroutine != null)
+            {
+                StopCoroutine(m_SlideCoroutine);
+                m_SlideCoroutine = null;
+            }
+
             for (int i = 0; i < m_TempObjects.Count; i++)
             {
                 Destroy(m_TempObjects[i]);
@@ -318,11 +332,14 @@ namespace Canvas
                     paperKeyValue.value = null;
                 }
             }
+
+
             if (m_BoxScriptinstances != null)
             {
                 foreach (var instance in m_BoxScriptinstances)
                 {
-                    Destroy(instance.gameObject);
+                    if (instance != null) 
+                        Destroy(instance.gameObject);
                 }
             }
         }

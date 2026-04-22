@@ -23,7 +23,9 @@ public class Printer : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent<Paper> OnPaperPrinted;
+    Paper m_CurrentlyPrinting = null;
 
+    Coroutine m_PrintRoutine = null;
 
     private bool IsPrinting = false;
     private void Awake()
@@ -40,7 +42,10 @@ public class Printer : MonoBehaviour
     {
         if (!IsPrinting)
         {
-            StartCoroutine(PrintRoutineNoAnim(text, type, onFinished));
+            if (m_PrintRoutine != null)
+                StopCoroutine(m_PrintRoutine);
+
+            m_PrintRoutine = StartCoroutine(PrintRoutineNoAnim(text, type, onFinished));
             IsPrinting = true;
             return true;
         }
@@ -61,6 +66,8 @@ public class Printer : MonoBehaviour
         RenderTexture.active = null;
 
         Paper paper = Instantiate(paperPrefab, paperStartPos.position, paperStartPos.rotation);
+        m_CurrentlyPrinting = paper;
+
         paper.data = text;
         paper.PaperType = type;
 
@@ -70,6 +77,7 @@ public class Printer : MonoBehaviour
         renderer.material.SetTexture("_BaseMap", snapshot);
 
         IsPrinting = false;
+        m_CurrentlyPrinting = null;
 
         onFinished?.Invoke(paper);
     }
@@ -79,7 +87,10 @@ public class Printer : MonoBehaviour
     {
         if (!IsPrinting)
         {
-            StartCoroutine(PrintRoutine(text, Paper.PAPER_TYPE.Data, paperHasInteractivity));
+            if (m_PrintRoutine != null)
+                StopCoroutine(m_PrintRoutine);
+
+            m_PrintRoutine = StartCoroutine(PrintRoutine(text, Paper.PAPER_TYPE.Data, paperHasInteractivity));
             IsPrinting = true;
         }
     }
@@ -88,7 +99,10 @@ public class Printer : MonoBehaviour
     {
         if (!IsPrinting)
         {
-            StartCoroutine(PrintRoutine(key, Paper.PAPER_TYPE.Hashkey, paperHasInteractivity));
+            if (m_PrintRoutine != null)
+                StopCoroutine(m_PrintRoutine);
+
+            m_PrintRoutine = StartCoroutine(PrintRoutine(key, Paper.PAPER_TYPE.Hashkey, paperHasInteractivity));
             IsPrinting = true;
         }
     }
@@ -122,6 +136,7 @@ public class Printer : MonoBehaviour
 
         // Spawn paper at start
         Paper paper = Instantiate(paperPrefab, paperStartPos.position, paperStartPos.rotation);
+        m_CurrentlyPrinting = paper;
         if (!paperHasInteractivity)
             paper.RemoveInteractivity();
 
@@ -183,8 +198,17 @@ public class Printer : MonoBehaviour
         if (grab != null)
             grab.enabled = true;
 
+        m_CurrentlyPrinting = null;
         Debug.Log("Printer: Paper Printed");
         OnPaperPrinted.Invoke(paper);
         IsPrinting = false;
+    }
+    private void OnDestroy()
+    {
+        if (m_PrintRoutine != null)
+            StopCoroutine(m_PrintRoutine);
+
+        if (m_CurrentlyPrinting != null)
+            Destroy(m_CurrentlyPrinting.gameObject);
     }
 }

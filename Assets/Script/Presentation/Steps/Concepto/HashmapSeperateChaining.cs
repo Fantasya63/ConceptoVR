@@ -243,9 +243,16 @@ namespace Canvas {
             yield break;
         }
 
-
-        public override void Deactivate()
+        void _Reset()
         {
+            if (m_VoiceSource.isPlaying)
+            {
+                m_VoiceSource.Stop();
+            }
+
+            if (m_Coroutine != null)
+                StopCoroutine(m_Coroutine);
+
             if (m_TempObjects == null)
                 return;
 
@@ -261,8 +268,14 @@ namespace Canvas {
             m_TempObjects.Clear();
         }
 
+        public override void Deactivate()
+        {
+            _Reset(); 
+        }
+
         public override void OnSlideExit()
         {
+            _Reset();
             //throw new System.NotImplementedException();
         }
     }

@@ -225,6 +225,11 @@ public class LinkedListsIntroStep : Step
         if (m_Coroutine != null)
             StopCoroutine(m_Coroutine);
 
+        if (m_VoiceSource.isPlaying)
+        {
+            m_VoiceSource.Stop();
+        }
+
         DestroyNodes();
 
         if (m_TempExamplePointer != null)
@@ -250,7 +255,6 @@ public class LinkedListsIntroStep : Step
 
     public override void OnSlideExit()
     {
-       CleanUP();
-
+        CleanUP();
     }
 }

@@ -37,7 +37,7 @@ namespace Concepto.HashMap
         [Header("Script Visualization")]
         [SerializeField]
         private ScriptVisualizer m_Visualizer;
-        
+
         [SerializeField]
         [TextArea(5, 20)]
         private string m_ScriptTemplate;
@@ -46,12 +46,13 @@ namespace Concepto.HashMap
         {
             if (m_Visualizer == null)
                 Debug.LogWarning($"{name} has no Script Visualizer attached to it.");
-                resultPrinter.OnPaperPrinted.AddListener(
-                (Paper paper) => {
-                    Debug.Log("HashFuncDev: PaperPrinted");
-                    OnPaperPrinted.Invoke(paper); 
-                    
-                });
+            resultPrinter.OnPaperPrinted.AddListener(
+            (Paper paper) =>
+            {
+                Debug.Log("HashFuncDev: PaperPrinted");
+                OnPaperPrinted.Invoke(paper);
+
+            });
         }
 
         public void PrintPaperScripted(Paper paper)
@@ -85,21 +86,25 @@ namespace Concepto.HashMap
             return string.Format(m_ScriptTemplate, input, hash);
         }
 
+        GameObject m_CurrentlyPrinting = null;
+
         private void Print(XRBaseInteractable interactable)
         {
             if (interactable == null)
                 return;
 
-            GameObject paperObject = interactable.gameObject;
+
+            m_CurrentlyPrinting = interactable.gameObject;
 
 
-            
             string paperData;
             {
-                Paper insertedPaper = paperObject.GetComponent<Paper>();
+                Paper insertedPaper = m_CurrentlyPrinting.GetComponent<Paper>();
                 paperData = new string(insertedPaper.data);
                 if (insertedPaper != null)
+                {
                     Destroy(insertedPaper);
+                }
 
                 // Disable interaction while animating
                 XRGrabInteractable grab = interactable.gameObject.GetComponent<XRGrabInteractable>();
@@ -120,22 +125,40 @@ namespace Concepto.HashMap
             int hashkey = HashMap.HashFunc.Hash(paperData, HashMap.HashFunc.NumBoxes);
 
 
-            paperObject.transform.position = inputPaperStartPos.position;
-            paperObject.transform.rotation = inputPaperStartPos.rotation;
+            m_CurrentlyPrinting.transform.position = inputPaperStartPos.position;
+            m_CurrentlyPrinting.transform.rotation = inputPaperStartPos.rotation;
 
             // Animate sliding into machine
-            LeanTween.move(paperObject, inputPaperFinalPos.position, inputSlideDuration)
+            LeanTween.move(m_CurrentlyPrinting, inputPaperFinalPos.position, inputSlideDuration)
                 .setEase(LeanTweenType.linear)
                 .setOnComplete(() =>
                 {
-                    Destroy(paperObject);
+                    if (m_CurrentlyPrinting != null)
+                        Destroy(m_CurrentlyPrinting);
+                    
                     resultPrinter.PrintHashkey(hashkey.ToString());
                 });
 
             if (m_Visualizer != null)
                 m_Visualizer.SetCodeWithNotif(GetScriptEquivalent(paperData, hashkey));
         }
-    }
-    
 
+        private void OnDestroy()
+        {
+            if (m_CurrentlyPrinting != null)
+            {
+                if (LeanTween.isTweening(m_CurrentlyPrinting))
+                {
+                    LeanTween.cancel(m_CurrentlyPrinting);
+                }
+            }
+            
+
+            if (m_CurrentlyPrinting != null)
+            {
+                Destroy(m_CurrentlyPrinting);
+            }
+        }
+    }
 }
+    

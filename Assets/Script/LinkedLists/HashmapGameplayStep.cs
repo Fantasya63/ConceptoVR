@@ -45,6 +45,8 @@ namespace Canvas
 
         private void Reset()
         {
+            
+
             if (m_GameplayObjectsInstance != null)
             {
                 Destroy(m_GameplayObjectsInstance.gameObject);

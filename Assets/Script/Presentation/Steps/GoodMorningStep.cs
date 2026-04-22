@@ -83,6 +83,11 @@ namespace Canvas
             if (m_Coroutine != null)
                 StopCoroutine(m_Coroutine);
 
+            if (m_VoiceSource.isPlaying)
+            {
+                m_VoiceSource.Stop();
+            }
+
             m_ContinueBtnPressed = false;
             m_TVPlayer.Stop();
             m_RepOrContinueControls.SetActive(false);

@@ -62,6 +62,11 @@ namespace Canvas
                 m_Coroutine = null;
             }
 
+            if (m_VoiceSource.isPlaying)
+            {
+                m_VoiceSource.Stop();
+            }
+
             if (m_LinkedListsInstance != null)
             {
                 Destroy(m_LinkedListsInstance.gameObject);

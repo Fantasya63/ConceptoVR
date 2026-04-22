@@ -62,6 +62,17 @@ namespace Canvas
 
         public override void Activate()
         {
+            if (m_HashFuncDevInstance != null)
+                Destroy(m_HashFuncDevInstance.gameObject);
+
+            m_HashFuncDevInstance = Instantiate(m_HashFuncDevPrefab);
+            m_HashFuncDevInitLocalScale = m_HashFuncDevInstance.transform.localScale;
+            m_HashFuncDevInstance.gameObject.SetActive(false);
+            m_HashFuncDevInstance.OnPaperPrinted.AddListener((Paper paper) => { m_OutputHashKeyPaper = paper; });
+
+            if (m_SlideRoutine != null)
+                StopCoroutine(m_SlideRoutine);
+
             m_SlideRoutine = StartCoroutine(OnExplanationRoutine());
         }
 
@@ -131,22 +142,38 @@ namespace Canvas
             Complete();
         }
 
-        public override void Deactivate()
+        void _Reset()
         {
+            if (m_HashFuncDevInstance != null)
+            {
+                if (LeanTween.isTweening(m_HashFuncDevInstance.gameObject))
+                {
+                    // STop
+                    LeanTween.cancel(m_HashFuncDevInstance.gameObject);
+                }
+            }
+            
+
             // Hide Hash func object and paper
             if (m_HashFuncDevInstance != null)
-                m_HashFuncDevInstance.gameObject.SetActive(false);
+                Destroy(m_HashFuncDevInstance.gameObject);
 
             if (m_PaperInstance != null)
-                m_PaperInstance.gameObject.SetActive(false);
+                Destroy(m_PaperInstance.gameObject);
+                //m_PaperInstance.gameObject.SetActive(false);
 
             if (m_SlideRoutine != null)
                 StopCoroutine(m_SlideRoutine);
         }
 
+        public override void Deactivate()
+        {
+           _Reset();
+        }
+
         public override void OnSlideExit()
         {
-            
+            _Reset();
         }
     }
 
