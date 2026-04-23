@@ -37,26 +37,23 @@ namespace Canvas
         IEnumerator OnRoutine()
         {
             PlayVoiceNoWait(m_VoiceSource, m_ToStartTheLinkedLists);
-
             m_DisplayHeader.gameObject.SetActive(true);
-            m_DisplayHeader.transform.localScale = Vector3.zero;
-
-            m_DisplayHeader.transform.LeanScale(Vector3.one, m_HeaderGrowDur);
-
-            yield return new WaitForSeconds(m_HeaderGrowDur);
-
-
+            yield return GrowAndWait(m_DisplayHeader.gameObject, m_HeaderGrowDur);
             yield return new WaitUntil(() => !m_VoiceSource.isPlaying);
-
             Complete();
         }
 
         void _Reset()
         {
+            if (m_Coroutine != null)
+                StopCoroutine(m_Coroutine);
+
+
             if (m_VoiceSource.isPlaying)
             {
                 m_VoiceSource.Stop();
             }
+            m_DisplayHeader.transform.localScale = Vector3.one;
             m_DisplayHeader.gameObject.SetActive(false);
         }
 

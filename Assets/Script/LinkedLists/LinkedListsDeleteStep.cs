@@ -17,6 +17,25 @@ namespace Canvas
         [SerializeField] AudioClip m_AfterThatWeSetTheCur;
         [SerializeField] AudioClip m_ThenWeCanSafelyDel;
 
+        [Header("Code Samples")]
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_DeleteTraverseCode;
+
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_TempToNodeToDeleteCode;
+
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_CurrNodeNextToNodetoRepCode;
+
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_DeleteNodeStep;
+
+
+
         [Header("Options")]
         [SerializeField] int[] m_StartingValues = { 23, 54, 345, 36 };
 

@@ -17,6 +17,10 @@ namespace Canvas
         [SerializeField] AudioClip m_ToTraverse;
         [SerializeField] AudioClip m_ThisConcludes;
 
+        [SerializeField]
+        [TextArea(5, 20)]
+        string m_TraverseCode;
+
 
         [Header("Options")]
         [SerializeField] int[] m_StartingValues = { 23, 54, 36 };

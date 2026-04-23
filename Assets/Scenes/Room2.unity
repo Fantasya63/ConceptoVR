@@ -2901,7 +2901,7 @@ MonoBehaviour:
 
     Node*
     pointer = *myNode;'
-  m_UnlikeArraysPause: 1
+  m_UnlikeArraysPause: 0.5
   m_PleaseHeadOver: {fileID: 8300000, guid: 3f0e4983bbd618b4cb0f34e1a5999495, type: 3}
   m_LinkedListsIsA: {fileID: 8300000, guid: c50344b79b3185d41a1e90150cfb0a0e, type: 3}
   m_AndEachNodePoints: {fileID: 8300000, guid: e5a63964a9c314c43a75105692564e7e, type: 3}
@@ -6205,7 +6205,7 @@ MonoBehaviour:
     just before the desired pos\nint currPos = 0;\nwhile(currPos + 1 < insertionPos)\n\tcurrentPtr
     = *currentPtr.nextPtr\n\n// Create newNode\nNode* newNode = new Node(newData)\n\n//
     Set the newNode's next ptr to the current's next ptr\n*newNode.nextPtr = *currentPtr.nextPtr\n\n//
-    Add the node to the list\n*currentPtr.nextPtr = newNode;\n"
+    Add the node to the list\n*currentPtr.nextPtr = newNode;"
   m_ToInsert: {fileID: 8300000, guid: b5a99a7ae9d0e7e408749d7be316537f, type: 3}
   m_WeWillAlsoNeedA: {fileID: 8300000, guid: fcc750a55c0829b45a4594bb6b0e9682, type: 3}
   m_NowWeCanJustInsertNodes: {fileID: 8300000, guid: 899304decb153db4d814f36402da413a, type: 3}
@@ -7733,7 +7733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 112977966672327368, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 733.2162
+      value: 791.0679
       objectReference: {fileID: 0}
     - target: {fileID: 112977966672327368, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_LocalScale.x
@@ -7777,7 +7777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 112977966672327368, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.4715
+      value: 1.5179
       objectReference: {fileID: 0}
     - target: {fileID: 112977966672327368, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7793,11 +7793,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2423970045907289593, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: code
-      value: "Node* currentPtr = headPtr;\n\n// Insert at the end of the list\nwhile(*currentPtr.nextPtr
-        != null)\n\tcurrentPtr = *currentPtr.nextPtr\n\n// Create newNode\nNode*
-        newNode = new Node(newData)\n\n// Set the newNode's next ptr to the current's
-        next ptr\n*newNode.nextPtr = *currentPtr.nextPtr\n\n// Add the node to the
-        list\n*currentPtr.nextPtr = newNode;\n\n"
+      value: "Node* currentPtr = headPtr;\n\n// Traverse the list until just before
+        the desired pos\nint currPos = 0;\nwhile(currPos + 1 < insertionPos)\n\tcurrentPtr
+        = *currentPtr.nextPtr\n\n// Create newNode\nNode* newNode = new Node(newData)\n\n//
+        Set the newNode's next ptr to the current's next ptr\n*newNode.nextPtr =
+        *currentPtr.nextPtr\n\n// Add the node to the list\n*currentPtr.nextPtr =
+        newNode;\n"
       objectReference: {fileID: 0}
     - target: {fileID: 4106129285770532639, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_Name
@@ -7810,11 +7811,13 @@ PrefabInstance:
     - target: {fileID: 5713243162175387829, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_text
       value: "<color=#569CD6>Node</color>* currentPtr = headPtr;\n\n<color=#6A9955>//
-        Insert at the end of the list</color>\n<color=#569CD6>while</color>(*currentPtr.nextPtr
-        != <color=#569CD6>null</color>)\n\tcurrentPtr = *currentPtr.nextPtr\n\n<color=#6A9955>//
+        Traverse the list until just before the desired pos</color>\n<color=#569CD6>int</color>
+        currPos = <color=#B5CEA8>0</color>;\n<color=#569CD6>while</color>(currPos
+        + <color=#B5CEA8>1</color> < insertionPos)\n\tcurrentPtr = *currentPtr.nextPtr\n\n<color=#6A9955>//
         Create newNode</color>\n<color=#569CD6>Node</color>* newNode = <color=#569CD6>new</color>
-        <color=#569CD6>Node</color>(newData)\n\n<color=#6A9955>// Add the node to
-        the list</color>\n*currentPtr.nextPtr = newNode;\n\n"
+        <color=#569CD6>Node</color>(newData)\n\n<color=#6A9955>// Set the newNode's
+        next ptr to the current's next ptr</color>\n*newNode.nextPtr = *currentPtr.nextPtr\n\n<color=#6A9955>//
+        Add the node to the list</color>\n*currentPtr.nextPtr = newNode;\n"
       objectReference: {fileID: 0}
     - target: {fileID: 8373872859730456590, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_IgnoreReversedGraphics
@@ -8041,7 +8044,7 @@ MonoBehaviour:
   prevSlideAction: {fileID: 0}
   toBeginningAction: {fileID: 0}
   toEndAction: {fileID: 0}
-  m_StartSlide: {fileID: 0}
+  m_StartSlide: {fileID: 1301246761}
 --- !u!1001 &1297770798
 PrefabInstance:
   m_ObjectHideFlags: 0

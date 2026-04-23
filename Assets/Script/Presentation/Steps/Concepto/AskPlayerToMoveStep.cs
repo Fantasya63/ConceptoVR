@@ -25,6 +25,8 @@ namespace Canvas
 
         public override void Deactivate()
         {
+            if (m_VoiceSource.isPlaying)
+                m_VoiceSource.Stop();
         }
 
        
