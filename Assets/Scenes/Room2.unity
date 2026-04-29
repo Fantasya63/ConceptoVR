@@ -6700,10 +6700,23 @@ MonoBehaviour:
   m_NextWeCreateATemp: {fileID: 8300000, guid: a086e5159dde10c4bb10da8797bda88b, type: 3}
   m_AfterThatWeSetTheCur: {fileID: 8300000, guid: 03c2a2aad9d1763438064f0f3a78df59, type: 3}
   m_ThenWeCanSafelyDel: {fileID: 8300000, guid: cb0af4af805181843ab2d8cbe59d6cef, type: 3}
-  m_DeleteTraverseCode: 
-  m_TempToNodeToDeleteCode: 
-  m_CurrNodeNextToNodetoRepCode: 
-  m_DeleteNodeStep: 
+  m_DeleteTraverseCode: "public void Delete(int pos)\r\n{\r\n    int currentPos =
+    0;\r\n    Node* currentPtr = m_HeadPtr;\r\n\r\n    // Traverse until we are next
+    to the position to delete\r\n    while(currentPos + 1 < pos)\r\n    {\r\n       
+    currentPtr = *currentPtr.nextPtr;\r\n\tcurrentPos++;\r\n    }\n\n    ...\n}\r\n"
+  m_TempToNodeToDeleteCode: "public void Delete(int pos)\n{\n    ...\n\n    // Traverse
+    until we are next to the position to delete\n    while(currentPos + 1 < pos)\n   
+    {\n        currentPtr = *currentPtr.nextPtr;\n\tcurrentPos++;\n    }\n\n    //
+    Create a temp ptr to point to the node to delete to avoid leaking the node after
+    the chain is broken.\n    Node* temp = *currentPtr.nextPtr;\n\n    ...\n}\n"
+  m_CurrNodeNextToNodetoRepCode: "public void Delete(int pos)\n{\n    ...\n    //
+    Create a temp ptr to point to the node to delete to avoid leaking the node after
+    the chain is broken.\n    Node* temp = *currentPtr.nextPtr;\n\n    // Unlink
+    the node to be deleted from the lists\n    *currentPtr.next = *temp.nextPtr;\n\n   
+    ...\n}"
+  m_DeleteNodeStep: "public void Delete(int pos)\n{\n    ...\n\n    Node* temp =
+    *currentPtr.nextPtr;\n    *currentPtr.next = *temp.nextPtr;\n\n    \n    delete(temp);\n\n   
+    ...\n}"
   m_StartingValues: 17000000360000005901000024000000
 --- !u!4 &711588447
 Transform:
@@ -9948,7 +9961,7 @@ MonoBehaviour:
   prevSlideAction: {fileID: 0}
   toBeginningAction: {fileID: 0}
   toEndAction: {fileID: 0}
-  m_StartSlide: {fileID: 1601730421}
+  m_StartSlide: {fileID: 1301246761}
 --- !u!1001 &1297770798
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12199,7 +12212,7 @@ PrefabInstance:
       propertyPath: code
       value: "class LinkedLists\n{\n \tNode* head;\n        \tNode* current;\n\n\tvoid
         Insert(string value,  int pos)\n\t{\n\t\t...\n\t}\n\n\tvoid Delete(int pos)\n\t{\n\t\t...\n\t}\n\n\tvoid
-        Traverse()\n\t{\n...\n\t}\n}"
+        Traverse()\n\t{\n\t\t...\n\t}\n}"
       objectReference: {fileID: 0}
     - target: {fileID: 4106129285770532639, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_Name
@@ -14968,7 +14981,13 @@ MonoBehaviour:
   m_LinkedListsStartTransform: {fileID: 525373897}
   m_ToTraverse: {fileID: 8300000, guid: b7e9ce6d3c239604196787850c8edaf7, type: 3}
   m_ThisConcludes: {fileID: 8300000, guid: 2393a8dd8f5e4b34da064a6b37a2fe12, type: 3}
-  m_TraverseCode: 
+  m_ScriptVisualizer: {fileID: 0}
+  m_ScriptGrowSpeed: 1
+  m_TraverseCode: "void Traverse()\r\n{\r\n    Node* current = m_HeadPtr;\r\n   
+    string output = \"Lists: \";\r\n    \r\n    // Move through the lists until we
+    reach the end\r\n    while (m_Current.GetData() != null)\r\n    {\r\n       
+    output += *current.Data + \" -> \";\r\n\tcurrent = *current.nextPtr;\r\n    }\r\n\r\n   
+    output += \"NULL\";\r\n}"
   m_StartingValues: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
   m_DelayDurTraverse: 1
 --- !u!4 &1980512379

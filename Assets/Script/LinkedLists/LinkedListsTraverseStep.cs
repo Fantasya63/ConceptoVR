@@ -17,6 +17,10 @@ namespace Canvas
         [SerializeField] AudioClip m_ToTraverse;
         [SerializeField] AudioClip m_ThisConcludes;
 
+        [Header("Code Equivalents")]
+        [SerializeField] ScriptVisualizer m_ScriptVisualizer;
+        [SerializeField] float m_ScriptGrowSpeed = 1.0f;
+
         [SerializeField]
         [TextArea(5, 20)]
         string m_TraverseCode;
@@ -36,11 +40,18 @@ namespace Canvas
             m_LinkedListsInstance.InitWithValues(m_StartingValues);
 
             m_Coroutine = StartCoroutine(OnRoutine());
+
+            m_ScriptVisualizer.gameObject.SetActive(false);
         }
 
         IEnumerator OnRoutine()
         {
+            m_ScriptVisualizer.gameObject.SetActive(true);
             PlayVoiceNoWait(m_VoiceSource, m_ToTraverse);
+
+            yield return new WaitForSeconds(0.1f);
+            m_ScriptVisualizer.Code = m_TraverseCode;
+            yield return GrowAndWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
 
             //yield return new WaitForSeconds(m_DelayDurTraverse);
 
