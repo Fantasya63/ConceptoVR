@@ -401,11 +401,17 @@ namespace Concepto
         }
 
         public IEnumerator DeleteWithNarration(
-            int pos, AudioSource voiceSource, 
-            AudioClip nowSuppose, 
-            AudioClip nextWeCreate, 
+            int pos, AudioSource voiceSource,
+            AudioClip nowSuppose,
+            AudioClip nextWeCreate,
             AudioClip afterThatWeSet,
-            AudioClip thenWeCanSafely)
+            AudioClip thenWeCanSafely,
+            ScriptVisualizer scriptVisualizer,
+            string deleteTraverseCode,
+            string tempToNodeToDelCode,
+            string CurrNextToTempNextCode,
+            string deleteNodeCode
+            )
         {
             m_TempPtr.gameObject.SetActive(false);
 
@@ -425,6 +431,10 @@ namespace Concepto
             voiceSource.clip = nowSuppose;
             voiceSource.Play();
 
+            scriptVisualizer.gameObject.SetActive(true);
+            scriptVisualizer.Code = deleteTraverseCode;
+
+            //yield return GrowAndWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
 
             int currentPos = 0;
             m_Current.PointToNoAnim(m_Head);
@@ -448,6 +458,10 @@ namespace Concepto
             {
                 voiceSource.clip = nextWeCreate;
                 voiceSource.Play();
+
+                scriptVisualizer.gameObject.SetActive(true);
+                scriptVisualizer.Code = tempToNodeToDelCode;
+
 
                 m_TempPtr.gameObject.SetActive(true);
                 m_TempPtr.PointToNoAnim(m_Current.GetData().NextPointer);
@@ -475,6 +489,9 @@ namespace Concepto
                 voiceSource.clip = afterThatWeSet;
                 voiceSource.Play();
 
+                scriptVisualizer.gameObject.SetActive(true);
+                scriptVisualizer.Code = CurrNextToTempNextCode;
+
                 // Set current node's next to the nodeToRep
                 yield return currentNode.NextPointer.LookAt(nodeToRep);
 
@@ -482,6 +499,10 @@ namespace Concepto
 
                 voiceSource.clip = thenWeCanSafely;
                 voiceSource.Play();
+
+
+                scriptVisualizer.gameObject.SetActive(true);
+                scriptVisualizer.Code = deleteNodeCode;
 
                 // Delete Node to delete
                 Destroy(nodeToDelete.gameObject);
@@ -497,6 +518,7 @@ namespace Concepto
                 }
 
                 yield return new WaitUntil(() => !voiceSource.isPlaying);
+                yield return new WaitForSeconds(1.0f);
             }
         }
 

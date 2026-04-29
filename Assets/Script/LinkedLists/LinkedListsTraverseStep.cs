@@ -83,6 +83,8 @@ namespace Canvas
                 Destroy(m_LinkedListsInstance.gameObject);
                 m_LinkedListsInstance = null;
             }
+
+            m_ScriptVisualizer.gameObject.SetActive(false);
         }
 
         public override void Deactivate()

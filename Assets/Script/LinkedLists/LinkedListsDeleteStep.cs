@@ -17,7 +17,12 @@ namespace Canvas
         [SerializeField] AudioClip m_AfterThatWeSetTheCur;
         [SerializeField] AudioClip m_ThenWeCanSafelyDel;
 
+        [Header("Anim")]
+        [SerializeField] float m_GrowDur = 0.5f;
+
         [Header("Code Samples")]
+        [SerializeField] ScriptVisualizer m_ScriptVisualizer;
+
         [SerializeField]
         [TextArea(5, 20)]
         string m_DeleteTraverseCode;
@@ -34,8 +39,6 @@ namespace Canvas
         [TextArea(5, 20)]
         string m_DeleteNodeStep;
 
-
-
         [Header("Options")]
         [SerializeField] int[] m_StartingValues = { 23, 54, 345, 36 };
 
@@ -51,6 +54,7 @@ namespace Canvas
             Debug.Assert( m_NextWeCreateATemp != null);
             Debug.Assert( m_AfterThatWeSetTheCur != null);
             Debug.Assert( m_ThenWeCanSafelyDel != null);
+            Debug.Assert(m_ScriptVisualizer != null);
         }
 
         public override void Activate()
@@ -66,8 +70,19 @@ namespace Canvas
 
         IEnumerator OnRoutine()
         {
-          
-            yield return m_LinkedListsInstance.DeleteWithNarration(1, m_VoiceSource, m_NowSupposeWeWantToDel, m_NextWeCreateATemp, m_AfterThatWeSetTheCur, m_ThenWeCanSafelyDel);
+            yield return m_LinkedListsInstance.DeleteWithNarration(
+                1,
+                m_VoiceSource,
+                m_NowSupposeWeWantToDel,
+                m_NextWeCreateATemp,
+                m_AfterThatWeSetTheCur,
+                m_ThenWeCanSafelyDel,
+                m_ScriptVisualizer,
+                m_DeleteTraverseCode,
+                m_TempToNodeToDeleteCode,
+                m_CurrNodeNextToNodetoRepCode,
+                m_DeleteNodeStep
+                );
 
             Complete();
             
@@ -91,6 +106,9 @@ namespace Canvas
                 Destroy(m_LinkedListsInstance.gameObject);
                 m_LinkedListsInstance = null;
             }
+
+            m_ScriptVisualizer.gameObject.SetActive(false);
+
         }
 
         public override void Deactivate()
