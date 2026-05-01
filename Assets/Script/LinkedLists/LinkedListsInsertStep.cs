@@ -55,7 +55,6 @@ namespace Canvas
         private void Awake()
         {
             m_PositionalMarkersHolder.SetActive(false);
-
             m_NextPressed = false;
 
             Debug.Assert(m_VoiceSource != null);
@@ -108,13 +107,8 @@ namespace Canvas
             m_ScriptVisualizer.gameObject.SetActive(true);
             m_ScriptVisualizer.Code = m_InsertStartCode;
             yield return GrowAndWait(m_ScriptVisualizer.gameObject, m_ScriptGrowSpeed);
-
             yield return WaitForAudioToFinish(m_VoiceSource);
-
             yield return m_LinkedListsInstance.Insert("23");
-
-            
-            
 
             PlayVoiceNoWait(m_VoiceSource, m_WeWillAlsoNeedA);
 
@@ -126,7 +120,7 @@ namespace Canvas
             m_LinkedListsInstance.CurrentPointer.transform.localScale = Vector3.one;
             yield return GrowAndWait(m_LinkedListsInstance.CurrentPointer.gameObject, m_CurrentPtrGrowSpeed);
 
-
+            
             yield return WaitForAudioToFinish(m_VoiceSource);
 
 
