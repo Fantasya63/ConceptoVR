@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace Canvas
 {
-    public class Slides : MonoBehaviour
+    public class  Slides : MonoBehaviour
     {
         [Header("Configuration")]
         public Step[] steps;
@@ -19,6 +19,10 @@ namespace Canvas
 
         private Dictionary<string, int> m_StepNameToIndexTable = new Dictionary<string, int>();
 
+        public int StepNameToIndex(string stepName)
+        {
+            return m_StepNameToIndexTable[stepName];
+        }
 
         public string SlideName
         {
@@ -54,29 +58,29 @@ namespace Canvas
         public void Setup()
         {
             
-            if (currentStep != -1)
+            if (currentStepIndex != -1)
                 Debug.LogWarning($"[Slides] Setup() called multiple times on {name}. Previous state will be overridden.");
 
             // Ensure current step is valid before doing anything
 
-            currentStep = 0;
+            currentStepIndex = 0;
 #if UNITY_EDITOR
-            currentStep = m_DebugStartStepIndex;
+            currentStepIndex = m_DebugStartStepIndex;
 #endif
 
             // Activate first step
-            steps[currentStep].Activate();
+            steps[currentStepIndex].Activate();
         }
 
 
 
         public void Cleanup()
         {
-            if (currentStep < 0 || steps == null || currentStep >= steps.Length)
+            if (currentStepIndex < 0 || steps == null || currentStepIndex >= steps.Length)
                 return;
 
-            steps[currentStep].Deactivate();
-            currentStep = -1;
+            steps[currentStepIndex].Deactivate();
+            currentStepIndex = -1;
 
             foreach (Step step in steps)
             {
@@ -89,19 +93,19 @@ namespace Canvas
         public bool Next()
         {
             AssertIsValidState();
-            bool allowNext = steps[currentStep].OnNextStep();
+            bool allowNext = steps[currentStepIndex].OnNextStep();
            
 
 
-            if (currentStep == steps.Length - 1)
+            if (currentStepIndex == steps.Length - 1)
                 return true;
 
-            steps[currentStep].Deactivate();
+            steps[currentStepIndex].Deactivate();
 
-            currentStep += 1;
+            currentStepIndex += 1;
 
-            AssertStepIsNotNull(currentStep);
-            steps[currentStep].Activate();
+            AssertStepIsNotNull(currentStepIndex);
+            steps[currentStepIndex].Activate();
             return false;
 
         }
@@ -111,15 +115,15 @@ namespace Canvas
         public bool Previous()
         {
             AssertIsValidState();
-            if (currentStep == 0)
+            if (currentStepIndex == 0)
                 return true;
 
-            steps[currentStep].Deactivate();
+            steps[currentStepIndex].Deactivate();
 
-            currentStep -= 1;
+            currentStepIndex -= 1;
             
-            AssertStepIsNotNull(currentStep);
-            steps[currentStep].Activate();
+            AssertStepIsNotNull(currentStepIndex);
+            steps[currentStepIndex].Activate();
             return false;
         }
 
@@ -132,11 +136,11 @@ namespace Canvas
             }
 
             int index = m_StepNameToIndexTable[destination.name];
-            steps[currentStep].Deactivate();
-            currentStep = index;
+            steps[currentStepIndex].Deactivate();
+            currentStepIndex = index;
 
-            AssertStepIsNotNull(currentStep);
-            steps[currentStep].Activate();
+            AssertStepIsNotNull(currentStepIndex);
+            steps[currentStepIndex].Activate();
 
         }
 
@@ -146,10 +150,12 @@ namespace Canvas
                 manager.NextStep();
         }
 
-        public int CurrentStep { get { return currentStep; } }
+        public int CurrentStepIndex { get { return currentStepIndex; } }
+        public Step CurrentStep
+        { get { return steps[currentStepIndex]; } }
 
         [SerializeField, HideInInspector]
-        private int currentStep = -1; // -1 = not initialized
+        private int currentStepIndex = -1; // -1 = not initialized
 
         // Helper Methods
 
@@ -157,8 +163,8 @@ namespace Canvas
         {
             Debug.Assert(steps != null, $"[Slides] Steps array is null on {name}");
             Debug.Assert(steps.Length > 0, $"[Slides] Steps array is empty on {name}");
-            Debug.Assert(currentStep >= 0 && currentStep < steps.Length,
-                $"[Slides] currentStep is invalid: {currentStep}. Valid range: 0–{steps.Length - 1}");
+            Debug.Assert(currentStepIndex >= 0 && currentStepIndex < steps.Length,
+                $"[Slides] currentStep is invalid: {currentStepIndex}. Valid range: 0–{steps.Length - 1}");
         }
 
         private void AssertStepIsNotNull(int index)
@@ -166,6 +172,19 @@ namespace Canvas
             Debug.Assert(steps[index] != null,
                 $"[Slides] Step at index {index} is null on {name}!");
         }
+
+        public void ReplayStep()
+        {
+            AssertIsValidState();
+            AssertStepIsNotNull(currentStepIndex);
+
+            steps[currentStepIndex].Deactivate();
+            steps[currentStepIndex].Activate();
+            
+            Debug.Log($"Replaying step: {steps[currentStepIndex].name}");
+            return;
+        }
+
 
         public void Replay()
         {
@@ -182,7 +201,7 @@ namespace Canvas
             Debug.Assert(m_StepNameToIndexTable.ContainsKey(step.name), $"Step: {step.name} is not part of the slide");
 
             int index = m_StepNameToIndexTable[step.name];
-            return index == currentStep;
+            return index == currentStepIndex;
         }
     }
 }

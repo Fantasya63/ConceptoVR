@@ -69,7 +69,7 @@ namespace Canvas
 
         private void OnKeypadSubmit()
         {
-            if (slide.manager.CurrentSlide == slide && slide.steps[slide.CurrentStep] == this && !m_HasToldHowToViz)
+            if (slide.manager.CurrentSlide == slide && slide.steps[slide.CurrentStepIndex] == this && !m_HasToldHowToViz)
                 PlayVoiceNoWait(m_VOSource, m_ShowCodeViz);
 
             m_HasToldHowToViz = true;

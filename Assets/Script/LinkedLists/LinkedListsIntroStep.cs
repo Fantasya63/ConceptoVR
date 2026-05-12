@@ -35,7 +35,6 @@ public class LinkedListsIntroStep : Step
     [SerializeField] float m_UnlikeArraysPause = 1.0f;
 
     [Header("Voice Clips")]
-    [SerializeField] AudioClip m_PleaseHeadOver;
     [SerializeField] AudioClip m_LinkedListsIsA;
     [SerializeField] AudioClip m_AndEachNodePoints;
     [SerializeField] AudioClip m_UnlikeArrays;
@@ -57,7 +56,7 @@ public class LinkedListsIntroStep : Step
         {
             for (int i = 0; i < m_TempNodes.Length; i++)
             {
-                Destroy(m_TempNodes[i].gameObject);
+                Destroy(m_TempNodes[i]?.gameObject);
             }
         }
         m_TempNodes = null;
@@ -66,7 +65,6 @@ public class LinkedListsIntroStep : Step
     private void Start()
     {
         Debug.Assert(m_VoiceSource != null);
-        Debug.Assert(m_PleaseHeadOver != null);
         Debug.Assert(m_LinkedListsIsA != null);
         Debug.Assert(m_AndEachNodePoints != null);
         Debug.Assert(m_UnlikeArrays != null);
@@ -164,6 +162,11 @@ public class LinkedListsIntroStep : Step
                         int nextIndex = index + 1;
                         if (nextIndex< m_NumOfInstances)
                         {
+                            if (m_TempNodes == null || m_TempNodes[nextIndex] == null)
+                                return;
+
+
+
                             SpatialNode nextNode = m_TempNodes[nextIndex];
                             _node.NextPointer.LookAtNoAnim(nextNode);
                         }

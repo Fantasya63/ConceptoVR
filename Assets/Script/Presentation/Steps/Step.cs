@@ -12,6 +12,11 @@ namespace Canvas
         [HideInInspector]
         public Slides slide;
 
+        public int GetIndex()
+        {
+            return slide.StepNameToIndex(name);
+        }
+
         public abstract void Activate();
 
         public abstract void Deactivate();

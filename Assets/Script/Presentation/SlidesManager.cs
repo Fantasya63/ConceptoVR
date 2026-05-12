@@ -1,13 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 
 namespace Canvas
 {
+    [System.Serializable]
+    public class StepEvent : UnityEvent<Step> { }
+
     public class SlidesManager : MonoBehaviour
     {
+        public StepEvent OnNextStepEvent;
+
         [Header("Slides to Manage")]
         [SerializeField] private Slides[] slides;
         [SerializeField, HideInInspector]
@@ -95,7 +101,10 @@ namespace Canvas
         {
             if (!IsValidState()) return;
 
+
+
             bool endReached = slides[currentSlideIndex].Next();
+            OnNextStepEvent?.Invoke(slides[currentSlideIndex].CurrentStep);
             if (endReached)
                 NextSlide();
         }
@@ -110,8 +119,21 @@ namespace Canvas
                 return; 
             }
             bool startReached = slides[currentSlideIndex].Previous();
+            OnNextStepEvent?.Invoke(slides[currentSlideIndex].CurrentStep);
             if (startReached)
                 PrevSlide();
+        }
+
+        public void ReplayStep()
+        {
+            if (!IsValidState())
+            {
+                Debug.Log("Replay Step Aborted. System is in invalid state");
+                return;
+            }
+
+            slides[currentSlideIndex].ReplayStep();
+            OnNextStepEvent?.Invoke(slides[currentSlideIndex].CurrentStep);
         }
 
         public Slides CurrentSlide => IsValidState() ? slides[currentSlideIndex] : null;
@@ -129,6 +151,18 @@ namespace Canvas
 
             SetupInputActions();
 
+        }
+
+        public void JumpToStep(Step _step)
+        {
+            if (_step == null)
+                return;
+
+            if (_step.slide != CurrentSlide)
+                return;
+
+            CurrentSlide.JumpToStep(_step);
+            OnNextStepEvent?.Invoke(CurrentSlide.CurrentStep);
         }
 
         public void JumpToSlide(Slides destination, bool restart = false)
@@ -160,6 +194,7 @@ namespace Canvas
 
             // Setup new
             slides[currentSlideIndex].Setup();
+            OnNextStepEvent?.Invoke(CurrentSlide.CurrentStep);
         }
 
         private void ShowCurrentSlide()
