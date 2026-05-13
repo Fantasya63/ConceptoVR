@@ -57,6 +57,7 @@ namespace Canvas
             Debug.Assert(m_PaperDataStartTransform != null);
             Debug.Assert(m_PaperKeyStartTransform != null);
             Debug.Assert(m_ScriptVisualizer != null);
+            Debug.Assert(m_VoiceSource != null);
 
             if (m_ScriptPrinter == null)
             {
@@ -203,6 +204,10 @@ namespace Canvas
             if (m_SlideRoutine != null)
                 StopCoroutine(m_SlideRoutine);
 
+            if (m_VoiceSource.isPlaying)
+            {
+                m_VoiceSource.Stop();
+            }
             m_PlayerHashFuncDev.OnPaperPrinted.RemoveListener(OnHashFuncDevPrinted);
             
             CleanUp();

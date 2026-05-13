@@ -6,11 +6,11 @@ namespace Canvas
     public class HashmapGameplayStep : Step
     {
         [Header("References")]
-        //[SerializeField] AudioSource m_VoiceSource;
+        [SerializeField] AudioSource m_VoiceSource;
         [SerializeField] GameObject m_GameplayObjectsPrefab;
 
         [Header("Voice Overs")]
-        //[SerializeField] AudioClip m_YouCanTry;
+        [SerializeField] AudioClip m_YouCanTry;
 
         GameObject m_GameplayObjectsInstance = null;
         Vector3 m_TeleportAnchorStartPos = Vector3.zero;
@@ -22,6 +22,8 @@ namespace Canvas
             Debug.Assert(m_GameplayObjectsPrefab != null);
             Debug.Assert(m_TeleportAnchorTransform != null);
             Debug.Assert(m_TeleportAnchorNewPos != null);
+            Debug.Assert(m_VoiceSource != null);
+            Debug.Assert(m_YouCanTry != null);
 
             m_TeleportAnchorStartPos = m_TeleportAnchorTransform.position;
         }
@@ -34,7 +36,7 @@ namespace Canvas
             }
 
 
-            //PlayVoiceNoWait(m_VoiceSource, m_YouCanTry);
+            PlayVoiceNoWait(m_VoiceSource, m_YouCanTry);
 
             m_GameplayObjectsInstance = Instantiate(m_GameplayObjectsPrefab);
             m_GameplayObjectsInstance.transform.position = Vector3.zero;
@@ -45,7 +47,8 @@ namespace Canvas
 
         private void Reset()
         {
-            
+            if (m_VoiceSource.isPlaying)
+                m_VoiceSource.Stop();
 
             if (m_GameplayObjectsInstance != null)
             {
