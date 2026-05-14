@@ -4,8 +4,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class ScriptVisualizer : MonoBehaviour
 {
-    [SerializeField]
-    [TextArea(5, 20)]
+    
     public string Code
     {
         set
