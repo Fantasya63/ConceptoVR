@@ -5937,8 +5937,6 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_AutoFindParentInteractableInHierarchy: 0
-  m_ParentInteractableObject: {fileID: 0}
   m_TeleportationProvider: {fileID: 0}
   m_MatchOrientation: 0
   m_MatchDirectionalInput: 1
@@ -8202,7 +8200,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 243568067}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Canvas.WaitForInputStep, Assembly-CSharp
         m_MethodName: TriggerInput
         m_Mode: 1
@@ -9237,8 +9235,6 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_AutoFindParentInteractableInHierarchy: 0
-  m_ParentInteractableObject: {fileID: 0}
   m_TeleportationProvider: {fileID: 0}
   m_MatchOrientation: 0
   m_MatchDirectionalInput: 1
@@ -9471,7 +9467,7 @@ MonoBehaviour:
   prevSlideAction: {fileID: 0}
   toBeginningAction: {fileID: 0}
   toEndAction: {fileID: 0}
-  m_StartSlide: {fileID: 0}
+  m_StartSlide: {fileID: 146583723}
 --- !u!1001 &1297770798
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11615,7 +11611,7 @@ PrefabInstance:
         head;\n        \t<color=#569CD6>Node</color>* current;\n\n\t<color=#569CD6>void</color>
         <color=#DCDCAA>Insert</color>(<color=#569CD6>string</color> value,  <color=#569CD6>int</color>
         pos)\n\t{\n\t\t...\n\t}\n\n\t<color=#569CD6>void</color> <color=#DCDCAA>Delete</color>(<color=#569CD6>int</color>
-        pos)\n\t{\n\t\t...\n\t}\n\n\t<color=#569CD6>void</color> <color=#DCDCAA>Traverse</color>()\n\t{\n...\n\t}\n}"
+        pos)\n\t{\n\t\t...\n\t}\n\n\t<color=#569CD6>void</color> <color=#DCDCAA>Traverse</color>()\n\t{\n\t\t...\n\t}\n}"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13331,14 +13327,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5713243162175387829, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_text
-      value: "<color=#569CD6>Node</color>* currentPtr = headPtr;\n\n<color=#6A9955>//
-        Traverse the list until just before the desired pos</color>\n<color=#569CD6>int</color>
-        currPos = <color=#B5CEA8>0</color>;\n<color=#569CD6>while</color>(currPos
-        + <color=#B5CEA8>1</color> < insertionPos)\n\tcurrentPtr = *currentPtr.nextPtr\n\n<color=#6A9955>//
-        Create newNode</color>\n<color=#569CD6>Node</color>* newNode = <color=#569CD6>new</color>
-        <color=#569CD6>Node</color>(newData)\n\n<color=#6A9955>// Set the newNode's
-        next ptr to the current's next ptr</color>\n*newNode.nextPtr = *currentPtr.nextPtr\n\n<color=#6A9955>//
-        Add the node to the list</color>\n*currentPtr.nextPtr = newNode;\n"
+      value: "<color=#569CD6>void</color> <color=#DCDCAA>Traverse</color>()\n{\n   
+        <color=#569CD6>Node</color>* current = m_HeadPtr;\n    <color=#569CD6>string</color>
+        output = <color=#CE9178>\"Lists: \"</color>;\n    \n    <color=#6A9955>//
+        Move through the lists until we reach the end</color>\n    <color=#569CD6>while</color>
+        (m_Current.<color=#DCDCAA>GetData</color>() != <color=#569CD6>null</color>)\n   
+        {\n        output += *current.Data + <color=#CE9178>\" -> \"</color>;\n\tcurrent
+        = *current.nextPtr;\n    }\n\n    output += <color=#CE9178>\"NULL\"</color>;\n}"
       objectReference: {fileID: 0}
     - target: {fileID: 8373872859730456590, guid: a6e720393d4c116469011282c09fe3a4, type: 3}
       propertyPath: m_IgnoreReversedGraphics
@@ -14016,7 +14011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5326217077169910985, guid: 61901f46a9e11924ba242ea9e781df5b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5708528067773138086, guid: 61901f46a9e11924ba242ea9e781df5b, type: 3}
       propertyPath: m_LocalPosition.x
